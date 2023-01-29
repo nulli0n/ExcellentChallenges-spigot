@@ -1,0 +1,5 @@
+Type: POTION_BREW
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  potions_brew:
+    Chance: 50.0

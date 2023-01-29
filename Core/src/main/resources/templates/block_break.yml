@@ -1,0 +1,57 @@
+Type: BLOCK_BREAK
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  break_bamboo:
+    Chance: 50.0
+  break_deep_ores:
+    Chance: 50.0
+  break_desert:
+    Chance: 50.0
+  break_end:
+    Chance: 50.0
+  break_farm_1:
+    Chance: 50.0
+  break_flowers_1:
+    Chance: 50.0
+  break_flowers_2:
+    Chance: 50.0
+  break_flowers_3:
+    Chance: 50.0
+  break_grass:
+    Chance: 50.0
+  break_leaves_1:
+    Chance: 50.0
+  break_leaves_2:
+    Chance: 50.0
+  break_log_1:
+    Chance: 50.0
+  break_log_2:
+    Chance: 50.0
+  break_log_3:
+    Chance: 50.0
+  break_mushrooms_1:
+    Chance: 50.0
+  break_mushrooms_2:
+    Chance: 50.0
+  break_mushrooms_3:
+    Chance: 50.0
+  break_mycelium:
+    Chance: 50.0
+  break_nether_1:
+    Chance: 50.0
+  break_nether_2:
+    Chance: 50.0
+  break_nether_ores:
+    Chance: 50.0
+  break_ores:
+    Chance: 50.0
+  break_sand:
+    Chance: 50.0
+  break_savanna:
+    Chance: 50.0
+  break_sea:
+    Chance: 50.0
+  break_snow:
+    Chance: 50.0
+  break_stones:
+    Chance: 50.0

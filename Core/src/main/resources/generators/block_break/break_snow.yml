@@ -1,0 +1,76 @@
+Names:
+  - '&fSnow Time!'
+Icon:
+  Active:
+    Material: SNOW_BLOCK
+    Item_Flags:
+    - '*'
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: '2'
+  List:
+    snow:
+      Chance: '80.0'
+      Level_Min: 1
+      Level_Max: 5
+    snow_block:
+      Chance: '50.0'
+      Level_Min: 1
+      Level_Max: 5
+    ice:
+      Chance: '35.0'
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    snow:
+      Minimum: '200 * %level% / 2'
+      Maximum: '350 * %level% / 2'
+    snow_block:
+      Minimum: '160 * %level% / 2'
+      Maximum: '280 * %level% / 2'
+    ice:
+      Minimum: '40 * %level% / 2'
+      Maximum: '60 * %level% / 2'
+
+Conditions:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '100.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50.0'
+      Level_Min: 1
+      Level_Max: 1
+    eco_500:
+      Chance: '50.0'
+      Level_Min: 2
+      Level_Max: 4
+    eco_750:
+      Chance: '50.0'
+      Level_Min: 3
+      Level_Max: 5

@@ -1,0 +1,5 @@
+Type: ITEM_FISH
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  food_fish:
+    Chance: 50.0

@@ -1,0 +1,182 @@
+Names:
+- 'Enchanter'
+Description: []
+Icon:
+  Active:
+    Material: ENCHANTING_TABLE
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: 0 + %level%
+  List:
+    fire_protection:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    sharpness:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    flame:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    soul_speed:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    aqua_affinity:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    punch:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    loyalty:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    unbreaking:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    knockback:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    fortune:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    protection:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    efficiency:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    mending:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    frost_walker:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    lure:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    looting:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    piercing:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    blast_protection:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    smite:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    multishot:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    fire_aspect:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    thorns:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    bane_of_arthropods:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    respiration:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    riptide:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    silk_touch:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    quick_charge:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    projectile_protection:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    feather_falling:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    power:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    infinity:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    default:
+      Minimum: 5 * %level%
+      Maximum: 12 * %level%
+Conditions:
+  Amount:
+    Minimum: '0'
+    Maximum: '0'
+  Worlds:
+    world:
+      Chance: '0'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '0'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '0'
+      Level_Min: 1
+      Level_Max: 5
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50'
+      Level_Min: 1
+      Level_Max: 2
+    eco_500:
+      Chance: '50'
+      Level_Min: 2
+      Level_Max: 3
+    eco_750:
+      Chance: '50'
+      Level_Min: 3
+      Level_Max: 4
+    eco_1000:
+      Chance: '50'
+      Level_Min: 4
+      Level_Max: 5

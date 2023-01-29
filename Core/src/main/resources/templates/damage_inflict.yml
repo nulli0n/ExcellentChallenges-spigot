@@ -1,0 +1,5 @@
+Type: DAMAGE_INFLICT
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  damage_inflict:
+    Chance: 50.0

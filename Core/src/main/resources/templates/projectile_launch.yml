@@ -1,0 +1,5 @@
+Type: PROJECTILE_LAUNCH
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  projectiles:
+    Chance: 50.0

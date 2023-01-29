@@ -1,0 +1,50 @@
+Names:
+- 'Killing Wither'
+Description: []
+Icon:
+  Active:
+    Material: WITHER_SKELETON_SKULL
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: 0 + %level%
+  List:
+    wither:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    wither:
+      Minimum: 1 * %level%
+      Maximum: 2 * %level%
+Conditions:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '0'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '100'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '0'
+      Level_Min: 1
+      Level_Max: 5
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_1000:
+      Chance: '50'
+      Level_Min: 1
+      Level_Max: 5

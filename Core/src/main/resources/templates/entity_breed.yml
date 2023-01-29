@@ -1,0 +1,5 @@
+Type: ENTITY_BREED
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  breed_animals:
+    Chance: 50.0

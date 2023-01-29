@@ -1,0 +1,5 @@
+Type: ITEM_ENCHANT
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  enchants:
+    Chance: 50.0

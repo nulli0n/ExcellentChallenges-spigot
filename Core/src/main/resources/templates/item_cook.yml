@@ -1,0 +1,7 @@
+Type: ITEM_COOK
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  food_fish:
+    Chance: 50.0
+  cook_ores:
+    Chance: 50.0

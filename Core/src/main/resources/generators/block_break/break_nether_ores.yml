@@ -1,0 +1,73 @@
+Names:
+  - 'Mining Nether Ores'
+Icon:
+  Active:
+    Material: NETHER_GOLD_ORE
+    Item_Flags:
+    - '*'
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: '0 + %level%'
+  List:
+    nether_quartz_ore:
+      Chance: '70.0'
+      Level_Min: 1
+      Level_Max: 5
+    nether_gold_ore:
+      Chance: '40.0'
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    nether_gold_ore:
+      Minimum: 30 * %level%
+      Maximum: 65 * %level%
+    nether_quartz_ore:
+      Minimum: '30 * %level%'
+      Maximum: '90 * %level%'
+
+Conditions:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '100.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50.0'
+      Level_Min: 1
+      Level_Max: 1
+    eco_500:
+      Chance: '50.0'
+      Level_Min: 2
+      Level_Max: 2
+    eco_750:
+      Chance: '50.0'
+      Level_Min: 3
+      Level_Max: 3
+    eco_1000:
+      Chance: '50.0'
+      Level_Min: 4
+      Level_Max: 5

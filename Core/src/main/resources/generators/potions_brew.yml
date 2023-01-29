@@ -1,0 +1,142 @@
+Names:
+- 'Breaking Bad'
+Description: []
+Icon:
+  Active:
+    Material: BREWING_STAND
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: 0 + %level%
+  List:
+    SPEED:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    SLOW:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    FAST_DIGGING:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    SLOW_DIGGING:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    INCREASE_DAMAGE:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    HEAL:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    HARM:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    JUMP:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    CONFUSION:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    REGENERATION:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    DAMAGE_RESISTANCE:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    FIRE_RESISTANCE:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    WATER_BREATHING:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    INVISIBILITY:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    BLINDNESS:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    NIGHT_VISION:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    WEAKNESS:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    POISON:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    HEALTH_BOOST:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    LEVITATION:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    SLOW_FALLING:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    default:
+      Minimum: 15 * %level%
+      Maximum: 30 * %level%
+Conditions:
+  Amount:
+    Minimum: '0'
+    Maximum: '0'
+  Worlds:
+    world:
+      Chance: '80'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '20'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '10'
+      Level_Min: 1
+      Level_Max: 5
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50'
+      Level_Min: 1
+      Level_Max: 2
+    eco_500:
+      Chance: '50'
+      Level_Min: 2
+      Level_Max: 3
+    eco_750:
+      Chance: '50'
+      Level_Min: 3
+      Level_Max: 4
+    eco_1000:
+      Chance: '50'
+      Level_Min: 4
+      Level_Max: 5

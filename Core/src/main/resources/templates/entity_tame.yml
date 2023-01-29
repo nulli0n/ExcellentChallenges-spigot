@@ -1,0 +1,7 @@
+Type: ENTITY_TAME
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  tame_horses:
+    Chance: 50.0
+  tame_pets:
+    Chance: 50.0

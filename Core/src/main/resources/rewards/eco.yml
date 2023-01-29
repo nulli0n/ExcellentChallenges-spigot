@@ -1,0 +1,34 @@
+eco_250:
+  Name: '$250'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 250'
+
+eco_500:
+  Name: '$500'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 500'
+
+eco_750:
+  Name: '$750'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 750'
+
+eco_1000:
+  Name: '$1000'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 1000'
+
+eco_1250:
+  Name: '$1250'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 1250'
+
+eco_1500:
+  Name: '$1500'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 1500'
+
+eco_2500:
+  Name: '$2500'
+  Commands:
+  - '[CONSOLE] eco give %player_name% 2500'

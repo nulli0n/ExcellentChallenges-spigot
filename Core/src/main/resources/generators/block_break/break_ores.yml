@@ -1,0 +1,96 @@
+Names:
+  - 'Mining Ores'
+  - 'Looking for Minerals'
+Icon:
+  Active:
+    Material: REDSTONE_ORE
+    Item_Flags:
+    - '*'
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: '0 + %level%'
+  List:
+    coal_ore,iron_ore:
+      Chance: '70.0'
+      Level_Min: 1
+      Level_Max: 5
+    gold_ore,copper_ore:
+      Chance: '50.0'
+      Level_Min: 1
+      Level_Max: 5
+    lapis_ore,redstone_ore:
+      Chance: '40.0'
+      Level_Min: 1
+      Level_Max: 5
+    emerald_ore:
+      Chance: '20.0'
+      Level_Min: 3
+      Level_Max: 5
+    diamond_ore:
+      Chance: '10.0'
+      Level_Min: 3
+      Level_Max: 5
+  Progress:
+    coal_ore,iron_ore:
+      Minimum: '120 * %level%'
+      Maximum: '250 * %level%'
+    gold_ore,copper_ore:
+      Minimum: '95 * %level%'
+      Maximum: '185 * %level%'
+    lapis_ore,redstone_ore:
+      Minimum: '95 * %level%'
+      Maximum: '185 * %level%'
+    emerald_ore:
+      Minimum: '6 * %level%'
+      Maximum: '15 * %level%'
+    diamond_ore:
+      Minimum: '35 * %level%'
+      Maximum: '60 * %level%'
+
+
+Conditions:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '100.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50.0'
+      Level_Min: 1
+      Level_Max: 1
+    eco_500:
+      Chance: '50.0'
+      Level_Min: 2
+      Level_Max: 2
+    eco_750:
+      Chance: '50.0'
+      Level_Min: 3
+      Level_Max: 3
+    eco_1000:
+      Chance: '50.0'
+      Level_Min: 4
+      Level_Max: 5

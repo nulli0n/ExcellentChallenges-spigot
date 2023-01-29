@@ -1,0 +1,69 @@
+Names:
+  - '&fDesert Excavation'
+Icon:
+  Active:
+    Material: SANDSTONE
+    Item_Flags:
+    - '*'
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: '0 + %level%'
+  List:
+    sandstone,smooth_sandstone,cut_sandstone:
+      Chance: '80.0'
+      Level_Min: 1
+      Level_Max: 5
+    chilesed_sandstone:
+      Chance: '30.0'
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    sandstone,smooth_sandstone,cut_sandstone:
+      Minimum: '30 * %level%'
+      Maximum: '45 * %level%'
+    chilesed_sandstone:
+      Minimum: '10 + %level% * 4'
+      Maximum: '15 + %level% * 4'
+
+Conditions:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '100.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '0.0'
+      Level_Min: 1
+      Level_Max: 5
+
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50.0'
+      Level_Min: 1
+      Level_Max: 2
+    eco_500:
+      Chance: '50.0'
+      Level_Min: 3
+      Level_Max: 4
+    eco_750:
+      Chance: '50.0'
+      Level_Min: 5
+      Level_Max: 5

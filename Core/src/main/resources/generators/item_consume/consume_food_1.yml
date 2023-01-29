@@ -1,0 +1,77 @@
+Names:
+- 'I''m Hungry'
+Description: []
+Icon:
+  Active:
+    Material: POTATO
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: 0 + %level%
+  List:
+    apple:
+      Chance: 70.0
+      Level_Min: 1
+      Level_Max: 5
+    carrot:
+      Chance: 30.0
+      Level_Min: 1
+      Level_Max: 5
+    potato:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    beetroot:
+      Chance: 20.0
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    apple,carrot,potato:
+      Minimum: 45 * %level%
+      Maximum: 90 * %level%
+    beetroot:
+      Minimum: 30 * %level%
+      Maximum: 60 * %level%
+Conditions:
+  Amount:
+    Minimum: '0'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '80'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '20'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '10'
+      Level_Min: 1
+      Level_Max: 5
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50'
+      Level_Min: 1
+      Level_Max: 2
+    eco_500:
+      Chance: '50'
+      Level_Min: 2
+      Level_Max: 3
+    eco_750:
+      Chance: '50'
+      Level_Min: 3
+      Level_Max: 4
+    eco_1000:
+      Chance: '50'
+      Level_Min: 4
+      Level_Max: 5

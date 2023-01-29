@@ -1,0 +1,20 @@
+ChallengeJobType:
+  BLOCK_BREAK: Break Block
+  BLOCK_PLACE: Place Block
+  ITEM_CONSUME: Consume Item
+  ITEM_CRAFT: Craft Item
+  ITEM_COOK: Cook/Smelt Item
+  ITEM_ENCHANT: Enchant Item
+  ITEM_DISENCHANT: Disenchant Item
+  ITEM_TRADE: Trade Item
+  ITEM_FISH: Fish Item
+  ENTITY_KILL: Kill Entity
+  ENTITY_KILL_MYTHIC: Kill Mythic Mob
+  ENTITY_TAME: Tame Entity
+  ENTITY_BREED: Breed Entity
+  ENTITY_SHEAR: Shear Entity
+  PROJECTILE_LAUNCH: Launch Projectile
+  POTION_BREW: Brew Potion
+  ANVIL_RENAME: Rename on Anvil
+  DAMAGE_RECEIVE: Receive Damage
+  DAMAGE_INFLICT: Inflict Damage

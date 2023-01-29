@@ -1,0 +1,95 @@
+Plugin:
+  Command_Aliases: excellentchallenges,challenges
+
+Database:
+  Table_Prefix: 'excellentchallenges'
+
+Challenges:
+  Types:
+    daily:
+      Name: Daily
+      Refresh_Time: 86400
+      Unique_Generators: true
+      Levels:
+        Min: 1
+        Max: 2
+      Amount_Per_Rank:
+        default: 6
+        premium: 9
+      Challenge_Ids_Per_Rank:
+        default:
+          - anvil_rename
+          - block_break
+          - block_place
+          - damage_inflict
+          - damage_receive
+          - entity_breed
+          - entity_kill
+          - entity_shear
+          - entity_tame
+          - item_consume
+          - item_cook
+          - item_craft
+          - item_disenchant
+          - item_enchant
+          - item_fish
+          - potion_brew
+          - projectile_launch
+    weekly:
+      Name: Weekly
+      Refresh_Time: 604800
+      Unique_Generators: true
+      Levels:
+        Min: 3
+        Max: 4
+      Amount_Per_Rank:
+        default: 6
+        premium: 9
+      Challenge_Ids_Per_Rank:
+        default:
+          - anvil_rename
+          - block_break
+          - block_place
+          - damage_inflict
+          - damage_receive
+          - entity_breed
+          - entity_kill
+          - entity_shear
+          - entity_tame
+          - item_consume
+          - item_cook
+          - item_craft
+          - item_disenchant
+          - item_enchant
+          - item_fish
+          - potion_brew
+          - projectile_launch
+    monthly:
+      Name: Monthly
+      Refresh_Time: 2628288
+      Unique_Generators: true
+      Levels:
+        Min: 5
+        Max: 5
+      Amount_Per_Rank:
+        default: 6
+        premium: 9
+      Challenge_Ids_Per_Rank:
+        default:
+          - anvil_rename
+          - block_break
+          - block_place
+          - damage_inflict
+          - damage_receive
+          - entity_breed
+          - entity_kill
+          - entity_shear
+          - entity_tame
+          - item_consume
+          - item_cook
+          - item_craft
+          - item_disenchant
+          - item_enchant
+          - item_fish
+          - potion_brew
+          - projectile_launch

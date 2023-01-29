@@ -1,0 +1,7 @@
+Type: BLOCK_PLACE
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  place_saplings_1:
+    Chance: 50.0
+  place_saplings_2:
+    Chance: 50.0

@@ -1,0 +1,116 @@
+Names:
+- 'Strength Test'
+Description: []
+Icon:
+  Active:
+    Material: IRON_CHESTPLATE
+    Item_Flags:
+    - '*'
+  Completed:
+    Material: LIME_STAINED_GLASS_PANE
+Level:
+  Minimum: 1
+  Maximum: 5
+Objectives:
+  Amount:
+    Minimum: '1'
+    Maximum: 0 + %level%
+  List:
+    contact,suffocation,drowning,fly_into_wall,starvation:
+      Chance: 20.0
+      Level_Min: 1
+      Level_Max: 5
+    entity_attack,entity_sweep_attack:
+      Chance: 80.0
+      Level_Min: 1
+      Level_Max: 5
+    projectile,thorns:
+      Chance: 60.0
+      Level_Min: 1
+      Level_Max: 5
+    fall,falling_block:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    fire,fire_tick,lava,hot_floor:
+      Chance: 40.0
+      Level_Min: 1
+      Level_Max: 5
+    block_explosion.entity_explosion:
+      Chance: 40.0
+      Level_Min: 1
+      Level_Max: 5
+    poison,magic,lightning,freeze,void:
+      Chance: 50.0
+      Level_Min: 1
+      Level_Max: 5
+    wither,dragon_breath,sonic_boom:
+      Chance: 30.0
+      Level_Min: 1
+      Level_Max: 5
+  Progress:
+    contact:
+      Minimum: 10 * %level%
+      Maximum: 30 * %level%
+    contact,suffocation,drowning,fly_into_wall,starvation:
+      Minimum: 10 * %level%
+      Maximum: 30 * %level%
+    entity_attack,entity_sweep_attack:
+      Minimum: 100 * %level%
+      Maximum: 150 * %level%
+    projectile,thorns:
+      Minimum: 120 * %level%
+      Maximum: 160 * %level%
+    fall,falling_block:
+      Minimum: 80 * %level%
+      Maximum: 140 * %level%
+    fire,fire_tick,lava,hot_floor:
+      Minimum: 50 * %level%
+      Maximum: 100 * %level%
+    block_explosion.entity_explosion:
+      Minimum: 200 * %level%
+      Maximum: 300 * %level%
+    poison,magic,lightning,freeze,void:
+      Minimum: 20 * %level%
+      Maximum: 40 * %level%
+    wither,dragon_breath,sonic_boom:
+      Minimum: 150 * %level%
+      Maximum: 300 * %level%
+Conditions:
+  Amount:
+    Minimum: '0'
+    Maximum: '1'
+  Worlds:
+    world:
+      Chance: '70'
+      Level_Min: 1
+      Level_Max: 5
+    world_nether:
+      Chance: '50'
+      Level_Min: 1
+      Level_Max: 5
+    world_the_end:
+      Chance: '30'
+      Level_Min: 1
+      Level_Max: 5
+Rewards:
+  Amount:
+    Minimum: '1'
+    Maximum: '1'
+  List:
+    eco_250:
+      Chance: '50'
+      Level_Min: 1
+      Level_Max: 2
+    eco_500:
+      Chance: '50'
+      Level_Min: 2
+      Level_Max: 3
+    eco_750:
+      Chance: '50'
+      Level_Min: 3
+      Level_Max: 4
+    eco_1000:
+      Chance: '50'
+      Level_Min: 4
+      Level_Max: 5

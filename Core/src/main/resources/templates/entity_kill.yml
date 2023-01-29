@@ -1,0 +1,27 @@
+Type: ENTITY_KILL
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  kill_ender:
+    Chance: 50.0
+  kill_ender_dragon:
+    Chance: 50.0
+  kill_fishes:
+    Chance: 50.0
+  kill_guardians:
+    Chance: 50.0
+  kill_nether:
+    Chance: 50.0
+  kill_pillagers:
+    Chance: 50.0
+  kill_skeletons:
+    Chance: 50.0
+  kill_spiders:
+    Chance: 50.0
+  kill_undead_horses:
+    Chance: 50.0
+  kill_various:
+    Chance: 50.0
+  kill_wither:
+    Chance: 50.0
+  kill_zombies:
+    Chance: 50.0

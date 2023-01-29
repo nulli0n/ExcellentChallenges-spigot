@@ -1,0 +1,5 @@
+Type: DAMAGE_RECEIVE
+Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
+Generators:
+  damage_receive:
+    Chance: 50.0
