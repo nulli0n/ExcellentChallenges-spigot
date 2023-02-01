@@ -152,6 +152,11 @@ public class ChallengeUser extends AbstractUser<ExcellentChallenges> {
         return this.getChallenges(type).stream().allMatch(Challenge::isCompleted);
     }
 
+    public int getCompletedChallengesAmount() {
+        return this.getCompletedChallengesMap().values().stream().flatMap(map -> map.values().stream())
+            .mapToInt(i -> i).sum();
+    }
+
     public int getCompletedChallengesAmount(@NotNull ChallengeType type) {
         return this.getCompletedChallengesAmount(type.getId());
     }

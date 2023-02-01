@@ -74,6 +74,10 @@ public class PlaceholderHook {
 
             if (params.startsWith("completed_")) {
                 String type = params.replace("completed_", "");
+                if (type.equalsIgnoreCase("all")) {
+                    return NumberUtil.format(user.getCompletedChallengesAmount());
+                }
+
                 ChallengeType cType = plugin.getChallengeManager().getChallengeType(type);
                 if (cType != null) {
                     return NumberUtil.format(user.getCompletedChallengesAmount(cType));
