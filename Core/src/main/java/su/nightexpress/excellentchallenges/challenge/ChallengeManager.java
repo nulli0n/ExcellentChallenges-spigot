@@ -207,6 +207,8 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
     }
 
     public void updateChallenges(@NotNull Player player, @NotNull ChallengeType type, boolean force) {
+        if (Hooks.isCitizensNPC(player)) return;
+
         ChallengeUser user = this.plugin.getUserManager().getUserData(player);
 
         if (!force) {
@@ -225,6 +227,8 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
 
     @NotNull
     public Set<Challenge> createChallenges(@NotNull Player player, @NotNull ChallengeType type) {
+        if (Hooks.isCitizensNPC(player)) return Collections.emptySet();
+
         ChallengeUser user = plugin.getUserManager().getUserData(player);
         Set<Challenge> generated = new HashSet<>();
 
@@ -271,6 +275,8 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
     }
 
     public void progressChallenge(@NotNull Player player, @NotNull ChallengeJobType jobType, @NotNull String objective, int amount) {
+        if (Hooks.isCitizensNPC(player)) return;
+
         ChallengeUser user = this.plugin.getUserManager().getUserData(player);
         Set<Challenge> challenges = user.getChallengesMap().values().stream().flatMap(Collection::stream)
             .filter(chal -> chal.getJobType() == jobType)

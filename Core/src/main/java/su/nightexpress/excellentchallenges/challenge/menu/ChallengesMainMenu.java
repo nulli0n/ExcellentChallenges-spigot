@@ -69,11 +69,13 @@ public class ChallengesMainMenu extends AbstractMenu<ExcellentChallenges> {
 
         int incompleted = (int) challenges.stream().filter(Predicate.not(Challenge::isCompleted)).count();
         int completed = (int) challenges.stream().filter(Challenge::isCompleted).count();
+        int total = challenges.size();
 
         ItemUtil.replace(item, line -> line
             .replace(Placeholders.GENERIC_REWARDS, challengeType.getCompletionRewards().stream().map(ChallengeReward::getName).collect(Collectors.joining(", ")))
             .replace(Placeholders.GENERIC_UNFINISHED, String.valueOf(incompleted))
             .replace(Placeholders.GENERIC_COMPLETED, String.valueOf(completed))
+            .replace(Placeholders.GENERIC_TOTAL, String.valueOf(total))
             .replace(Placeholders.GENERIC_PROGRESS, NumberUtil.format(user.getProgressPercent(challengeType)))
             .replace(Placeholders.GENERIC_REROLL_TOKENS, String.valueOf(user.getRerollTokens(challengeType)))
         );

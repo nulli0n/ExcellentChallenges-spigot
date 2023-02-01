@@ -8,6 +8,7 @@ public class Placeholders extends su.nexmedia.engine.utils.Placeholders {
     public static final String GENERIC_TYPE          = "%type%";
     public static final String GENERIC_UNFINISHED    = "%unfinished%";
     public static final String GENERIC_COMPLETED     = "%completed%";
+    public static final String GENERIC_TOTAL = "%total%";
     public static final String GENERIC_PROGRESS      = "%progress%";
     public static final String GENERIC_REROLL_TOKENS = "%reroll_tokens%";
     public static final String GENERIC_REWARDS = "%rewards%";

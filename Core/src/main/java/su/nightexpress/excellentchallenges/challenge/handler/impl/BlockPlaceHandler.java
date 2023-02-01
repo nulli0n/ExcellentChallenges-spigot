@@ -15,7 +15,7 @@ public class BlockPlaceHandler extends ChallengeHandler {
         super(plugin, ChallengeJobType.BLOCK_PLACE);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChallengeBlockPlace(BlockPlaceEvent e) {
         Block block = e.getBlock();
 

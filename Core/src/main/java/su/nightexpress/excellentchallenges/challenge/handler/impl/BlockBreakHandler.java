@@ -23,7 +23,12 @@ public class BlockBreakHandler extends ChallengeHandler {
         PlayerBlockTracker.initialize(this.plugin);
     }
 
-    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    /*
+    Using MONITOR priority here for the best compatibility with protection plugins.
+    PlayerBlockTracker is initialized after this handler registers its listeners,
+    so we're safe to assume it won't untrack the block before this event handler proceed.
+     */
+    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
     public void onChallengeBlockBreak(BlockBreakEvent e) {
         Block block = e.getBlock();
         if (PlayerBlockTracker.isTracked(block)) return;
