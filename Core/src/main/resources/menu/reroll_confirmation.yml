@@ -17,7 +17,7 @@ Content:
       Material: RED_STAINED_GLASS_PANE
       Name: '&c&lDecline'
     Slots: 0,1,2,3
-    Type: CONFIRMATION_ACCEPT
+    Type: CONFIRMATION_DECLINE
     Priority: 5
   
   info:

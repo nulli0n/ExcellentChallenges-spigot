@@ -259,7 +259,13 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
             }
             if (type.isUniqueGenerators() && !generators.remove(generator)) continue;
 
-            generated.add(Challenge.from(template, generator, type));
+            try {
+                generated.add(Challenge.from(template, generator, type));
+            }
+            catch (IllegalStateException e) {
+                this.plugin.error("Could not generate challenge. See stracktrace below:");
+                e.printStackTrace();
+            }
 
             //templates.remove(template);
             amount--;
