@@ -3,3 +3,9 @@ Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
 Generators:
   breed_animals:
     Chance: 50.0
+  breed_farm:
+    Chance: 50.0
+  breed_horses:
+    Chance: 50.0
+  breed_village:
+    Chance: 50.0

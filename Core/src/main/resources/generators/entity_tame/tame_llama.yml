@@ -1,9 +1,9 @@
 Names:
-- 'Bakery'
+- 'Taming Llamas'
 Description: []
 Icon:
   Active:
-    Material: BREAD
+    Material: HAY_BLOCK
   Completed:
     Material: LIME_STAINED_GLASS_PANE
 Level:
@@ -14,35 +14,14 @@ Objectives:
     Minimum: '1'
     Maximum: 0 + %level%
   List:
-    bread:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cake:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cookie:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    pumpkin_pie:
+    llama,trader_llama:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5
   Progress:
-    bread:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cake:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cookie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    pumpkin_pie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
+    default:
+      Minimum: 1 * %level%
+      Maximum: 3 * %level%
 Conditions:
   Amount:
     Minimum: '0'

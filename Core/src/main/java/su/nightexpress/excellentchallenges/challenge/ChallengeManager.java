@@ -122,6 +122,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
             case ANVIL_RENAME -> new AnvilRenameHandler(this.plugin);
             case BLOCK_BREAK -> new BlockBreakHandler(this.plugin);
             case BLOCK_PLACE -> new BlockPlaceHandler(this.plugin);
+            case BLOCK_FERTILIZE -> new BlockFertilizeHandler(this.plugin);
             case DAMAGE_INFLICT -> new DamageHandler(this.plugin, ChallengeJobType.DAMAGE_INFLICT);
             case DAMAGE_RECEIVE -> new DamageHandler(this.plugin, ChallengeJobType.DAMAGE_RECEIVE);
             case ENTITY_BREED -> new EntityBreedHandler(this.plugin);

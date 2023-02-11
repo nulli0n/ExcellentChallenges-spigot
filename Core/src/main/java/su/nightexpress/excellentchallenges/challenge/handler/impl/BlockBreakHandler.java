@@ -21,6 +21,11 @@ public class BlockBreakHandler extends ChallengeHandler {
     public void setup() {
         super.setup();
         PlayerBlockTracker.initialize(this.plugin);
+        PlayerBlockTracker.BLOCK_FILTERS.add(block -> {
+            return plugin.getChallengeManager().getGenerators().stream().anyMatch(generator -> {
+                return generator.getObjectivesProgress().containsKey(block.getType().name().toLowerCase());
+            });
+        });
     }
 
     /*

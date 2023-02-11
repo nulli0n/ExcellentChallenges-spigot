@@ -21,6 +21,7 @@ Challenges:
           - anvil_rename
           - block_break
           - block_place
+          - block_fertilize
           - damage_inflict
           - damage_receive
           - entity_breed
@@ -50,6 +51,7 @@ Challenges:
           - anvil_rename
           - block_break
           - block_place
+          - block_fertilize
           - damage_inflict
           - damage_receive
           - entity_breed
@@ -79,6 +81,7 @@ Challenges:
           - anvil_rename
           - block_break
           - block_place
+          - block_fertilize
           - damage_inflict
           - damage_receive
           - entity_breed

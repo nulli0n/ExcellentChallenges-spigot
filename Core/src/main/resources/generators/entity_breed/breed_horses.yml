@@ -1,9 +1,10 @@
 Names:
-- 'Bakery'
+- 'Breeding Horses'
 Description: []
 Icon:
   Active:
-    Material: BREAD
+    Material: PLAYER_HEAD
+    Head_Texture: 'eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvZTU0NTBhZWIzOGY0YzhiYWFiNGJkMGQwOTNkNjAwYWZjZGNiZmY2OTI2Yjc4ZTg2YTc5NGVmMGQ4ZDk3YmRhNiJ9fX0='
   Completed:
     Material: LIME_STAINED_GLASS_PANE
 Level:
@@ -14,35 +15,14 @@ Objectives:
     Minimum: '1'
     Maximum: 0 + %level%
   List:
-    bread:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cake:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cookie:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    pumpkin_pie:
+    horse,mule,donkey:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5
   Progress:
-    bread:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cake:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cookie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    pumpkin_pie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
+    default:
+      Minimum: 10 * %level%
+      Maximum: 20 * %level%
 Conditions:
   Amount:
     Minimum: '0'

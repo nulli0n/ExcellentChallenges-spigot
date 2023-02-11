@@ -1,9 +1,13 @@
 Names:
-- 'Bakery'
+- 'Sea Treasures'
 Description: []
 Icon:
   Active:
-    Material: BREAD
+    Material: FISHING_ROD
+    Enchants:
+      lure: 1
+    Item_Flags:
+    - HIDE_ENCHANTS
   Completed:
     Material: LIME_STAINED_GLASS_PANE
 Level:
@@ -14,42 +18,43 @@ Objectives:
     Minimum: '1'
     Maximum: 0 + %level%
   List:
-    bread:
+    bow,fishing_rod:
+      Chance: 70.0
+      Level_Min: 1
+      Level_Max: 5
+    enchanted_book:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5
-    cake:
-      Chance: 50.0
+    name_tag:
+      Chance: 40.0
       Level_Min: 1
       Level_Max: 5
-    cookie:
-      Chance: 50.0
+    nautilus_shell:
+      Chance: 30.0
       Level_Min: 1
       Level_Max: 5
-    pumpkin_pie:
-      Chance: 50.0
+    saddle:
+      Chance: 30.0
       Level_Min: 1
       Level_Max: 5
   Progress:
-    bread:
+    bow,fishing_rod:
       Minimum: 30 * %level%
       Maximum: 60 * %level%
-    cake:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cookie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    pumpkin_pie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
+    enchanted_book:
+      Minimum: 20 * %level%
+      Maximum: 40 * %level%
+    name_tag,nautilus_shell,saddle:
+      Minimum: 15 * %level%
+      Maximum: 30 * %level%
 Conditions:
   Amount:
     Minimum: '0'
-    Maximum: '0'
+    Maximum: '1'
   Worlds:
     world:
-      Chance: '0'
+      Chance: '100'
       Level_Min: 1
       Level_Max: 5
     world_nether:

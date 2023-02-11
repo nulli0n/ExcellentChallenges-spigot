@@ -62,10 +62,6 @@ Objectives:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5
-    mending:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
     frost_walker:
       Chance: 50.0
       Level_Min: 1

@@ -172,6 +172,11 @@ public class ChallengeGenerator extends AbstractConfigHolder<ExcellentChallenges
         return levelMax;
     }
 
+    @NotNull
+    public Map<String, ChallengeScaler[]> getObjectivesProgress() {
+        return objectivesProgress;
+    }
+
     private int pickAmount(@NotNull ChallengeScaler smin, @NotNull ChallengeScaler smax, int level) {
         int min = Math.max(0, (int) smin.getValue(level));
         int max = Math.max(min, (int) smax.getValue(level));

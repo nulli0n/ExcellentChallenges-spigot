@@ -1,9 +1,9 @@
 Names:
-- 'Bakery'
+- 'A bit of fishing'
 Description: []
 Icon:
   Active:
-    Material: BREAD
+    Material: COD
   Completed:
     Material: LIME_STAINED_GLASS_PANE
 Level:
@@ -14,42 +14,35 @@ Objectives:
     Minimum: '1'
     Maximum: 0 + %level%
   List:
-    bread:
+    cod:
+      Chance: 70.0
+      Level_Min: 1
+      Level_Max: 5
+    salmon:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5
-    cake:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cookie:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    pumpkin_pie:
-      Chance: 50.0
+    tropical_fish,pufferfish:
+      Chance: 40.0
       Level_Min: 1
       Level_Max: 5
   Progress:
-    bread:
+    cod:
+      Minimum: 40 * %level%
+      Maximum: 70 * %level%
+    salmon:
       Minimum: 30 * %level%
       Maximum: 60 * %level%
-    cake:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cookie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    pumpkin_pie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
+    tropical_fish,pufferfish:
+      Minimum: 20 * %level%
+      Maximum: 40 * %level%
 Conditions:
   Amount:
     Minimum: '0'
-    Maximum: '0'
+    Maximum: '1'
   Worlds:
     world:
-      Chance: '0'
+      Chance: '100'
       Level_Min: 1
       Level_Max: 5
     world_nether:

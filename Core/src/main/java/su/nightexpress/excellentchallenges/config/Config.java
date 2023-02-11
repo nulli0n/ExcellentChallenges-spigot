@@ -24,7 +24,10 @@ public class Config {
 
     public static final JOption<Set<ChallengeJobType>> CHALLENGES_ENABLED = new JOption<Set<ChallengeJobType>>("Challenges.Enabled",
         (cfg, path, def) -> Stream.of(ChallengeJobType.values())
-            .filter(jobType -> cfg.getBoolean(path + "." + jobType.name())).collect(Collectors.toSet()),
+            .filter(jobType -> {
+                cfg.addMissing(path + "." + jobType.name(), true);
+                return cfg.getBoolean(path + "." + jobType.name());
+            }).collect(Collectors.toSet()),
         () -> Stream.of(ChallengeJobType.values()).collect(Collectors.toSet()),
         "A list of enabled challenge actions.",
         "When you disable certain action, no challenges will be generated with it.")

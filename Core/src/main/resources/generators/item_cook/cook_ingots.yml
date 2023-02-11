@@ -14,7 +14,7 @@ Objectives:
     Minimum: '1'
     Maximum: 0 + %level%
   List:
-    iron_ingot,gold_ingot:
+    iron_ingot,gold_ingot,copper_ingot:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5

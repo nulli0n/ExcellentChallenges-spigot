@@ -5,3 +5,5 @@ Generators:
     Chance: 50.0
   tame_pets:
     Chance: 50.0
+  tame_llama:
+    Chance: 50.0

@@ -71,8 +71,8 @@ public class Challenge implements IPlaceholder {
         if (level > type.getLevels()[1] || level < type.getLevels()[0]) {
             level = Rnd.get(type.getLevels());
         }
-        if (level < generator.getLevelMin()) level = generator.getLevelMin();
-        if (level > generator.getLevelMin()) level = generator.getLevelMax();
+        //if (level < generator.getLevelMin()) level = generator.getLevelMin();
+        //if (level > generator.getLevelMin()) level = generator.getLevelMax();
         //}
         //else {
         //    level = generator.pickLevel();

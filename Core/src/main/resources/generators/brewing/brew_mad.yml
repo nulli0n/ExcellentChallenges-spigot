@@ -1,9 +1,12 @@
 Names:
-- 'Bakery'
+- 'Mad Alchemist'
 Description: []
 Icon:
   Active:
-    Material: BREAD
+    Material: POTION
+    Color: '170,50,0'
+    Item_Flags:
+    - '*'
   Completed:
     Material: LIME_STAINED_GLASS_PANE
 Level:
@@ -14,50 +17,29 @@ Objectives:
     Minimum: '1'
     Maximum: 0 + %level%
   List:
-    bread:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cake:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    cookie:
-      Chance: 50.0
-      Level_Min: 1
-      Level_Max: 5
-    pumpkin_pie:
+    slow,harm,weakness,poison:
       Chance: 50.0
       Level_Min: 1
       Level_Max: 5
   Progress:
-    bread:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cake:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    cookie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
-    pumpkin_pie:
-      Minimum: 30 * %level%
-      Maximum: 60 * %level%
+    default:
+      Minimum: 15 * %level%
+      Maximum: 30 * %level%
 Conditions:
   Amount:
     Minimum: '0'
     Maximum: '0'
   Worlds:
     world:
-      Chance: '0'
+      Chance: '80'
       Level_Min: 1
       Level_Max: 5
     world_nether:
-      Chance: '0'
+      Chance: '20'
       Level_Min: 1
       Level_Max: 5
     world_the_end:
-      Chance: '0'
+      Chance: '10'
       Level_Min: 1
       Level_Max: 5
 Rewards:
