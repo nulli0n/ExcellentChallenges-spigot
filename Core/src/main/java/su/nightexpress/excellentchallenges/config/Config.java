@@ -51,6 +51,10 @@ public class Config {
         RerollCondition.ALL_UNFINISHED + " - When all challenges are unfinished.",
         RerollCondition.ANYTIME + " - At anytime.");
 
+    public static final JOption<Boolean> OBJECTIVES_ANTI_GLITCH_TRACK_BLOCKS = JOption.create("Objectives.Anti_Glitch.Track_Player_Blocks", true,
+        "Sets whether plugin should store data of player placed blocks and prevent them",
+        "from counting into challenge progress.");
+
     public static final JOption<Set<CreatureSpawnEvent.SpawnReason>> OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS = new JOption<>(
         "Objectives.Anti_Glitch.Tracked_Entity_Spawn",
         (cfg, path, def) -> cfg.getStringSet(path).stream()

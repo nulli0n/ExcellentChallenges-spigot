@@ -6,7 +6,7 @@ import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractConfigHolder;
 import su.nexmedia.engine.api.manager.IPlaceholder;
 import su.nexmedia.engine.utils.CollectionsUtil;
-import su.nexmedia.engine.utils.StringUtil;
+import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Placeholders;
@@ -36,7 +36,7 @@ public class ChallengeTemplate extends AbstractConfigHolder<ExcellentChallenges>
             return false;
         }
 
-        this.name = StringUtil.color(cfg.getString("Name", this.getId()));
+        this.name = Colorizer.apply(cfg.getString("Name", this.getId()));
 
         this.generators.clear();
         for (String sId : cfg.getSection("Generators")) {

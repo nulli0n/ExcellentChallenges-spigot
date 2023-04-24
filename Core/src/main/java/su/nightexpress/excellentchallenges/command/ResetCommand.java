@@ -4,7 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.command.AbstractCommand;
-import su.nexmedia.engine.utils.PlayerUtil;
+import su.nexmedia.engine.utils.CollectionsUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Perms;
 import su.nightexpress.excellentchallenges.Placeholders;
@@ -44,7 +44,7 @@ public class ResetCommand extends AbstractCommand<ExcellentChallenges> {
     @NotNull
     public List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args) {
         if (arg == 1) {
-            return PlayerUtil.getPlayerNames();
+            return CollectionsUtil.playerNames(player);
         }
         if (arg == 2) {
             return new ArrayList<>(Config.CHALLENGES_TYPES.get().keySet());

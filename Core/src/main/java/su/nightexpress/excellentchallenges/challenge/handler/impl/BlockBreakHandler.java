@@ -10,6 +10,7 @@ import su.nexmedia.playerblocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.challenge.handler.ChallengeHandler;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
+import su.nightexpress.excellentchallenges.config.Config;
 
 public class BlockBreakHandler extends ChallengeHandler {
 
@@ -20,12 +21,14 @@ public class BlockBreakHandler extends ChallengeHandler {
     @Override
     public void setup() {
         super.setup();
-        PlayerBlockTracker.initialize(this.plugin);
-        PlayerBlockTracker.BLOCK_FILTERS.add(block -> {
-            return plugin.getChallengeManager().getGenerators().stream().anyMatch(generator -> {
-                return generator.getObjectivesProgress().containsKey(block.getType().name().toLowerCase());
+
+        if (Config.OBJECTIVES_ANTI_GLITCH_TRACK_BLOCKS.get()) {
+            PlayerBlockTracker.BLOCK_FILTERS.add(block -> {
+                return plugin.getChallengeManager().getGenerators().stream().anyMatch(generator -> {
+                    return generator.getObjectivesProgress().containsKey(block.getType().name().toLowerCase());
+                });
             });
-        });
+        }
     }
 
     /*

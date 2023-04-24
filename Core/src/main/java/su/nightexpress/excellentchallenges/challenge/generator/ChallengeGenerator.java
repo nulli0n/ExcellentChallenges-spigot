@@ -6,7 +6,7 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractConfigHolder;
-import su.nexmedia.engine.utils.StringUtil;
+import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
@@ -96,8 +96,8 @@ public class ChallengeGenerator extends AbstractConfigHolder<ExcellentChallenges
 
     @Override
     public boolean load() {
-        this.names = StringUtil.color(cfg.getStringSet("Names"));
-        this.description = StringUtil.color(cfg.getStringList("Description"));
+        this.names = Colorizer.apply(cfg.getStringSet("Names"));
+        this.description = Colorizer.apply(cfg.getStringList("Description"));
         this.iconActive = cfg.getItem("Icon.Active");
         this.iconCompleted = cfg.getItem("Icon.Completed");
         this.levelMin = cfg.getInt("Level.Minimum", 1);

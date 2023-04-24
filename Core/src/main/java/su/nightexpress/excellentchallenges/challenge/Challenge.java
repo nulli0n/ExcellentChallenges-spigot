@@ -2,8 +2,8 @@ package su.nightexpress.excellentchallenges.challenge;
 
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.manager.IPlaceholder;
+import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.NumberUtil;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.Placeholders;
@@ -36,7 +36,7 @@ public class Challenge implements IPlaceholder {
         this.templateId = templateId.toLowerCase();
         this.generatorId = generatorId.toLowerCase();
         this.jobType = jobType;
-        this.name = StringUtil.color(name);
+        this.name = Colorizer.apply(name);
         this.description = description;
         this.level = Math.max(1, level);
         this.dateCreated = dateCreated;

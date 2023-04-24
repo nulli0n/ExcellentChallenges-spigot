@@ -9,6 +9,7 @@ import su.nexmedia.engine.api.data.UserDataHolder;
 import su.nexmedia.engine.command.list.ReloadSubCommand;
 import su.nexmedia.engine.hooks.Hooks;
 import su.nexmedia.engine.hooks.external.citizens.CitizensHook;
+import su.nexmedia.playerblocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.challenge.ChallengeManager;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 import su.nightexpress.excellentchallenges.command.OpenCommand;
@@ -47,6 +48,10 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
             return;
         }
 
+        if (Config.OBJECTIVES_ANTI_GLITCH_TRACK_BLOCKS.get()) {
+            PlayerBlockTracker.initialize(this);
+        }
+
         //LazyGen.go();
         this.challengeManager = new ChallengeManager(this);
         this.challengeManager.setup();
@@ -54,6 +59,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
 
     @Override
     public void disable() {
+        PlayerBlockTracker.shutdown();
         if (this.challengeManager != null) {
             this.challengeManager.shutdown();
             this.challengeManager = null;
@@ -66,6 +72,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
             case V1_18_R2 -> new V1_18_R2();
             case V1_19_R1 -> new V1_19_R1();
             case V1_19_R2 -> new V1_19_R2();
+            case V1_19_R3 -> new V1_19_R3();
         };
         return true;
     }

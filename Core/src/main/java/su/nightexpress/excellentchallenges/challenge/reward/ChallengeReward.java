@@ -3,8 +3,8 @@ package su.nightexpress.excellentchallenges.challenge.reward;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.manager.IPlaceholder;
+import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.PlayerUtil;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.Placeholders;
 
 import java.util.List;
@@ -18,7 +18,7 @@ public class ChallengeReward implements IPlaceholder {
 
     public ChallengeReward(@NotNull String id, @NotNull String name, @NotNull List<String> commands) {
         this.id = id.toLowerCase();
-        this.name = StringUtil.color(name);
+        this.name = Colorizer.apply(name);
         this.commands = commands;
     }
 

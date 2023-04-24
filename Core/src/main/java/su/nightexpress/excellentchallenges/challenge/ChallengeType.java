@@ -6,7 +6,7 @@ import su.nexmedia.engine.api.config.JOption;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.ICleanable;
 import su.nexmedia.engine.hooks.Hooks;
-import su.nexmedia.engine.utils.StringUtil;
+import su.nexmedia.engine.utils.Colorizer;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.menu.ChallengesListMenu;
@@ -34,7 +34,7 @@ public class ChallengeType implements ICleanable {
                          @NotNull Map<String, Set<String>> challengesPerRank,
                          @NotNull Set<String> completionRewards) {
         this.id = id.toLowerCase();
-        this.name = StringUtil.color(name);
+        this.name = Colorizer.apply(name);
         this.refreshTime = refreshTime;
         this.uniqueGenerators = uniqueGenerators;
         this.levels = levels;

@@ -8,9 +8,9 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.menu.*;
-import su.nexmedia.engine.config.EngineConfig;
+import su.nexmedia.engine.lang.LangManager;
+import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.ItemUtil;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nexmedia.engine.utils.TimeUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Perms;
@@ -54,12 +54,12 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
         this.challengeType = challengeType;
 
         this.challengesSlots = cfg.getIntArray("Challenges.Slots");
-        this.formatActiveName = StringUtil.color(cfg.getString("Challenges.Format.Challenge_Active.Name", Placeholders.CHALLENGE_NAME));
-        this.formatActiveLore = StringUtil.color(cfg.getStringList("Challenges.Format.Challenge_Active.Lore"));
-        this.formatCompletedName = StringUtil.color(cfg.getString("Challenges.Format.Challenge_Completed.Name", Placeholders.CHALLENGE_NAME));
-        this.formatCompletedLore = StringUtil.color(cfg.getStringList("Challenges.Format.Challenge_Completed.Lore"));
-        this.formatWorlds = StringUtil.color(cfg.getStringList("Challenges.Format.Worlds"));
-        this.formatRewards = StringUtil.color(cfg.getStringList("Challenges.Format.Rewards"));
+        this.formatActiveName = Colorizer.apply(cfg.getString("Challenges.Format.Challenge_Active.Name", Placeholders.CHALLENGE_NAME));
+        this.formatActiveLore = Colorizer.apply(cfg.getStringList("Challenges.Format.Challenge_Active.Lore"));
+        this.formatCompletedName = Colorizer.apply(cfg.getString("Challenges.Format.Challenge_Completed.Name", Placeholders.CHALLENGE_NAME));
+        this.formatCompletedLore = Colorizer.apply(cfg.getStringList("Challenges.Format.Challenge_Completed.Lore"));
+        this.formatWorlds = Colorizer.apply(cfg.getStringList("Challenges.Format.Worlds"));
+        this.formatRewards = Colorizer.apply(cfg.getStringList("Challenges.Format.Rewards"));
 
         MenuClick click = (player, type, e) -> {
             if (type instanceof MenuItemType type2) {
@@ -170,7 +170,9 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
             if (line.equalsIgnoreCase(PLACEHOLDER_WORLDS)) {
                 if (challenge.getWorlds().isEmpty()) continue;
 
-                String worlds = challenge.getWorlds().stream().map(EngineConfig::getWorldName).collect(Collectors.joining(", "));
+                String worlds = challenge.getWorlds().stream()
+                    .map(name -> plugin.getServer().getWorld(name)).filter(Objects::nonNull)
+                    .map(LangManager::getWorld).collect(Collectors.joining(", "));
                 List<String> formatWorlds = new ArrayList<>(this.formatWorlds);
                 formatWorlds.replaceAll(str -> str.replace(Placeholders.GENERIC_WORLD, worlds));
                 lore2.addAll(formatWorlds);

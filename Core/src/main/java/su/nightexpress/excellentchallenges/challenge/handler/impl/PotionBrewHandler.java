@@ -36,7 +36,7 @@ public class PotionBrewHandler extends ChallengeHandler {
         BrewingStand stand = bInventory.getHolder();
         if (stand == null) return;
 
-        String uuidRaw = PDCUtil.getStringData(stand, Keys.BREWING_HOLDER);
+        String uuidRaw = PDCUtil.getString(stand, Keys.BREWING_HOLDER).orElse(null);
         UUID uuid = uuidRaw == null ? null : UUID.fromString(uuidRaw);
         if (uuid == null) return;
 
@@ -84,7 +84,8 @@ public class PotionBrewHandler extends ChallengeHandler {
                 if (!canBrew2) return;
 
                 BrewingStand stand2 = bInventory.getHolder();
-                PDCUtil.setData(stand2, Keys.BREWING_HOLDER, player.getUniqueId().toString());
+                PDCUtil.set(stand2, Keys.BREWING_HOLDER, player.getUniqueId().toString());
+                stand2.update();
             });
         }
     }

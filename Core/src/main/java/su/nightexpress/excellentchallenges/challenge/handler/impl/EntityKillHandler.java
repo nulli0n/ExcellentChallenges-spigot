@@ -26,14 +26,14 @@ public class EntityKillHandler extends ChallengeHandler {
     public void onChallengeEntitySpawn(CreatureSpawnEvent e) {
         CreatureSpawnEvent.SpawnReason reason = e.getSpawnReason();
         if (!Config.OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS.get().contains(reason)) {
-            PDCUtil.setData(e.getEntity(), Keys.ENTITY_TRACKED, true);
+            PDCUtil.set(e.getEntity(), Keys.ENTITY_TRACKED, true);
         }
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onChallengeEntityKill(EntityDeathEvent e) {
         LivingEntity entity = e.getEntity();
-        if (PDCUtil.getBooleanData(entity, Keys.ENTITY_TRACKED)) return;
+        if (PDCUtil.getBoolean(entity, Keys.ENTITY_TRACKED).orElse(false)) return;
 
         Player killer = entity.getKiller();
         if (killer == null || Hooks.isCitizensNPC(killer)) return;
