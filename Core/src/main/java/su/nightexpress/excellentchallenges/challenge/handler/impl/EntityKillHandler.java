@@ -25,7 +25,7 @@ public class EntityKillHandler extends ChallengeHandler {
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
     public void onChallengeEntitySpawn(CreatureSpawnEvent e) {
         CreatureSpawnEvent.SpawnReason reason = e.getSpawnReason();
-        if (!Config.OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS.get().contains(reason)) {
+        if (Config.OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS.get().contains(reason)) {
             PDCUtil.set(e.getEntity(), Keys.ENTITY_TRACKED, true);
         }
     }
