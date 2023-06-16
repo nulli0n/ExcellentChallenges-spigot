@@ -1,7 +1,7 @@
 Title: Weekly Challenges
 Size: 54
-# Sets whether to use Paper's MiniMessage API for the GUI Title.
 Use_Mini_Message: false
+Inventory_Type: CHEST
 
 Challenges:
   Slots: 21,22,23,30,31,32
@@ -46,7 +46,7 @@ Challenges:
     - '#ebff9a[$] #ddeceeComplete this challenge to receive:'
     - '#ebff9a◈ %reward_name%'
 
-Special:
+Content:
   reroll:
     Priority: 5
     Item:
@@ -54,19 +54,18 @@ Special:
       Head_Texture: eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYjQyMzI4OTUxMGM1NGI2N2RmMDIzNTgwOTc5YzQ2NWQwNDgxYzc2OWM4NjViZjRiNDY1Y2Y0Nzg3NDlmMWM0ZiJ9fX0=
       Name: '#ffee9a(⟳) &fReroll Challenges #ddecee(1 Token)'
       Lore:
-      - '#ffee9a&lInfo:'
-      - '#ffee9a▪ #ddeceeTokens: #ffee9a%reroll_tokens%'
-      - '#ffee9a▪ #ddeceePurchase at: #ffee9astore.mycraft.com'
-      - ''
-      - '#ffee9a&lDescription:'
-      - '#ddeceeUse this button to #ffee9areroll#ddecee your'
-      - '#ddeceecurrent challenges.'
-      - ''
-      - '#ff9a9a[!] #ddeceeAll challenge progress will be #ff9a9alost#ddecee.'
+        - '#ffee9a&lInfo:'
+        - '#ffee9a▪ #ddeceeTokens: #ffee9a%reroll_tokens%'
+        - '#ffee9a▪ #ddeceePurchase at: #ffee9astore.mycraft.com'
+        - ''
+        - '#ffee9a&lDescription:'
+        - '#ddeceeUse this button to #ffee9areroll#ddecee your'
+        - '#ddeceecurrent challenges.'
+        - ''
+        - '#ff9a9a[!] #ddeceeAll challenge progress will be #ff9a9alost#ddecee.'
     Slots: 4
     Type: REROLL
 
-Content:
   return:
     Priority: 5
     Item:

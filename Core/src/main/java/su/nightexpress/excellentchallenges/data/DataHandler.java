@@ -18,17 +18,17 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 
-public class ChallengeDataHandler extends AbstractUserDataHandler<ExcellentChallenges, ChallengeUser> {
+public class DataHandler extends AbstractUserDataHandler<ExcellentChallenges, ChallengeUser> {
 
     private static final SQLColumn COL_CHALLENGES           = SQLColumn.of("challenges", ColumnType.STRING);
     private static final SQLColumn COL_REFRESH_TIMES        = SQLColumn.of("refreshTimes", ColumnType.STRING);
     private static final SQLColumn COL_REROLL_TOKENS        = SQLColumn.of("rerollTokens", ColumnType.STRING);
     private static final SQLColumn COL_COMPLETED_CHALLENGES = SQLColumn.of("completedChallenges", ColumnType.STRING);
 
-    private static ChallengeDataHandler               instance;
+    private static DataHandler                        instance;
     private final  Function<ResultSet, ChallengeUser> userFunction;
 
-    protected ChallengeDataHandler(@NotNull ExcellentChallenges plugin) {
+    protected DataHandler(@NotNull ExcellentChallenges plugin) {
         super(plugin, plugin);
 
         this.userFunction = (resultSet) -> {
@@ -56,9 +56,9 @@ public class ChallengeDataHandler extends AbstractUserDataHandler<ExcellentChall
     }
 
     @NotNull
-    public static ChallengeDataHandler getInstance(@NotNull ExcellentChallenges plugin) throws SQLException {
+    public static DataHandler getInstance(@NotNull ExcellentChallenges plugin) throws SQLException {
         if (instance == null) {
-            instance = new ChallengeDataHandler(plugin);
+            instance = new DataHandler(plugin);
         }
         return instance;
     }

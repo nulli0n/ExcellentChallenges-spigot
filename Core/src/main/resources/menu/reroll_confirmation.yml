@@ -2,6 +2,7 @@ Title: 'Confirm: Reroll'
 Size: 9
 # Sets whether to use Paper's MiniMessage API for the GUI Title.
 Use_Mini_Message: false
+Inventory_Type: CHEST
 
 Content:
   accept:

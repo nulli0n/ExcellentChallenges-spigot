@@ -1,7 +1,8 @@
 package su.nightexpress.excellentchallenges.challenge;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.manager.IPlaceholder;
+import su.nexmedia.engine.api.placeholder.Placeholder;
+import su.nexmedia.engine.api.placeholder.PlaceholderMap;
 import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.NumberUtil;
 import su.nexmedia.engine.utils.random.Rnd;
@@ -14,7 +15,7 @@ import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 import java.util.*;
 import java.util.function.UnaryOperator;
 
-public class Challenge implements IPlaceholder {
+public class Challenge implements Placeholder {
 
     private final String             typeId;
     private final String             templateId;
@@ -27,6 +28,8 @@ public class Challenge implements IPlaceholder {
     private final Set<String>        worlds;
     private final Set<String>        rewards;
     private final long               dateCreated;
+
+    private final PlaceholderMap placeholderMap;
 
     public Challenge(@NotNull String typeId, @NotNull String templateId, @NotNull String generatorId, @NotNull ChallengeJobType jobType,
                      @NotNull String name, @NotNull List<String> description, int level, long dateCreated,
@@ -43,6 +46,16 @@ public class Challenge implements IPlaceholder {
         this.objectives = objectives;
         this.worlds = worlds;
         this.rewards = rewards;
+
+        this.placeholderMap = new PlaceholderMap()
+            .add(Placeholders.CHALLENGE_NAME, this::getName)
+            .add(Placeholders.CHALLENGE_DESCRIPTION, () -> String.join("\n", this.getDescription()))
+            .add(Placeholders.CHALLENGE_LEVEL, () -> NumberUtil.format(this.getLevel()))
+            .add(Placeholders.CHALLENGE_LEVEL_ROMAN, () -> NumberUtil.toRoman(this.getLevel()))
+            .add(Placeholders.CHALLENGE_PROGRESS_PERCENT, () -> NumberUtil.format(this.getProgressPercent()))
+            .add(Placeholders.CHALLENGE_JOB_TYPE, () -> ExcellentChallengesAPI.PLUGIN.getLangManager().getEnum(this.getJobType()))
+            .add(Placeholders.OBJECTIVE_PROGRESS_PERCENT, () -> NumberUtil.format(this.getProgressPercent()))
+        ;
     }
 
     /*@NotNull
@@ -102,17 +115,10 @@ public class Challenge implements IPlaceholder {
         return new Challenge(typeId, configId, generatorId, jobType, name, description, level, dateCreated, objectives2, worlds, rewards);
     }
 
+    @Override
     @NotNull
-    public UnaryOperator<String> replacePlaceholders() {
-        return line -> line
-            .replace(Placeholders.CHALLENGE_NAME, this.getName())
-            .replace(Placeholders.CHALLENGE_DESCRIPTION, String.join("\n", this.getDescription()))
-            .replace(Placeholders.CHALLENGE_LEVEL, NumberUtil.format(this.getLevel()))
-            .replace(Placeholders.CHALLENGE_LEVEL_ROMAN, NumberUtil.toRoman(this.getLevel()))
-            .replace(Placeholders.CHALLENGE_PROGRESS_PERCENT, NumberUtil.format(this.getProgressPercent()))
-            .replace(Placeholders.CHALLENGE_JOB_TYPE, ExcellentChallengesAPI.PLUGIN.getLangManager().getEnum(this.getJobType()))
-            .replace(Placeholders.OBJECTIVE_PROGRESS_PERCENT, NumberUtil.format(this.getProgressPercent()))
-            ;
+    public PlaceholderMap getPlaceholders() {
+        return this.placeholderMap;
     }
 
     @NotNull

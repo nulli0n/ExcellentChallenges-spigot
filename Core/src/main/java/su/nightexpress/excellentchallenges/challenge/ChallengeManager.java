@@ -7,6 +7,7 @@ import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractManager;
 import su.nexmedia.engine.hooks.Hooks;
 import su.nexmedia.engine.utils.Colorizer;
+import su.nexmedia.engine.utils.EntityUtil;
 import su.nexmedia.engine.utils.Placeholders;
 import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
@@ -208,7 +209,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
     }
 
     public void updateChallenges(@NotNull Player player, @NotNull ChallengeType type, boolean force) {
-        if (Hooks.isCitizensNPC(player)) return;
+        if (EntityUtil.isNPC(player)) return;
 
         ChallengeUser user = this.plugin.getUserManager().getUserData(player);
 
@@ -228,7 +229,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
 
     @NotNull
     public Set<Challenge> createChallenges(@NotNull Player player, @NotNull ChallengeType type) {
-        if (Hooks.isCitizensNPC(player)) return Collections.emptySet();
+        if (EntityUtil.isNPC(player)) return Collections.emptySet();
 
         ChallengeUser user = plugin.getUserManager().getUserData(player);
         Set<Challenge> generated = new HashSet<>();
@@ -251,8 +252,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
 
         while (amount > 0 && !templates.isEmpty() && !generators.isEmpty()) {
             ChallengeTemplate template = Rnd.get(templates);
-            if (template == null) break;
-
             ChallengeGenerator generator = template.pickGenerator();
             if (generator == null) {
                 templates.remove(template);
@@ -282,7 +281,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
     }
 
     public void progressChallenge(@NotNull Player player, @NotNull ChallengeJobType jobType, @NotNull String objective, int amount) {
-        if (Hooks.isCitizensNPC(player)) return;
+        if (EntityUtil.isNPC(player)) return;
 
         ChallengeUser user = this.plugin.getUserManager().getUserData(player);
         Set<Challenge> challenges = user.getChallengesMap().values().stream().flatMap(Collection::stream)

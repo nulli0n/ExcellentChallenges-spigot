@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EntityUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.challenge.handler.ChallengeHandler;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
@@ -24,12 +24,12 @@ public class DamageHandler extends ChallengeHandler {
         EntityDamageEvent.DamageCause cause = e.getCause();
         double damage = e.getDamage();
 
-        if (victim instanceof Player pVictim && !Hooks.isCitizensNPC(victim) && this.getJobType() == ChallengeJobType.DAMAGE_RECEIVE) {
+        if (victim instanceof Player pVictim && !EntityUtil.isNPC(victim) && this.getJobType() == ChallengeJobType.DAMAGE_RECEIVE) {
             this.progressChallenge(pVictim, cause.name(), (int) damage);
         }
         if (e instanceof EntityDamageByEntityEvent ede) {
             Entity damager = ede.getDamager();
-            if (damager instanceof Player pDamager && !Hooks.isCitizensNPC(damager) && this.getJobType() == ChallengeJobType.DAMAGE_INFLICT) {
+            if (damager instanceof Player pDamager && !EntityUtil.isNPC(damager) && this.getJobType() == ChallengeJobType.DAMAGE_INFLICT) {
                 this.progressChallenge(pDamager, cause.name(), (int) damage);
             }
         }

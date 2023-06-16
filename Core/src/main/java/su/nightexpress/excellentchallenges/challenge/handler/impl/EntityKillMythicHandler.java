@@ -6,7 +6,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EntityUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.challenge.handler.ChallengeHandler;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
@@ -21,7 +21,7 @@ public class EntityKillMythicHandler extends ChallengeHandler {
     public void onChallengeEntityKillMythic(MythicMobDeathEvent e) {
         LivingEntity killer = e.getKiller();
         if (!(killer instanceof Player player)) return;
-        if (Hooks.isCitizensNPC(player)) return;
+        if (EntityUtil.isNPC(player)) return;
 
         String mobId = e.getMob().getType().getInternalName();
         this.progressChallenge(player, mobId, 1);

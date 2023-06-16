@@ -2,6 +2,7 @@ Title: Monthly Challenges
 Size: 54
 # Sets whether to use Paper's MiniMessage API for the GUI Title.
 Use_Mini_Message: false
+Inventory_Type: CHEST
 
 Challenges:
   Slots: '21,22,23,30,31,32'
@@ -46,7 +47,7 @@ Challenges:
       - '#ebff9a[$] #ddeceeComplete this challenge to receive:'
       - '#ebff9a◈ %reward_name%'
 
-Special:
+Content:
   reroll:
     Priority: 5
     Item:
@@ -66,7 +67,6 @@ Special:
     Slots: 4
     Type: REROLL
 
-Content:
   return:
     Priority: 5
     Item:

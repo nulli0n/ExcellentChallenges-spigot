@@ -2,7 +2,7 @@ package su.nightexpress.excellentchallenges.data.serialize;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
-import su.nexmedia.engine.utils.CollectionsUtil;
+import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.challenge.Challenge;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 
@@ -20,7 +20,7 @@ public class ChallengeSerializer implements JsonDeserializer<Challenge>, JsonSer
         String typeId = object.get("typeId").getAsString();
         String templateId = object.get("templateId").getAsString();
         String generatorId = object.get("generatorId").getAsString();
-        ChallengeJobType jobType = CollectionsUtil.getEnum(object.get("jobType").getAsString(), ChallengeJobType.class);
+        ChallengeJobType jobType = StringUtil.getEnum(object.get("jobType").getAsString(), ChallengeJobType.class).orElse(null);
         if (jobType == null) return null;
 
         String name = object.get("name").getAsString();

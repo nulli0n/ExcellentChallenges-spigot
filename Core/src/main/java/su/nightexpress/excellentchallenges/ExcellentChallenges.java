@@ -8,7 +8,6 @@ import su.nexmedia.engine.api.command.GeneralCommand;
 import su.nexmedia.engine.api.data.UserDataHolder;
 import su.nexmedia.engine.command.list.ReloadSubCommand;
 import su.nexmedia.engine.hooks.Hooks;
-import su.nexmedia.engine.hooks.external.citizens.CitizensHook;
 import su.nexmedia.playerblocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.challenge.ChallengeManager;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
@@ -17,10 +16,9 @@ import su.nightexpress.excellentchallenges.command.RerollTokensCommand;
 import su.nightexpress.excellentchallenges.command.ResetCommand;
 import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Lang;
-import su.nightexpress.excellentchallenges.data.ChallengeDataHandler;
+import su.nightexpress.excellentchallenges.data.DataHandler;
 import su.nightexpress.excellentchallenges.data.UserManager;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
-import su.nightexpress.excellentchallenges.hooks.external.ChallengesTrait;
 import su.nightexpress.excellentchallenges.hooks.external.PlaceholderHook;
 import su.nightexpress.excellentchallenges.nms.*;
 
@@ -28,8 +26,8 @@ import java.sql.SQLException;
 
 public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implements UserDataHolder<ExcellentChallenges, ChallengeUser> {
 
-    private ChallengeDataHandler dataHandler;
-    private UserManager          userManager;
+    private DataHandler dataHandler;
+    private UserManager userManager;
 
     private ChallengeManager challengeManager;
     private ChallengeNMS     challengeNMS;
@@ -81,7 +79,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
     @Override
     public boolean setupDataHandlers() {
         try {
-            this.dataHandler = ChallengeDataHandler.getInstance(this);
+            this.dataHandler = DataHandler.getInstance(this);
             this.dataHandler.setup();
         }
         catch (SQLException e) {
@@ -113,9 +111,6 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
         if (Hooks.hasPlaceholderAPI()) {
             PlaceholderHook.setup();
         }
-        if (Hooks.hasCitizens()) {
-            CitizensHook.registerTrait(this, ChallengesTrait.class);
-        }
     }
 
     @Override
@@ -133,7 +128,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
 
     @Override
     @NotNull
-    public ChallengeDataHandler getData() {
+    public DataHandler getData() {
         return this.dataHandler;
     }
 

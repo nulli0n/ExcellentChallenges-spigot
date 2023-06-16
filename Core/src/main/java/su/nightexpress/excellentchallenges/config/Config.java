@@ -2,7 +2,7 @@ package su.nightexpress.excellentchallenges.config;
 
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import su.nexmedia.engine.api.config.JOption;
-import su.nexmedia.engine.utils.CollectionsUtil;
+import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.Perms;
 import su.nightexpress.excellentchallenges.challenge.ChallengeType;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
@@ -58,7 +58,7 @@ public class Config {
     public static final JOption<Set<CreatureSpawnEvent.SpawnReason>> OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS = new JOption<>(
         "Objectives.Anti_Glitch.Tracked_Entity_Spawn",
         (cfg, path, def) -> cfg.getStringSet(path).stream()
-            .map(raw -> CollectionsUtil.getEnum(raw, CreatureSpawnEvent.SpawnReason.class))
+            .map(raw -> StringUtil.getEnum(raw, CreatureSpawnEvent.SpawnReason.class).orElse(null))
             .filter(Objects::nonNull).collect(Collectors.toSet()),
         Set.of(CreatureSpawnEvent.SpawnReason.SPAWNER, CreatureSpawnEvent.SpawnReason.SPAWNER_EGG,
             CreatureSpawnEvent.SpawnReason.EGG, CreatureSpawnEvent.SpawnReason.DISPENSE_EGG,

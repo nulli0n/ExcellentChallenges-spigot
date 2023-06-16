@@ -10,13 +10,14 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.NexEngine;
 import su.nexmedia.engine.hooks.Hooks;
-import su.nexmedia.engine.hooks.external.MythicMobsHook;
 import su.nexmedia.engine.lang.LangManager;
-import su.nexmedia.engine.utils.CollectionsUtil;
+import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.handler.ChallengeHandler;
 import su.nightexpress.excellentchallenges.config.Lang;
+import su.nightexpress.excellentchallenges.hooks.HookId;
+import su.nightexpress.excellentchallenges.hooks.external.MythicMobsHook;
 
 import java.util.function.UnaryOperator;
 
@@ -56,7 +57,7 @@ public enum ChallengeJobType {
     }
 
     public boolean isAvailable() {
-        if (this == ENTITY_KILL_MYTHIC && !Hooks.hasMythicMobs()) {
+        if (this == ENTITY_KILL_MYTHIC && !Hooks.hasPlugin(HookId.MYTHIC_MOBS)) {
             return false;
         }
         return true;
@@ -80,7 +81,7 @@ public enum ChallengeJobType {
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_ENTITY = (obj -> {
-            EntityType type = CollectionsUtil.getEnum(obj, EntityType.class);
+            EntityType type = StringUtil.getEnum(obj, EntityType.class).orElse(null);
             if (type == null) return obj;
 
             return NexEngine.get().getLangManager().getEnum(type);
@@ -101,11 +102,11 @@ public enum ChallengeJobType {
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_MYTHIC = (obj -> {
-            return Hooks.hasMythicMobs() ? MythicMobsHook.getMobDisplayName(obj) : obj;
+            return Hooks.hasPlugin(HookId.MYTHIC_MOBS) ? MythicMobsHook.getMobDisplayName(obj) : obj;
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_DAMAGE_CAUSE = (obj -> {
-            DamageCause cause = CollectionsUtil.getEnum(obj, DamageCause.class);
+            DamageCause cause = StringUtil.getEnum(obj, DamageCause.class).orElse(null);
             if (cause == null) return obj;
 
             return ExcellentChallengesAPI.PLUGIN.getLangManager().getEnum(cause);

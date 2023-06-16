@@ -1,17 +1,12 @@
 package su.nightexpress.excellentchallenges.config;
 
 import org.bukkit.Sound;
+import su.nexmedia.engine.api.lang.LangColors;
 import su.nexmedia.engine.api.lang.LangKey;
 import su.nexmedia.engine.lang.EngineLang;
 import su.nightexpress.excellentchallenges.Placeholders;
 
-public class Lang extends EngineLang {
-
-    private static final String GRAY   = "#d4d9d8";
-    private static final String GREEN  = "#aefd5e";
-    private static final String YELLOW = "#fdf35e";
-    private static final String ORANGE = "#fdba5e";
-    private static final String RED    = "#fd5e5e";
+public class Lang extends EngineLang implements LangColors {
 
     public static final LangKey COMMAND_OPEN_DESC  = new LangKey("Command.Open.Desc", "Open challenges GUI.");
     public static final LangKey COMMAND_OPEN_USAGE = new LangKey("Command.Open.Usage", "[type]");

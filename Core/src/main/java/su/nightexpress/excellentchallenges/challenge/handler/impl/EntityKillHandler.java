@@ -8,13 +8,15 @@ import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.hooks.Hooks;
-import su.nexmedia.engine.hooks.external.MythicMobsHook;
+import su.nexmedia.engine.utils.EntityUtil;
 import su.nexmedia.engine.utils.PDCUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Keys;
 import su.nightexpress.excellentchallenges.challenge.handler.ChallengeHandler;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 import su.nightexpress.excellentchallenges.config.Config;
+import su.nightexpress.excellentchallenges.hooks.HookId;
+import su.nightexpress.excellentchallenges.hooks.external.MythicMobsHook;
 
 public class EntityKillHandler extends ChallengeHandler {
 
@@ -36,10 +38,10 @@ public class EntityKillHandler extends ChallengeHandler {
         if (PDCUtil.getBoolean(entity, Keys.ENTITY_TRACKED).orElse(false)) return;
 
         Player killer = entity.getKiller();
-        if (killer == null || Hooks.isCitizensNPC(killer)) return;
+        if (killer == null || EntityUtil.isNPC(killer)) return;
 
         // Do not count MythicMobs here.
-        if (Hooks.hasMythicMobs() && MythicMobsHook.isMythicMob(entity)) return;
+        if (Hooks.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return;
 
         this.progressChallenge(killer, entity.getType().name(), 1);
     }

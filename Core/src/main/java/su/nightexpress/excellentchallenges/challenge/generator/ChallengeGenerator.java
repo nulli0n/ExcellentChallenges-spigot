@@ -193,10 +193,8 @@ public class ChallengeGenerator extends AbstractConfigHolder<ExcellentChallenges
         source.removeIf(obj -> level < obj.getLevelMin() || level > obj.getLevelMax());
         source.forEach(obj -> mapChance.put(obj.getName(), obj.getChance().getValue(level)));
 
-        while (amount > 0 && !mapChance.isEmpty()) {
-            String pick = Rnd.get(mapChance);
-            if (pick == null) break;
-
+        while (amount > 0 && !mapChance.isEmpty() && mapChance.values().stream().mapToDouble(d -> d).sum() > 0) {
+            String pick = Rnd.getByWeight(mapChance);
             list.add(pick);
             mapChance.remove(pick);
             amount--;

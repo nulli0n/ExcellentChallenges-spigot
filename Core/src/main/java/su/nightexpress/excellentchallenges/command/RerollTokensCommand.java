@@ -5,11 +5,11 @@ import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.command.AbstractCommand;
+import su.nexmedia.engine.api.command.CommandResult;
 import su.nexmedia.engine.api.command.GeneralCommand;
 import su.nexmedia.engine.api.lang.LangMessage;
 import su.nexmedia.engine.command.list.HelpSubCommand;
 import su.nexmedia.engine.utils.CollectionsUtil;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Perms;
 import su.nightexpress.excellentchallenges.Placeholders;
@@ -21,12 +21,14 @@ import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 
 public class RerollTokensCommand extends GeneralCommand<ExcellentChallenges> {
 
     public RerollTokensCommand(@NotNull ExcellentChallenges plugin) {
         super(plugin, new String[]{"rerolltokens", "retok"}, Perms.COMMAND_REROLL_TOKENS);
+        this.setDescription(plugin.getMessage(Lang.COMMAND_REROLL_TOKENS_DESC));
+        this.setUsage(plugin.getMessage(Lang.COMMAND_REROLL_TOKENS_USAGE));
+
         this.addDefaultCommand(new HelpSubCommand<>(plugin));
         this.addChildren(new SubCommand(plugin, Mode.GIVE, new String[]{"give"}, Perms.COMMAND_REROLL_TOKENS_GIVE));
         this.addChildren(new SubCommand(plugin, Mode.TAKE, new String[]{"take"}, Perms.COMMAND_REROLL_TOKENS_TAKE));
@@ -34,25 +36,8 @@ public class RerollTokensCommand extends GeneralCommand<ExcellentChallenges> {
     }
 
     @Override
-    @NotNull
-    public String getUsage() {
-        return plugin.getMessage(Lang.COMMAND_REROLL_TOKENS_USAGE).getLocalized();
-    }
-
-    @Override
-    @NotNull
-    public String getDescription() {
-        return plugin.getMessage(Lang.COMMAND_REROLL_TOKENS_DESC).getLocalized();
-    }
-
-    @Override
-    public boolean isPlayerOnly() {
-        return false;
-    }
-
-    @Override
-    protected void onExecute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Map<String, String> flags) {
-
+    protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
+        super.onExecute(sender, result);
     }
 
     enum Mode {
@@ -105,27 +90,27 @@ public class RerollTokensCommand extends GeneralCommand<ExcellentChallenges> {
         }
 
         @Override
-        protected void onExecute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Map<String, String> flags) {
-            if (args.length < 5) {
+        protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
+            if (result.length() < 5) {
                 this.printUsage(sender);
                 return;
             }
 
-            ChallengeUser user = plugin.getUserManager().getUserData(args[2]);
+            ChallengeUser user = plugin.getUserManager().getUserData(result.getArg(2));
             if (user == null) {
                 this.errorPlayer(sender);
                 return;
             }
 
-            ChallengeType challengeType = plugin.getChallengeManager().getChallengeType(args[3]);
+            ChallengeType challengeType = plugin.getChallengeManager().getChallengeType(result.getArg(3));
             if (challengeType == null) {
 
                 return;
             }
 
-            int amount = StringUtil.getInteger(args[4], 0);
+            int amount = result.getInt(4, 0);
             if (amount == 0) {
-                this.errorNumber(sender, args[4]);
+                this.errorNumber(sender, result.getArg(4));
                 return;
             }
 

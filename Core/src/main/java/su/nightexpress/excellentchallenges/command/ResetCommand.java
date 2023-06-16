@@ -4,6 +4,7 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.command.AbstractCommand;
+import su.nexmedia.engine.api.command.CommandResult;
 import su.nexmedia.engine.utils.CollectionsUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Perms;
@@ -15,29 +16,13 @@ import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 public class ResetCommand extends AbstractCommand<ExcellentChallenges> {
 
     public ResetCommand(@NotNull ExcellentChallenges plugin) {
         super(plugin, new String[]{"reset"}, Perms.COMMAND_RESET);
-    }
-
-    @Override
-    @NotNull
-    public String getUsage() {
-        return plugin.getMessage(Lang.COMMAND_RESET_USAGE).getLocalized();
-    }
-
-    @Override
-    @NotNull
-    public String getDescription() {
-        return plugin.getMessage(Lang.COMMAND_RESET_DESC).getLocalized();
-    }
-
-    @Override
-    public boolean isPlayerOnly() {
-        return false;
+        this.setDescription(plugin.getMessage(Lang.COMMAND_RESET_DESC));
+        this.setUsage(plugin.getMessage(Lang.COMMAND_RESET_USAGE));
     }
 
     @Override
@@ -53,19 +38,19 @@ public class ResetCommand extends AbstractCommand<ExcellentChallenges> {
     }
 
     @Override
-    protected void onExecute(@NotNull CommandSender sender, @NotNull String label, @NotNull String[] args, @NotNull Map<String, String> flags) {
-        if (args.length < 2) {
+    protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
+        if (result.length() < 2) {
             this.printUsage(sender);
             return;
         }
 
-        ChallengeUser user = plugin.getUserManager().getUserData(args[1]);
+        ChallengeUser user = plugin.getUserManager().getUserData(result.getArg(1));
         if (user == null) {
             this.errorPlayer(sender);
             return;
         }
 
-        String type = args.length >= 3 ? args[2] : null;
+        String type = result.length() >= 3 ? result.getArg(2) : null;
         ChallengeType cType = type != null ? plugin.getChallengeManager().getChallengeType(type) : null;
         ChallengeType[] types = cType != null ? new ChallengeType[]{cType} : Config.CHALLENGES_TYPES.get().values().toArray(new ChallengeType[0]);
 

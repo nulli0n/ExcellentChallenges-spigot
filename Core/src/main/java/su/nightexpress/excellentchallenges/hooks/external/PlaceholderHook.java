@@ -3,8 +3,8 @@ package su.nightexpress.excellentchallenges.hooks.external;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.CollectionsUtil;
 import su.nexmedia.engine.utils.NumberUtil;
+import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.challenge.ChallengeType;
@@ -39,7 +39,7 @@ public class PlaceholderHook {
         @Override
         @NotNull
         public String getIdentifier() {
-            return "excellentchallenges";
+            return ExcellentChallengesAPI.PLUGIN.getDescription().getName().toLowerCase();
         }
 
         @Override
@@ -83,7 +83,7 @@ public class PlaceholderHook {
                     return NumberUtil.format(user.getCompletedChallengesAmount(cType));
                 }
 
-                ChallengeJobType jobType = CollectionsUtil.getEnum(type, ChallengeJobType.class);
+                ChallengeJobType jobType = StringUtil.getEnum(type, ChallengeJobType.class).orElse(null);
                 if (jobType != null) {
                     return NumberUtil.format(user.getCompletedChallengesAmount(jobType));
                 }

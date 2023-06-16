@@ -2,15 +2,21 @@ package su.nightexpress.excellentchallenges.challenge.menu;
 
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.menu.*;
+import su.nexmedia.engine.api.menu.AutoPaged;
+import su.nexmedia.engine.api.menu.MenuItemType;
+import su.nexmedia.engine.api.menu.click.ClickHandler;
+import su.nexmedia.engine.api.menu.click.ItemClick;
+import su.nexmedia.engine.api.menu.impl.ConfigMenu;
+import su.nexmedia.engine.api.menu.impl.MenuOptions;
+import su.nexmedia.engine.api.menu.impl.MenuViewer;
 import su.nexmedia.engine.lang.LangManager;
 import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.ItemUtil;
+import su.nexmedia.engine.utils.NumberUtil;
 import su.nexmedia.engine.utils.TimeUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Perms;
@@ -33,7 +39,7 @@ import java.util.Objects;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Challenge> {
+public class ChallengesListMenu extends ConfigMenu<ExcellentChallenges> implements AutoPaged<Challenge> {
 
     private static final String PLACEHOLDER_WORLDS  = "%worlds%";
     private static final String PLACEHOLDER_REWARDS = "%rewards%";
@@ -50,7 +56,7 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
     private MenuUpdateTask updateTask;
 
     public ChallengesListMenu(@NotNull ExcellentChallenges plugin, @NotNull JYML cfg, @NotNull ChallengeType challengeType) {
-        super(plugin, cfg, "");
+        super(plugin, cfg);
         this.challengeType = challengeType;
 
         this.challengesSlots = cfg.getIntArray("Challenges.Slots");
@@ -61,64 +67,65 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
         this.formatWorlds = Colorizer.apply(cfg.getStringList("Challenges.Format.Worlds"));
         this.formatRewards = Colorizer.apply(cfg.getStringList("Challenges.Format.Rewards"));
 
-        MenuClick click = (player, type, e) -> {
-            if (type instanceof MenuItemType type2) {
-                if (type2 == MenuItemType.RETURN) plugin.getChallengeManager().getMainMenu().open(player, 1);
-                else this.onItemClickDefault(player, type2);
-            }
-            else if (type instanceof ButtonType type2) {
-                if (type2 == ButtonType.REROLL) {
-                    if (!player.hasPermission(Perms.REROLL)) {
-                        plugin.getMessage(Lang.ERROR_PERMISSION_DENY).send(player);
-                        return;
-                    }
+        this.registerHandler(MenuItemType.class)
+            .addClick(MenuItemType.RETURN, (viewer, event) -> {
+                plugin.getChallengeManager().getMainMenu().openNextTick(viewer, 1);
+            })
+            .addClick(MenuItemType.PAGE_NEXT, ClickHandler.forNextPage(this))
+            .addClick(MenuItemType.PAGE_PREVIOUS, ClickHandler.forPreviousPage(this));
 
-                    ChallengeUser user = plugin.getUserManager().getUserData(player);
-                    int tokens = user.getRerollTokens(this.challengeType);
-                    if (tokens <= 0) {
-                        plugin.getMessage(Lang.CHALLENGE_REROLL_ERROR_NO_TOKENS).send(player);
-                        return;
-                    }
-
-                    RerollCondition condition = Config.REROLL_CONDITION.get();
-                    if (condition == RerollCondition.ALL_COMPLETED) {
-                        if (user.getChallenges(this.challengeType).stream().anyMatch(Predicate.not(Challenge::isCompleted))) {
-                            plugin.getMessage(Lang.CHALLENGE_REROLL_ERROR_CONDITION).send(player);
-                            return;
-                        }
-                    }
-                    else if (condition == RerollCondition.ALL_UNFINISHED) {
-                        if (user.getChallenges(this.challengeType).stream().anyMatch(Challenge::isCompleted)) {
-                            plugin.getMessage(Lang.CHALLENGE_REROLL_ERROR_CONDITION).send(player);
-                            return;
-                        }
-                    }
-
-                    plugin.getChallengeManager().getRerollConfirmMenu().open(player, this.challengeType);
+        this.registerHandler(ButtonType.class)
+            .addClick(ButtonType.REROLL, (viewer, event) -> {
+                Player player = viewer.getPlayer();
+                if (!player.hasPermission(Perms.REROLL)) {
+                    plugin.getMessage(Lang.ERROR_PERMISSION_DENY).send(player);
+                    return;
                 }
-            }
-        };
 
-        for (String sId : cfg.getSection("Content")) {
-            MenuItem menuItem = cfg.getMenuItem("Content." + sId, MenuItemType.class);
+                ChallengeUser user = plugin.getUserManager().getUserData(player);
+                int tokens = user.getRerollTokens(this.challengeType);
+                if (tokens <= 0) {
+                    plugin.getMessage(Lang.CHALLENGE_REROLL_ERROR_NO_TOKENS).send(player);
+                    return;
+                }
 
-            if (menuItem.getType() != null) {
-                menuItem.setClickHandler(click);
-            }
-            this.addItem(menuItem);
-        }
+                RerollCondition condition = Config.REROLL_CONDITION.get();
+                if (condition == RerollCondition.ALL_COMPLETED) {
+                    if (user.getChallenges(this.challengeType).stream().anyMatch(Predicate.not(Challenge::isCompleted))) {
+                        plugin.getMessage(Lang.CHALLENGE_REROLL_ERROR_CONDITION).send(player);
+                        return;
+                    }
+                }
+                else if (condition == RerollCondition.ALL_UNFINISHED) {
+                    if (user.getChallenges(this.challengeType).stream().anyMatch(Challenge::isCompleted)) {
+                        plugin.getMessage(Lang.CHALLENGE_REROLL_ERROR_CONDITION).send(player);
+                        return;
+                    }
+                }
 
-        for (String sId : cfg.getSection("Special")) {
-            MenuItem menuItem = cfg.getMenuItem("Special." + sId, ButtonType.class);
+                plugin.getChallengeManager().getRerollConfirmMenu().open(player, this.challengeType);
+            });
 
-            if (menuItem.getType() != null) {
-                menuItem.setClickHandler(click);
-            }
-            this.addItem(menuItem);
-        }
+        this.load();
 
-        this.updateTask = new MenuUpdateTask(this);
+        this.updateTask = new MenuUpdateTask(this.plugin, this);
         this.updateTask.start();
+
+        this.getItems().forEach(menuItem -> {
+            menuItem.getOptions().addDisplayModifier((viewer, item) -> {
+                ChallengeUser user = plugin.getUserManager().getUserData(viewer.getPlayer());
+
+                ItemUtil.replace(item, str -> str
+                    .replace(Placeholders.GENERIC_REROLL_TOKENS, NumberUtil.format(user.getRerollTokens(this.challengeType)))
+                );
+            });
+        });
+    }
+
+    @Override
+    public void onPrepare(@NotNull MenuViewer viewer, @NotNull MenuOptions options) {
+        super.onPrepare(viewer, options);
+        this.getItemsForPage(viewer).forEach(this::addItem);
     }
 
     enum ButtonType {
@@ -135,13 +142,13 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
     }
 
     @Override
-    protected int[] getObjectSlots() {
+    public int[] getObjectSlots() {
         return this.challengesSlots;
     }
 
     @Override
     @NotNull
-    protected List<Challenge> getObjects(@NotNull Player player) {
+    public List<Challenge> getObjects(@NotNull Player player) {
         this.plugin.getChallengeManager().updateChallenges(player, false);
         ChallengeUser user = plugin.getUserManager().getUserData(player);
         return user.getChallenges(this.challengeType).stream().sorted(Comparator.comparingInt(Challenge::getLevel)).toList();
@@ -149,7 +156,7 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
 
     @Override
     @NotNull
-    protected ItemStack getObjectStack(@NotNull Player player, @NotNull Challenge challenge) {
+    public ItemStack getObjectStack(@NotNull Player player, @NotNull Challenge challenge) {
         ChallengeTemplate template = plugin.getChallengeManager().getTemplate(challenge.getTemplateId());
         ChallengeGenerator generator = plugin.getChallengeManager().getGenerator(challenge.getGeneratorId());
         if (template == null || generator == null) return new ItemStack(Material.AIR);
@@ -220,24 +227,9 @@ public class ChallengesListMenu extends AbstractMenuAuto<ExcellentChallenges, Ch
 
     @Override
     @NotNull
-    protected MenuClick getObjectClick(@NotNull Player player, @NotNull Challenge challenge) {
-        return ((player1, type, e) -> {
+    public ItemClick getObjectClick(@NotNull Challenge challenge) {
+        return (viewer, event) -> {
 
-        });
-    }
-
-    @Override
-    public void onItemPrepare(@NotNull Player player, @NotNull MenuItem menuItem, @NotNull ItemStack item) {
-        super.onItemPrepare(player, menuItem, item);
-        ChallengeUser user = plugin.getUserManager().getUserData(player);
-
-        ItemUtil.replace(item, str -> str
-            .replace(Placeholders.GENERIC_REROLL_TOKENS, String.valueOf(user.getRerollTokens(this.challengeType)))
-        );
-    }
-
-    @Override
-    public boolean cancelClick(@NotNull InventoryClickEvent e, @NotNull AbstractMenu.SlotType slotType) {
-        return true;
+        };
     }
 }

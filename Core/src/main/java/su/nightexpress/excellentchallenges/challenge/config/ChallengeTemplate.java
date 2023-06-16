@@ -4,7 +4,8 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractConfigHolder;
-import su.nexmedia.engine.api.manager.IPlaceholder;
+import su.nexmedia.engine.api.placeholder.Placeholder;
+import su.nexmedia.engine.api.placeholder.PlaceholderMap;
 import su.nexmedia.engine.utils.CollectionsUtil;
 import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.random.Rnd;
@@ -15,17 +16,21 @@ import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.function.UnaryOperator;
 
-public class ChallengeTemplate extends AbstractConfigHolder<ExcellentChallenges> implements IPlaceholder {
+public class ChallengeTemplate extends AbstractConfigHolder<ExcellentChallenges> implements Placeholder {
 
     private ChallengeJobType    jobType;
     private String              name;
     private Map<String, Double> generators;
 
+    private final PlaceholderMap placeholderMap;
+
     public ChallengeTemplate(@NotNull ExcellentChallenges plugin, @NotNull JYML cfg) {
         super(plugin, cfg);
         this.generators = new HashMap<>();
+        this.placeholderMap = new PlaceholderMap()
+            .add(Placeholders.TEMPLATE_NAME, this::getName)
+        ;
     }
 
     @Override
@@ -57,16 +62,16 @@ public class ChallengeTemplate extends AbstractConfigHolder<ExcellentChallenges>
 
     @Override
     @NotNull
-    public UnaryOperator<String> replacePlaceholders() {
-        return str -> str
-            .replace(Placeholders.TEMPLATE_NAME, this.getName())
-            ;
+    public PlaceholderMap getPlaceholders() {
+        return this.placeholderMap;
     }
 
     @Nullable
     public ChallengeGenerator pickGenerator() {
-        String genId = Rnd.get(this.generators);
-        return genId == null ? null : plugin.getChallengeManager().getGenerator(genId);
+        if (this.generators.isEmpty()) return null;
+
+        String genId = Rnd.getByWeight(this.generators);
+        return plugin.getChallengeManager().getGenerator(genId);
     }
 
     @NotNull
