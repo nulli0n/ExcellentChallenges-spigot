@@ -59,7 +59,7 @@ public class ResetCommand extends AbstractCommand<ExcellentChallenges> {
 
             plugin.getMessage(Lang.COMMAND_RESET_DONE)
                 .replace(Placeholders.GENERIC_TYPE, type2.getName())
-                .replace(Placeholders.Player.NAME, user.getName())
+                .replace(Placeholders.PLAYER_NAME, user.getName())
                 .send(sender);
         }
 

@@ -7,7 +7,7 @@ import su.nexmedia.engine.Version;
 import su.nexmedia.engine.api.command.GeneralCommand;
 import su.nexmedia.engine.api.data.UserDataHolder;
 import su.nexmedia.engine.command.list.ReloadSubCommand;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.playerblocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.challenge.ChallengeManager;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
@@ -65,15 +65,14 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
     }
 
     private boolean setupNMS() {
-        this.challengeNMS = switch (Version.CURRENT) {
+        this.challengeNMS = switch (Version.getCurrent()) {
             case V1_17_R1 -> new V1_17_R1();
             case V1_18_R2 -> new V1_18_R2();
-            case V1_19_R1 -> new V1_19_R1();
-            case V1_19_R2 -> new V1_19_R2();
             case V1_19_R3 -> new V1_19_R3();
             case V1_20_R1 -> new V1_20_R1();
+            default -> null;
         };
-        return true;
+        return this.challengeNMS != null;
     }
 
     @Override
@@ -101,14 +100,14 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
     @Override
     public void loadLang() {
         this.getLangManager().loadMissing(Lang.class);
-        this.getLangManager().setupEnum(ChallengeJobType.class);
-        this.getLangManager().setupEnum(EntityDamageEvent.DamageCause.class);
+        this.getLangManager().loadEnum(ChallengeJobType.class);
+        this.getLangManager().loadEnum(EntityDamageEvent.DamageCause.class);
         this.getLang().saveChanges();
     }
 
     @Override
     public void registerHooks() {
-        if (Hooks.hasPlaceholderAPI()) {
+        if (EngineUtils.hasPlaceholderAPI()) {
             PlaceholderHook.setup();
         }
     }

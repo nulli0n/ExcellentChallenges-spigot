@@ -37,7 +37,7 @@ public class RerollTokensCommand extends GeneralCommand<ExcellentChallenges> {
 
     @Override
     protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
-        super.onExecute(sender, result);
+
     }
 
     enum Mode {
@@ -129,7 +129,7 @@ public class RerollTokensCommand extends GeneralCommand<ExcellentChallenges> {
                 }
             };
             message
-                .replace(Placeholders.Player.NAME, user.getName())
+                .replace(Placeholders.PLAYER_NAME, user.getName())
                 .replace(Placeholders.GENERIC_AMOUNT, String.valueOf(amount))
                 .replace(Placeholders.GENERIC_TYPE, challengeType.getName())
                 .send(sender);

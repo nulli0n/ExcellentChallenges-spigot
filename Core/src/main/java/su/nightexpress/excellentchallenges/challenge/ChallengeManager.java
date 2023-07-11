@@ -5,10 +5,10 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.hooks.Hooks;
 import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.EntityUtil;
 import su.nexmedia.engine.utils.Placeholders;
+import su.nexmedia.engine.utils.PlayerUtil;
 import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeCompleteEvent;
@@ -237,7 +237,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
         int amount = type.getAmountPerRank(player);
         if (amount <= 0) return generated;
 
-        String rank = Hooks.getPermissionGroup(player);
+        String rank = PlayerUtil.getPermissionGroup(player);
         Set<ChallengeTemplate> templates = type.getChallengesPerRank(rank).stream()
             .map(this::getTemplate).filter(Objects::nonNull).collect(Collectors.toSet());
         if (templates.isEmpty()) {

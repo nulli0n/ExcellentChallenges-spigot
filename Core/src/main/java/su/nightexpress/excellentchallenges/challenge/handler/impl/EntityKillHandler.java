@@ -7,7 +7,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.entity.CreatureSpawnEvent;
 import org.bukkit.event.entity.EntityDeathEvent;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.hooks.Hooks;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.EntityUtil;
 import su.nexmedia.engine.utils.PDCUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
@@ -41,7 +41,7 @@ public class EntityKillHandler extends ChallengeHandler {
         if (killer == null || EntityUtil.isNPC(killer)) return;
 
         // Do not count MythicMobs here.
-        if (Hooks.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return;
+        if (EngineUtils.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return;
 
         this.progressChallenge(killer, entity.getType().name(), 1);
     }

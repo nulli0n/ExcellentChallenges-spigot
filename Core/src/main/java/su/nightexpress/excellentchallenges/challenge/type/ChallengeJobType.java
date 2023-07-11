@@ -8,9 +8,8 @@ import org.bukkit.event.entity.EntityDamageEvent.DamageCause;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.NexEngine;
-import su.nexmedia.engine.hooks.Hooks;
 import su.nexmedia.engine.lang.LangManager;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.Placeholders;
@@ -57,7 +56,7 @@ public enum ChallengeJobType {
     }
 
     public boolean isAvailable() {
-        if (this == ENTITY_KILL_MYTHIC && !Hooks.hasPlugin(HookId.MYTHIC_MOBS)) {
+        if (this == ENTITY_KILL_MYTHIC && !EngineUtils.hasPlugin(HookId.MYTHIC_MOBS)) {
             return false;
         }
         return true;
@@ -77,14 +76,14 @@ public enum ChallengeJobType {
             Material material = Material.getMaterial(obj.toUpperCase());
             if (material == null) return obj;
 
-            return NexEngine.get().getLangManager().getEnum(material);
+            return LangManager.getMaterial(material);
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_ENTITY = (obj -> {
             EntityType type = StringUtil.getEnum(obj, EntityType.class).orElse(null);
             if (type == null) return obj;
 
-            return NexEngine.get().getLangManager().getEnum(type);
+            return LangManager.getEntityType(type);
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_POTION = (obj -> {
@@ -102,7 +101,7 @@ public enum ChallengeJobType {
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_MYTHIC = (obj -> {
-            return Hooks.hasPlugin(HookId.MYTHIC_MOBS) ? MythicMobsHook.getMobDisplayName(obj) : obj;
+            return EngineUtils.hasPlugin(HookId.MYTHIC_MOBS) ? MythicMobsHook.getMobDisplayName(obj) : obj;
         });
 
         private static final UnaryOperator<String> OBJECTIVE_FORMATTER_DAMAGE_CAUSE = (obj -> {

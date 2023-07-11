@@ -5,7 +5,7 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.manager.AbstractListener;
-import su.nexmedia.engine.api.manager.ILoadable;
+import su.nexmedia.engine.api.manager.Loadable;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 
@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
-public abstract class ChallengeHandler extends AbstractListener<ExcellentChallenges> implements ILoadable {
+public abstract class ChallengeHandler extends AbstractListener<ExcellentChallenges> implements Loadable {
 
     public static final Map<ChallengeJobType, ChallengeHandler> HANDLERS = new HashMap<>();
 

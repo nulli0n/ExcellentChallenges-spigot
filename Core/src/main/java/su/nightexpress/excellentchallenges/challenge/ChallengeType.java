@@ -4,9 +4,8 @@ import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import su.nexmedia.engine.api.config.JOption;
 import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.manager.ICleanable;
-import su.nexmedia.engine.hooks.Hooks;
 import su.nexmedia.engine.utils.Colorizer;
+import su.nexmedia.engine.utils.PlayerRankMap;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.menu.ChallengesListMenu;
@@ -16,21 +15,21 @@ import su.nightexpress.excellentchallenges.config.Config;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class ChallengeType implements ICleanable {
+public class ChallengeType {
 
     private final String                   id;
     private final String                   name;
     private final long                     refreshTime;
     private final int[]                    levels;
     private final boolean                  uniqueGenerators;
-    private final Map<String, Integer>     amountPerRank;
+    private final PlayerRankMap<Integer>     amountPerRank;
     private final Map<String, Set<String>> challengesPerRank;
     private final Set<String> completionRewards;
 
     private ChallengesListMenu menu;
 
     public ChallengeType(@NotNull String id, @NotNull String name, long refreshTime, boolean uniqueGenerators, int[] levels,
-                         @NotNull Map<String, Integer> amountPerRank,
+                         @NotNull PlayerRankMap<Integer> amountPerRank,
                          @NotNull Map<String, Set<String>> challengesPerRank,
                          @NotNull Set<String> completionRewards) {
         this.id = id.toLowerCase();
@@ -52,10 +51,7 @@ public class ChallengeType implements ICleanable {
         levels[0] = Math.max(1, cfg.getInt(path + ".Levels.Min"));
         levels[1] = Math.max(levels[0], cfg.getInt(path + ".Levels.Max"));
 
-        Map<String, Integer> amountPerRank = new HashMap<>();
-        for (String sRank : cfg.getSection(path + ".Amount_Per_Rank")) {
-            amountPerRank.put(sRank.toLowerCase(), cfg.getInt(path + ".Amount_Per_Rank." + sRank));
-        }
+        PlayerRankMap<Integer> amountPerRank = PlayerRankMap.read(cfg, path + ".Amount_Per_Rank", Integer.class);
         Map<String, Set<String>> challengesPerRank = new HashMap<>();
         for (String sRank : cfg.getSection(path + ".Challenge_Ids_Per_Rank")) {
             challengesPerRank.put(sRank.toLowerCase(), cfg.getStringSet(path + ".Challenge_Ids_Per_Rank." + sRank));
@@ -77,13 +73,12 @@ public class ChallengeType implements ICleanable {
         cfg.set(path + ".Levels.Min", type.getLevels()[0]);
         cfg.set(path + ".Levels.Max", type.getLevels()[1]);
         cfg.remove(path + ".Amount_Per_Rank");
-        type.getAmountPerRank().forEach((rank, amount) -> cfg.set(path + ".Amount_Per_Rank." + rank, amount));
+        type.getAmountPerRank().write(cfg, path + ".Amount_Per_Rank");
         cfg.remove(path + ".Challenge_Ids_Per_Rank");
         type.getChallengesPerRank().forEach((rank, amount) -> cfg.set(path + ".Challenge_Ids_Per_Rank." + rank, amount));
         cfg.set(path + ".Completion_Rewards", type.getCompletionRewardIds());
     }
 
-    @Override
     public void clear() {
         if (this.menu != null) {
             this.menu.clear();
@@ -123,12 +118,12 @@ public class ChallengeType implements ICleanable {
     }
 
     @NotNull
-    public Map<String, Integer> getAmountPerRank() {
+    public PlayerRankMap<Integer> getAmountPerRank() {
         return amountPerRank;
     }
 
     public int getAmountPerRank(@NotNull Player player) {
-        return Hooks.getGroupValueInt(player, this.getAmountPerRank(), false);
+        return this.getAmountPerRank().getBestValue(player, 0);
     }
 
     @NotNull
