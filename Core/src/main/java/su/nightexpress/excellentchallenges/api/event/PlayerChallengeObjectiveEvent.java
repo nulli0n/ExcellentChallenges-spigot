@@ -10,8 +10,8 @@ public class PlayerChallengeObjectiveEvent extends PlayerChallengeEvent {
 
     private static final HandlerList handlerList = new HandlerList();
 
-    protected String objective;
-    protected int amount;
+    protected final String objective;
+    protected final int amount;
 
     public PlayerChallengeObjectiveEvent(
         @NotNull Player player, @NotNull ChallengeUser user, @NotNull Challenge progress,

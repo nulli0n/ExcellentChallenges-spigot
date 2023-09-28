@@ -6,7 +6,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.EventPriority;
 import org.bukkit.event.block.BlockBreakEvent;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.playerblocktracker.PlayerBlockTracker;
+import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.challenge.handler.ChallengeHandler;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
@@ -36,12 +36,12 @@ public class BlockBreakHandler extends ChallengeHandler {
     PlayerBlockTracker is initialized after this handler registers its listeners,
     so we're safe to assume it won't untrack the block before this event handler proceed.
      */
-    @EventHandler(priority = EventPriority.MONITOR, ignoreCancelled = true)
-    public void onChallengeBlockBreak(BlockBreakEvent e) {
-        Block block = e.getBlock();
-        if (PlayerBlockTracker.isTracked(block)) return;
+    @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
+    public void onChallengeBlockBreak(BlockBreakEvent event) {
+        Block block = event.getBlock();
+        if (Config.OBJECTIVES_ANTI_GLITCH_TRACK_BLOCKS.get() && PlayerBlockTracker.isTracked(block)) return;
 
-        Player player = e.getPlayer();
+        Player player = event.getPlayer();
         this.progressChallenge(player, block.getType().name(), 1);
     }
 }

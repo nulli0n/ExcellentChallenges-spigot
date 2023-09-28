@@ -56,7 +56,7 @@ public class DataHandler extends AbstractUserDataHandler<ExcellentChallenges, Ch
     }
 
     @NotNull
-    public static DataHandler getInstance(@NotNull ExcellentChallenges plugin) throws SQLException {
+    public static DataHandler getInstance(@NotNull ExcellentChallenges plugin) {
         if (instance == null) {
             instance = new DataHandler(plugin);
         }

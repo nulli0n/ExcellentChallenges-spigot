@@ -6,6 +6,7 @@ import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.menu.MenuItemType;
 import su.nexmedia.engine.api.menu.impl.ConfigMenu;
 import su.nexmedia.engine.api.menu.item.MenuItem;
+import su.nexmedia.engine.utils.EngineUtils;
 import su.nexmedia.engine.utils.ItemUtil;
 import su.nexmedia.engine.utils.NumberUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
@@ -61,5 +62,15 @@ public class ChallengesMainMenu extends ConfigMenu<ExcellentChallenges> {
             });
             this.addItem(menuItem);
         }
+
+        this.getItems().forEach(menuItem -> {
+            menuItem.getOptions().addDisplayModifier((viewer, item) -> {
+                ChallengeUser user = plugin.getUserManager().getUserData(viewer.getPlayer());
+
+                if (EngineUtils.hasPlaceholderAPI()) {
+                    ItemUtil.setPlaceholderAPI(viewer.getPlayer(), item);
+                }
+            });
+        });
     }
 }

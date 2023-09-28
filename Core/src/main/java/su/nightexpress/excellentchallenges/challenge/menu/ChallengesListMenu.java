@@ -14,10 +14,7 @@ import su.nexmedia.engine.api.menu.impl.ConfigMenu;
 import su.nexmedia.engine.api.menu.impl.MenuOptions;
 import su.nexmedia.engine.api.menu.impl.MenuViewer;
 import su.nexmedia.engine.lang.LangManager;
-import su.nexmedia.engine.utils.Colorizer;
-import su.nexmedia.engine.utils.ItemUtil;
-import su.nexmedia.engine.utils.NumberUtil;
-import su.nexmedia.engine.utils.TimeUtil;
+import su.nexmedia.engine.utils.*;
 import su.nightexpress.excellentchallenges.ExcellentChallenges;
 import su.nightexpress.excellentchallenges.Perms;
 import su.nightexpress.excellentchallenges.Placeholders;
@@ -115,6 +112,9 @@ public class ChallengesListMenu extends ConfigMenu<ExcellentChallenges> implemen
             menuItem.getOptions().addDisplayModifier((viewer, item) -> {
                 ChallengeUser user = plugin.getUserManager().getUserData(viewer.getPlayer());
 
+                if (EngineUtils.hasPlaceholderAPI()) {
+                    ItemUtil.setPlaceholderAPI(viewer.getPlayer(), item);
+                }
                 ItemUtil.replace(item, str -> str
                     .replace(Placeholders.GENERIC_REROLL_TOKENS, NumberUtil.format(user.getRerollTokens(this.challengeType)))
                 );
@@ -206,9 +206,19 @@ public class ChallengesListMenu extends ConfigMenu<ExcellentChallenges> implemen
             }
 
             if (line.contains(Placeholders.OBJECTIVE_NAME)) {
-                challenge.getObjectives().forEach((objId, objVal) -> {
-                    lore2.add(challenge.replacePlaceholders(objId).apply(line));
-                });
+                if (generator.isObjectivesUseGlobalName()) {
+                    lore2.add(line
+                        .replace(Placeholders.OBJECTIVE_NAME, generator.getObjectivesGlobalName())
+                        .replace(Placeholders.OBJECTIVE_PROGRESS_CURRENT, NumberUtil.format(challenge.getProgressCurrent()))
+                        .replace(Placeholders.OBJECTIVE_PROGRESS_MAX, NumberUtil.format(challenge.getProgressMax()))
+                        .replace(Placeholders.OBJECTIVE_PROGRESS_PERCENT, NumberUtil.format(challenge.getProgressPercent()))
+                    );
+                }
+                else {
+                    challenge.getObjectives().forEach((objId, objVal) -> {
+                        lore2.add(challenge.replacePlaceholders(objId).apply(line));
+                    });
+                }
                 continue;
             }
 

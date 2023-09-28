@@ -1,0 +1,90 @@
+# Here you can create your own custom placeholders to use it in language config.
+# Key = Placeholder, Value = Replacer.
+Placeholders:
+  '%red%': '#fd5e5e'
+  '%gray%': '#d4d9d8'
+  '%green%': '#aefd5e'
+Command:
+  Open:
+    Desc: Открыть меню заданий.
+    Usage: '[type]'
+  Reset:
+    Desc: Заменить текущие задания игрока.
+    Usage: <player> [type]
+    Done: 'Заменить #aefd5e%type%#d4d9d8 задания у игрока #aefd5e%player_name%#d4d9d8!'
+  RerollTokens:
+    Desc: Управление токенами замены.
+    Usage: '[help]'
+    SubUsage: <player> <type> <amount>
+    Give:
+      Desc: Выдать токены замены заданий игроков.
+      Done: 'Выдано #aefd5ex%amount% токенов замены #d4d9d8игроку #aefd5e%player_name%#d4d9d8!'
+    Take:
+      Desc: Отобрать токены замены заданий у игрока.
+      Done: 'Убрано #aefd5ex%amount% токенов замены #d4d9d8у игрока #aefd5e%player_name%#d4d9d8!'
+    Set:
+      Desc: Установить количество токенов замены игроку.
+      Done: 'Установлено #aefd5ex%amount% токенов замены #d4d9d8для #aefd5e%player_name%#d4d9d8!'
+Challenge:
+  Reroll:
+    Done: <! sound:"ENTITY_PLAYER_LEVELUP" !>#aefd5e%type%#d4d9d8 задания заменены!
+    Error:
+      Condition: '#fd5e5eВы не можете заменить задания сейчас.'
+      NoTokens: 'У вас недостаточно #fd5e5eтокенов замены#d4d9d8!'
+  Notify:
+    Progress: '<! type:"action_bar" !> #d4d9d8%challenge_name%: #fdf35e%objective_name% #fdf35e%objective_progress_current%#d4d9d8/#fdf35e%objective_progress_max%'
+    Completed: '<! type:"action_bar" !> #d4d9d8%challenge_name%: #aefd5e&lCOMPLETED!'
+ChallengeJobType:
+  BLOCK_BREAK: Добыча блоков
+  BLOCK_PLACE: Размещение блоков
+  BLOCK_FERTILIZE: Удобрение культур
+  ITEM_CONSUME: Использование предметов
+  ITEM_CRAFT: Создание предметов
+  ITEM_COOK: Приготовление продуктов
+  ITEM_ENCHANT: Зачарование предметов
+  ITEM_DISENCHANT: Снятие зачарований с предметов
+  ITEM_TRADE: Торговля предметами
+  ITEM_FISH: Рыбалка
+  ENTITY_KILL: Убийство существ
+  ENTITY_KILL_MYTHIC: Убийство мифических существ
+  ENTITY_TAME: Приручение существ
+  ENTITY_BREED: Размножение существ
+  ENTITY_SHEAR: Перемещение существ
+  PROJECTILE_LAUNCH: Запуск снарядов
+  POTION_BREW: Создание зелий
+  ANVIL_RENAME: Переименование в наковальне
+  DAMAGE_RECEIVE: Получение урона
+  DAMAGE_INFLICT: Нанесение урона
+DamageCause:
+  KILL: Убийство
+  WORLD_BORDER: Граница мира
+  CONTACT: Контакт
+  ENTITY_ATTACK: Атака существа
+  ENTITY_SWEEP_ATTACK: Атака захвата существа
+  PROJECTILE: Снаряд
+  SUFFOCATION: Удушье
+  FALL: Падение
+  FIRE: Огонь
+  FIRE_TICK: Огненный тик
+  MELTING: Плавление
+  LAVA: Лава
+  DROWNING: Утопление
+  BLOCK_EXPLOSION: Взрыв блока
+  ENTITY_EXPLOSION: Взрыв существа
+  VOID: Пустота
+  LIGHTNING: Молния
+  SUICIDE: Самоубийство
+  STARVATION: Голод
+  POISON: Зелье
+  MAGIC: Магия
+  WITHER: Иссушение
+  FALLING_BLOCK: Падающий блок
+  THORNS: Шипы
+  DRAGON_BREATH: Дыхание дракона
+  CUSTOM: Кастом
+  FLY_INTO_WALL: Полет в стену
+  HOT_FLOOR: Горячий пол
+  CRAMMING: Зубрежка
+  DRYOUT: Сухость
+  FREEZE: Заморозка
+  SONIC_BOOM: Ударная волна

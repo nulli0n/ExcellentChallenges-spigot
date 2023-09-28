@@ -8,7 +8,7 @@ import su.nexmedia.engine.api.command.GeneralCommand;
 import su.nexmedia.engine.api.data.UserDataHolder;
 import su.nexmedia.engine.command.list.ReloadSubCommand;
 import su.nexmedia.engine.utils.EngineUtils;
-import su.nexmedia.playerblocktracker.PlayerBlockTracker;
+import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.challenge.ChallengeManager;
 import su.nightexpress.excellentchallenges.challenge.type.ChallengeJobType;
 import su.nightexpress.excellentchallenges.command.OpenCommand;
@@ -21,8 +21,6 @@ import su.nightexpress.excellentchallenges.data.UserManager;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.excellentchallenges.hooks.external.PlaceholderHook;
 import su.nightexpress.excellentchallenges.nms.*;
-
-import java.sql.SQLException;
 
 public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implements UserDataHolder<ExcellentChallenges, ChallengeUser> {
 
@@ -47,7 +45,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
         }
 
         if (Config.OBJECTIVES_ANTI_GLITCH_TRACK_BLOCKS.get()) {
-            PlayerBlockTracker.initialize(this);
+            PlayerBlockTracker.initialize();
         }
 
         //LazyGen.go();
@@ -57,7 +55,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
 
     @Override
     public void disable() {
-        PlayerBlockTracker.shutdown();
+        //PlayerBlockTracker.shutdown();
         if (this.challengeManager != null) {
             this.challengeManager.shutdown();
             this.challengeManager = null;
@@ -70,6 +68,7 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
             case V1_18_R2 -> new V1_18_R2();
             case V1_19_R3 -> new V1_19_R3();
             case V1_20_R1 -> new V1_20_R1();
+            case V1_20_R2 -> new V1_20_R2();
             default -> null;
         };
         return this.challengeNMS != null;
@@ -77,14 +76,8 @@ public class ExcellentChallenges extends NexPlugin<ExcellentChallenges> implemen
 
     @Override
     public boolean setupDataHandlers() {
-        try {
-            this.dataHandler = DataHandler.getInstance(this);
-            this.dataHandler.setup();
-        }
-        catch (SQLException e) {
-            this.error("Could not setup data handler!");
-            return false;
-        }
+        this.dataHandler = DataHandler.getInstance(this);
+        this.dataHandler.setup();
 
         this.userManager = new UserManager(this);
         this.userManager.setup();

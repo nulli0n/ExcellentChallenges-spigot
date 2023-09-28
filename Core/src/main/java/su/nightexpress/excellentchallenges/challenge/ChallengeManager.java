@@ -257,6 +257,10 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
                 templates.remove(template);
                 continue;
             }
+            if (generator.getLevelMin() > type.getLevels()[0]) {
+                generators.remove(generator);
+                continue;
+            }
             if (type.isUniqueGenerators() && !generators.remove(generator)) continue;
 
             try {
@@ -275,7 +279,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
         challenges.clear();
         challenges.addAll(generated);
         user.updateRefreshTime(type);
-        user.saveData(this.plugin);
+        this.plugin.getUserManager().saveUser(user);
 
         return generated;
     }
@@ -304,6 +308,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallenges> {
             }
         });
 
-        user.saveData(this.plugin);
+        this.plugin.getUserManager().saveUser(user);
     }
 }

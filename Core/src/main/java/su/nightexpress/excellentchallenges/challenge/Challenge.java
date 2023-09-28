@@ -207,6 +207,14 @@ public class Challenge implements Placeholder {
         return has / need * 100D;
     }
 
+    public double getProgressCurrent() {
+        return this.getObjectives().values().stream().mapToInt(arr -> arr[0]).sum();
+    }
+
+    public double getProgressMax() {
+        return this.getObjectives().values().stream().mapToInt(arr -> arr[1]).sum();
+    }
+
     public double getProgressPercent(@NotNull String objective) {
         double has = this.getObjectiveProgressCurrent(objective);
         double need = this.getObjectiveProgressMax(objective);

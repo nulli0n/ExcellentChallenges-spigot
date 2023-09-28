@@ -128,6 +128,8 @@ public class RerollTokensCommand extends GeneralCommand<ExcellentChallenges> {
                     yield plugin.getMessage(Lang.COMMAND_REROLL_TOKENS_SET_DONE);
                 }
             };
+            this.plugin.getUserManager().saveUser(user);
+
             message
                 .replace(Placeholders.PLAYER_NAME, user.getName())
                 .replace(Placeholders.GENERIC_AMOUNT, String.valueOf(amount))

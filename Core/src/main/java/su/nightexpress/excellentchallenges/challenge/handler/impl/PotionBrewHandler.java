@@ -40,9 +40,6 @@ public class PotionBrewHandler extends ChallengeHandler {
         UUID uuid = uuidRaw == null ? null : UUID.fromString(uuidRaw);
         if (uuid == null) return;
 
-        PDCUtil.remove(stand, Keys.BREWING_HOLDER);
-        stand.update();
-
         Player player = plugin.getServer().getPlayer(uuid);
         if (player == null) return;
 

@@ -8,9 +8,9 @@ import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 
 public abstract class PlayerChallengeEvent extends Event {
 
-    protected Player        player;
-    protected ChallengeUser user;
-    protected Challenge     challenge;
+    protected final Player        player;
+    protected final ChallengeUser user;
+    protected final Challenge     challenge;
 
     public PlayerChallengeEvent(@NotNull Player player, @NotNull ChallengeUser user, @NotNull Challenge challenge) {
         this.player = player;
