@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import su.nexmedia.engine.api.config.JYML;
 import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.utils.Colorizer;
 import su.nexmedia.engine.utils.EntityUtil;
 import su.nexmedia.engine.utils.NumberUtil;
 import su.nexmedia.engine.utils.PlayerUtil;
@@ -33,7 +32,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     private final Map<String, Generator>       generatorMap;
     private final Map<String, ConditionConfig> conditionMap;
     private final Map<String, Reward>          rewardMap;
-    //private final Map<String, List<String>> namesMap;
 
     private CategoriesMenu    categoriesMenu;
     private ChallengesMenu    challengesMenu;
@@ -44,18 +42,10 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         this.generatorMap = new HashMap<>();
         this.conditionMap = new HashMap<>();
         this.rewardMap = new HashMap<>();
-        //this.namesMap = new HashMap<>();
     }
 
     @Override
     public void onLoad() {
-        /*JYML configNames = JYML.loadOrExtract(plugin, Config.NAMES_FILE);
-        for (String sId : configNames.getSection("")) {
-            this.getNamesMap().put(sId.toLowerCase(), configNames.getStringList(sId));
-        }
-        this.plugin.info("Loaded " + this.getNamesMap().size() + " name lists.");*/
-
-
         // Load conditions.
         for (JYML cfg : JYML.loadAll(plugin.getDataFolder() + Config.DIR_CONDITIONS, true)) {
             cfg.getSection("").forEach(sId -> {
@@ -131,16 +121,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     public Difficulty getDifficulty(@NotNull String id) {
         return this.getDifficultyMap().get(id.toLowerCase());
     }
-
-    /*@NotNull
-    public Map<String, List<String>> getNamesMap() {
-        return namesMap;
-    }
-
-    @NotNull
-    public List<String> getNames(@NotNull String nameGen) {
-        return this.getNamesMap().getOrDefault(nameGen.toLowerCase(), Collections.emptyList());
-    }*/
 
     @NotNull
     public Map<String, Generator> getGeneratorMap() {

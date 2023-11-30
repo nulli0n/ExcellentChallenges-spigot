@@ -23,7 +23,7 @@ import java.util.function.UnaryOperator;
 
 public class GeneratedChallenge implements Placeholder {
 
-    private final ExcellentChallengesPlugin plugin;
+    //private final ExcellentChallengesPlugin plugin;
     private final ActionType<?, ?>          actionType;
     private final Generator         generator;
     private final ChallengeCategory type;
@@ -33,10 +33,6 @@ public class GeneratedChallenge implements Placeholder {
     private final Map<ConditionConfig, List<List<CompiledCondition<?, ?>>>> conditions;
     private final List<Reward>                                              rewards;
     private final long                                                      dateCreated;
-
-    /*@Deprecated private final String       name;
-    @Deprecated private final List<String> description;
-    @Deprecated private final ItemStack icon;*/
 
     private final PlaceholderMap placeholderMap;
 
@@ -51,12 +47,8 @@ public class GeneratedChallenge implements Placeholder {
         @NotNull Map<ConditionConfig, List<List<CompiledCondition<?, ?>>>> conditions,
         @NotNull List<Reward> rewards,
         long dateCreated
-
-        /*@NotNull String name,
-        @NotNull List<String> description,
-        @NotNull ItemStack icon*/
     ) {
-        this.plugin = plugin;
+        //this.plugin = plugin;
         this.actionType = actionType;
         this.generator = generator;
         this.type = type;
@@ -67,20 +59,12 @@ public class GeneratedChallenge implements Placeholder {
         this.rewards = rewards;
         this.dateCreated = dateCreated;
 
-        /*this.name = Colorizer.apply(name);
-        this.description = Colorizer.apply(description);
-        this.icon = new ItemStack(icon);*/
-
         this.placeholderMap = new PlaceholderMap()
-            //.add(Placeholders.CHALLENGE_NAME, this::getNameFormatted)
-            //.add(Placeholders.CHALLENGE_DESCRIPTION, () -> String.join("\n", this.getDescription()))
             .add(Placeholders.CHALLENGE_DIFFICULTY, () -> this.getDifficulty().getName())
             .add(Placeholders.CHALLENGE_LEVEL, () -> NumberUtil.format(this.getLevel()))
             .add(Placeholders.CHALLENGE_LEVEL_ROMAN, () -> NumberUtil.toRoman(this.getLevel()))
             .add(Placeholders.CHALLENGE_PROGRESS_PERCENT, () -> NumberUtil.format(this.getCompletionPercent()))
-            .add(Placeholders.CHALLENGE_TYPE, () -> this.getActionType().getDisplayName())
-            //.add(Placeholders.OBJECTIVE_PROGRESS_PERCENT, () -> NumberUtil.format(this.getCompletionPercent()))
-        ;
+            .add(Placeholders.CHALLENGE_TYPE, () -> this.getActionType().getDisplayName());
     }
 
     public static GeneratedChallenge create(
@@ -92,10 +76,6 @@ public class GeneratedChallenge implements Placeholder {
         @NotNull List<ConditionConfig> conditionConfigs,
         @NotNull List<Reward> rewards,
         long dateCreated
-
-        /*@NotNull String name,
-        @NotNull List<String> description,
-        @NotNull ItemStack icon*/
     ) {
 
         Map<ConditionConfig, List<List<CompiledCondition<?, ?>>>> conditionMap = new LinkedHashMap<>();
@@ -112,7 +92,6 @@ public class GeneratedChallenge implements Placeholder {
         return new GeneratedChallenge(
             generator.plugin(), generator.getType(), generator, type, difficulty, level,
             objectives, conditionMap, rewards, dateCreated
-            //name, description, icon
         );
     }
 
@@ -209,12 +188,6 @@ public class GeneratedChallenge implements Placeholder {
             );
     }
 
-    /*@NotNull
-    @Deprecated
-    public String getNameFormatted() {
-        return this.getDifficulty().formatChallengeName(this);
-    }*/
-
     @NotNull
     public ActionType<?, ?> getActionType() {
         return actionType;
@@ -257,22 +230,4 @@ public class GeneratedChallenge implements Placeholder {
     public long getDateCreated() {
         return dateCreated;
     }
-
-    /*@NotNull
-    @Deprecated
-    public String getName() {
-        return name;
-    }
-
-    @NotNull
-    @Deprecated
-    public List<String> getDescription() {
-        return description;
-    }
-
-    @NotNull
-    @Deprecated
-    public ItemStack getIcon() {
-        return icon;
-    }*/
 }

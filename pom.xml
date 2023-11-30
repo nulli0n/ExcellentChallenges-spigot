@@ -7,7 +7,7 @@
     <groupId>su.nightexpress.challengesrenewed</groupId>
     <artifactId>ExcellentChallenges</artifactId>
     <packaging>pom</packaging>
-    <version>3.0.0</version>
+    <version>3.0.1</version>
     <modules>
         <module>Core</module>
         <module>NMS</module>
