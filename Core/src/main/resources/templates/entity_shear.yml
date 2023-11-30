@@ -1,5 +1,0 @@
-Type: ENTITY_SHEAR
-Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
-Generators:
-  shear_sheep:
-    Chance: 50.0

@@ -1,8 +1,0 @@
-main: su.nightexpress.excellentchallenges.ExcellentChallenges
-version: '${project.version}'
-name: ExcellentChallenges
-author: NightExpress
-description: Advanced challenges plugin for your server and players.
-depend: [ NexEngine ]
-softdepend: [ PlaceholderAPI, Citizens, MythicMobs ]
-api-version: 1.17

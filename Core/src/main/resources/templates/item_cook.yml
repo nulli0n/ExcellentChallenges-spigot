@@ -1,9 +1,0 @@
-Type: ITEM_COOK
-Name: '#ffee9a(⛏) &f%challenge_name% #ddeceeLv. %challenge_level%'
-Generators:
-  food_fish:
-    Chance: 50.0
-  cook_ingots:
-    Chance: 50.0
-  cook_bricks:
-    Chance: 50.0
