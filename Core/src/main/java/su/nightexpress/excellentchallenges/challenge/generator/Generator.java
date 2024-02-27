@@ -103,7 +103,9 @@ public class Generator extends AbstractFileData<ExcellentChallengesPlugin> {
     protected void onSave(@NotNull FileConfig cfg) {
         cfg.set("Type", this.getType().getName());
 
-        this.objectiveAmount.write(cfg, "Objectives.Amount");
+        if (this.objectiveAmount != null) {
+            this.objectiveAmount.write(cfg, "Objectives.Amount");
+        }
 
         this.getObjectiveList().getObjectMap().forEach((id, object) -> {
             object.write(cfg, "Objectives.List." + id);

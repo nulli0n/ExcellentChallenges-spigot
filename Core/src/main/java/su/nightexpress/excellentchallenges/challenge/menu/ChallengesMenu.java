@@ -140,13 +140,13 @@ public class ChallengesMenu extends ConfigMenu<ExcellentChallengesPlugin>
         ).read(cfg);
 
         this.formatActiveName = ConfigValue.create("Challenges.Format.Challenge_Active.Name",
-            CYAN.enclose(BOLD.enclose("Challenge: ")) + LIGHT_GRAY.enclose(CHALLENGE_TYPE)
+            LIGHT_CYAN.enclose(BOLD.enclose("Challenge: ")) + LIGHT_GRAY.enclose(CHALLENGE_TYPE)
         ).read(cfg);
 
         this.formatActiveLore = ConfigValue.create("Challenges.Format.Challenge_Active.Lore",
             Arrays.asList(
-                CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Difficulty: ") + CHALLENGE_DIFFICULTY),
-                CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Level: ") + CHALLENGE_LEVEL),
+                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Difficulty: ") + CHALLENGE_DIFFICULTY),
+                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Level: ") + CHALLENGE_LEVEL),
                 "",
                 PLACEHOLDER_OBJECTIVES,
                 PLACEHOLDER_CONDITIONS,
@@ -158,13 +158,13 @@ public class ChallengesMenu extends ConfigMenu<ExcellentChallengesPlugin>
         ).read(cfg);
 
         this.formatCompletedName = ConfigValue.create("Challenges.Format.Challenge_Completed.Name",
-            CYAN.enclose(BOLD.enclose("Challenge: ")) + LIGHT_GRAY.enclose(CHALLENGE_TYPE)
+            LIGHT_CYAN.enclose(BOLD.enclose("Challenge: ")) + LIGHT_GRAY.enclose(CHALLENGE_TYPE)
         ).read(cfg);
 
         this.formatCompletedLore = ConfigValue.create("Challenges.Format.Challenge_Completed.Lore",
             Arrays.asList(
-                CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Difficulty: ") + CHALLENGE_DIFFICULTY),
-                CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Level: ") + CHALLENGE_LEVEL),
+                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Difficulty: ") + CHALLENGE_DIFFICULTY),
+                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Level: ") + CHALLENGE_LEVEL),
                 "",
                 PLACEHOLDER_OBJECTIVES,
                 PLACEHOLDER_REWARDS,
@@ -175,8 +175,8 @@ public class ChallengesMenu extends ConfigMenu<ExcellentChallengesPlugin>
 
         this.formatObjectives = ConfigValue.create("Challenges.Format.Objectives",
             Arrays.asList(
-                CYAN.enclose(BOLD.enclose("Objectives:")),
-                CYAN.enclose("┃ " + LIGHT_GRAY.enclose(OBJECTIVE_NAME + ": ") + OBJECTIVE_PROGRESS_CURRENT + LIGHT_GRAY.enclose("/") + OBJECTIVE_PROGRESS_MAX)
+                LIGHT_CYAN.enclose(BOLD.enclose("Objectives:")),
+                LIGHT_CYAN.enclose("┃ " + LIGHT_GRAY.enclose(OBJECTIVE_NAME + ": ") + OBJECTIVE_PROGRESS_CURRENT + LIGHT_GRAY.enclose("/") + OBJECTIVE_PROGRESS_MAX)
             )
         ).read(cfg);
 
