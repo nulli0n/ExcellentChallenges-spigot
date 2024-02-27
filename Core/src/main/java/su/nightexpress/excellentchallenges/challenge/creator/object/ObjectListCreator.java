@@ -5,7 +5,7 @@ import su.nightexpress.excellentchallenges.challenge.difficulty.DifficultyValue;
 import su.nightexpress.excellentchallenges.challenge.difficulty.ModifierAction;
 import su.nightexpress.excellentchallenges.challenge.generator.object.GenAmountObject;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.values.UniInt;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.*;
 

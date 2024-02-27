@@ -1,7 +1,7 @@
 package su.nightexpress.excellentchallenges.challenge.difficulty;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JYML;
+import su.nightexpress.nightcore.config.FileConfig;
 
 public class DifficultyModifier {
 
@@ -22,14 +22,14 @@ public class DifficultyModifier {
     }
 
     @NotNull
-    public static DifficultyModifier read(@NotNull JYML cfg, @NotNull String path) {
+    public static DifficultyModifier read(@NotNull FileConfig cfg, @NotNull String path) {
         double base = cfg.getDouble(path + ".Base");
         double perLevel = cfg.getDouble(path + ".Per_Level");
 
         return new DifficultyModifier(base, perLevel);
     }
 
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Base", this.getBase());
         cfg.set(path + ".Per_Level", this.getPerLevel());
     }

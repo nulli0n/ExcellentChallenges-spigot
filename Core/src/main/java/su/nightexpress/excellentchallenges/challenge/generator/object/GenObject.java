@@ -1,10 +1,10 @@
 package su.nightexpress.excellentchallenges.challenge.generator.object;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JOption;
-import su.nexmedia.engine.api.config.JYML;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.config.FileConfig;
 
 import java.util.*;
 
@@ -22,13 +22,13 @@ public class GenObject {
     }
 
     @NotNull
-    public static GenObject read(@NotNull JYML cfg, @NotNull String path, @NotNull String id) {
-        double weight = JOption.create(path + ".Weight", 50D,
+    public static GenObject read(@NotNull FileConfig cfg, @NotNull String path, @NotNull String id) {
+        double weight = ConfigValue.create(path + ".Weight", 50D,
             "Determines the chance for this object to be picked in generation prior to others.",
             "The higher the value, the greater the chance."
         ).read(cfg);
 
-        Map<String, Set<String>> items = new JOption<Map<String, Set<String>>>(path + ".Items",
+        Map<String, Set<String>> items = ConfigValue.create(path + ".Items",
             (cfg2, path2, def) -> {
                 Map<String, Set<String>> map = new HashMap<>();
                 for (String diffs : cfg2.getSection(path2)) {
@@ -38,6 +38,7 @@ public class GenObject {
                 }
                 return map;
             },
+            (cfg2, path2, map) -> map.forEach((sId, set) -> cfg2.set(path2 + "." + sId, set)),
             () -> {
                 Map<String, Set<String>> map = new HashMap<>();
                 map.put(Placeholders.WILDCARD, new HashSet<>());
@@ -50,12 +51,12 @@ public class GenObject {
             "-- - item2",
             "You can provide multiple difficulties for the same list - split them with a comma.",
             "You can use '" + Placeholders.WILDCARD + "' to make list available for any difficult."
-        ).setWriter((cfg2, path2, map) -> map.forEach((sId, set) -> cfg2.set(path2 + "." + sId, set))).read(cfg);
+        ).read(cfg);
 
         return new GenObject(id, weight, items);
     }
 
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Weight", this.getWeight());
         cfg.remove(path + ".Items");
 

@@ -7,8 +7,8 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.utils.*;
 import su.nightexpress.excellentchallenges.Placeholders;
+import su.nightexpress.nightcore.util.*;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -45,7 +45,7 @@ public class Conditions {
     public static final Condition<Pair<Double, Boolean>, Player> PLAYER_HEALTH = register("player_health",
         str -> {
             boolean percent = str.endsWith("%");
-            double value = StringUtil.getDouble(str.replace("%", ""), 0D);
+            double value = NumberUtil.getDouble(str.replace("%", ""), 0D);
             return Pair.of(value, percent);
         },
         player -> player,
@@ -106,7 +106,7 @@ public class Conditions {
     public static Condition<Number, Number> numeric(@NotNull String name,
                                                     @NotNull Function<Player, Number> extractor) {
 
-        Function<String, Number> parser = str -> StringUtil.getDouble(str, 0D);
+        Function<String, Number> parser = str -> NumberUtil.getDouble(str, 0D);
         TriFunction<Number, Number, Operator, Boolean> tester = (eventValue, condValue, operator) -> {
             return switch (operator) {
                 case EQUAL -> eventValue.doubleValue() == condValue.doubleValue();
@@ -157,7 +157,7 @@ public class Conditions {
 
     @NotNull
     public static Condition<String, String> string(@NotNull String name, @NotNull Function<Player, String> extractor) {
-        Function<String, String> parser = Colorizer::strip;
+        Function<String, String> parser = Colorizer::restrip;
         TriFunction<String, String, Operator, Boolean> tester = (eventValue, condValue, operator) -> {
             if (operator == Operator.NOT_EQUAL) {
                 return !eventValue.equalsIgnoreCase(condValue);

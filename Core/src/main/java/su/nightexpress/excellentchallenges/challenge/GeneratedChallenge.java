@@ -3,10 +3,6 @@ package su.nightexpress.excellentchallenges.challenge;
 import su.nightexpress.excellentchallenges.challenge.condition.ConditionConfig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.placeholder.Placeholder;
-import su.nexmedia.engine.api.placeholder.PlaceholderMap;
-import su.nexmedia.engine.utils.NumberUtil;
-import su.nexmedia.engine.utils.values.UniInt;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
@@ -14,6 +10,10 @@ import su.nightexpress.excellentchallenges.challenge.condition.CompiledCondition
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
 import su.nightexpress.excellentchallenges.challenge.generator.Generator;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
+import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.placeholder.Placeholder;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
@@ -28,7 +28,7 @@ public class GeneratedChallenge implements Placeholder {
     private final Generator         generator;
     private final ChallengeCategory type;
     private final Difficulty        difficulty;
-    private final int                                                 level;
+    private final int                                                       level;
     private final Map<String, UniInt>                                       objectives;
     private final Map<ConditionConfig, List<List<CompiledCondition<?, ?>>>> conditions;
     private final List<Reward>                                              rewards;
@@ -68,6 +68,7 @@ public class GeneratedChallenge implements Placeholder {
     }
 
     public static GeneratedChallenge create(
+        @NotNull ExcellentChallengesPlugin plugin,
         @NotNull Generator generator,
         @NotNull ChallengeCategory type,
         @NotNull Difficulty difficulty,
@@ -90,7 +91,7 @@ public class GeneratedChallenge implements Placeholder {
         });
 
         return new GeneratedChallenge(
-            generator.plugin(), generator.getType(), generator, type, difficulty, level,
+            plugin, generator.getType(), generator, type, difficulty, level,
             objectives, conditionMap, rewards, dateCreated
         );
     }
@@ -169,7 +170,7 @@ public class GeneratedChallenge implements Placeholder {
     public boolean addObjectiveProgress(@NotNull String id, int amount) {
         if (!this.hasObjective(id) || this.isCompleted(id) || this.isCompleted()) return false;
 
-        UniInt progress = this.getObjectiveValue(id);
+        //UniInt progress = this.getObjectiveValue(id);
         int current = this.getObjectiveProgress(id);
         int max = this.getObjectiveRequirement(id);
 

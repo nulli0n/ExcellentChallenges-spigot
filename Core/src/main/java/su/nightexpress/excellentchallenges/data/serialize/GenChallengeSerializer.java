@@ -5,13 +5,13 @@ import com.google.gson.reflect.TypeToken;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.challenge.condition.ConditionConfig;
 import su.nightexpress.excellentchallenges.challenge.generator.Generator;
-import su.nexmedia.engine.utils.values.UniInt;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -66,14 +66,10 @@ public class GenChallengeSerializer implements JsonDeserializer<GeneratedChallen
 
         long dateCreated = object.get("dateCreated").getAsLong();
 
-        //String name = object.get("name").getAsString();
-        //List<String> description = context.deserialize(object.get("description"), new TypeToken<List<String>>(){}.getType());
-        //ItemStack icon = context.deserialize(object.get("icon"), new TypeToken<ItemStack>(){}.getType());
-
         return GeneratedChallenge.create(
+            ExcellentChallengesAPI.PLUGIN,
             generator, challengeCategory, difficulty, level,
             objectives, conditionConfigs, rewards, dateCreated
-            //name, description, icon
         );
 
     }
@@ -96,9 +92,6 @@ public class GenChallengeSerializer implements JsonDeserializer<GeneratedChallen
         object.add("rewards", context.serialize(rewardIds));
 
         object.addProperty("dateCreated", challenge.getDateCreated());
-        //object.addProperty("name", challenge.getName());
-        //object.add("description", context.serialize(challenge.getDescription()));
-        //object.add("icon", context.serialize(challenge.getIcon()));
 
         return object;
     }

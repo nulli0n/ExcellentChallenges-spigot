@@ -6,13 +6,13 @@ import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.excellentchallenges.data.serialize.GenChallengeSerializer;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.data.AbstractUserDataHandler;
-import su.nexmedia.engine.api.data.sql.SQLColumn;
-import su.nexmedia.engine.api.data.sql.SQLValue;
-import su.nexmedia.engine.api.data.sql.column.ColumnType;
-import su.nexmedia.engine.utils.values.UniInt;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.data.serialize.UniIntSerializer;
+import su.nightexpress.nightcore.database.AbstractUserDataHandler;
+import su.nightexpress.nightcore.database.sql.SQLColumn;
+import su.nightexpress.nightcore.database.sql.SQLValue;
+import su.nightexpress.nightcore.database.sql.column.ColumnType;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -26,11 +26,10 @@ public class DataHandler extends AbstractUserDataHandler<ExcellentChallengesPlug
     private static final SQLColumn COL_REROLL_TOKENS        = SQLColumn.of("rerollTokens", ColumnType.STRING);
     private static final SQLColumn COL_COMPLETED_CHALLENGES = SQLColumn.of("completedChallenges", ColumnType.STRING);
 
-    private static DataHandler                        instance;
     private final  Function<ResultSet, ChallengeUser> userFunction;
 
-    protected DataHandler(@NotNull ExcellentChallengesPlugin plugin) {
-        super(plugin, plugin);
+    public DataHandler(@NotNull ExcellentChallengesPlugin plugin) {
+        super(plugin);
 
         this.userFunction = (resultSet) -> {
             try {
@@ -58,23 +57,9 @@ public class DataHandler extends AbstractUserDataHandler<ExcellentChallengesPlug
         };
     }
 
-    @NotNull
-    public static DataHandler getInstance(@NotNull ExcellentChallengesPlugin plugin) {
-        if (instance == null) {
-            instance = new DataHandler(plugin);
-        }
-        return instance;
-    }
-
-    @Override
-    protected void onShutdown() {
-        super.onShutdown();
-        instance = null;
-    }
-
     @Override
     public void onSynchronize() {
-        for (ChallengeUser user : this.dataHolder.getUserManager().getUsersLoaded()) {
+        for (ChallengeUser user : this.plugin.getUserManager().getLoaded()) {
             ChallengeUser fetch = this.getUser(user.getId());
             if (fetch == null) continue;
 
@@ -119,7 +104,7 @@ public class DataHandler extends AbstractUserDataHandler<ExcellentChallengesPlug
 
     @Override
     @NotNull
-    protected Function<ResultSet, ChallengeUser> getFunctionToUser() {
+    protected Function<ResultSet, ChallengeUser> getUserFunction() {
         return this.userFunction;
     }
 }

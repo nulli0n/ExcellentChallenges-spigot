@@ -1,6 +1,6 @@
 package su.nightexpress.excellentchallenges;
 
-public class Placeholders extends su.nexmedia.engine.utils.Placeholders {
+public class Placeholders extends su.nightexpress.nightcore.util.Placeholders {
 
     public static final String WIKI_URL          = "https://github.com/nulli0n/ExcellentChallenges-spigot/wiki/";
     public static final String WIKI_ACTION_TYPES = WIKI_URL + "Challenge-Action-Types";

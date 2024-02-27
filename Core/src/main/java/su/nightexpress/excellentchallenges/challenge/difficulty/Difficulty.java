@@ -2,10 +2,9 @@ package su.nightexpress.excellentchallenges.challenge.difficulty;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.utils.Colorizer;
-import su.nexmedia.engine.utils.StringUtil;
-import su.nexmedia.engine.utils.values.UniInt;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,14 +28,14 @@ public class Difficulty {
                       @NotNull UniInt levels,
                       @NotNull Map<String, DifficultyModifier> modifiers) {
         this.id = id.toLowerCase();
-        this.name = Colorizer.apply(name);
+        this.name = name;
         //this.nameFormat = Colorizer.apply(nameFormat);
         this.levels = levels;
         this.modifiers = modifiers;
     }
 
     @NotNull
-    public static Difficulty read(@NotNull JYML cfg, @NotNull String path, @NotNull String id) {
+    public static Difficulty read(@NotNull FileConfig cfg, @NotNull String path, @NotNull String id) {
         String name = cfg.getString(path + ".Name", StringUtil.capitalizeUnderscored(id));
         //String nameFormat = cfg.getString(path + ".Challenge_Name_Format", Placeholders.CHALLENGE_NAME);
         UniInt levels = UniInt.read(cfg, path + ".Levels");
@@ -49,7 +48,7 @@ public class Difficulty {
         return new Difficulty(id, name, levels, modifiers);
     }
 
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Name", this.getName());
         //cfg.set(path + ".Challenge_Name_Format", this.getNameFormat());
         this.getLevels().write(cfg, path + ".Levels");

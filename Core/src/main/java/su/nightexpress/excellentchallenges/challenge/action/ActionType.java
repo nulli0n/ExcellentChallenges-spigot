@@ -4,11 +4,10 @@ import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JOption;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.utils.Colorizer;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.StringUtil;
 
 public class ActionType<E extends Event, O> {
 
@@ -54,14 +53,13 @@ public class ActionType<E extends Event, O> {
     }
 
     public boolean loadSettings(@NotNull ExcellentChallengesPlugin plugin) {
-        JYML config = plugin.getConfig();
+        FileConfig config = plugin.getConfig();
         String path = "Challenges.Action_Types." + this.getName();
-        if (!JOption.create(path + ".Enabled", true).read(config)) {
+        if (!ConfigValue.create(path + ".Enabled", true).read(config)) {
             return false;
         }
-        this.setDisplayName(JOption.create(path + ".DisplayName", this.getDisplayName()).read(config));
-        this.setIcon(JOption.create(path + ".Icon", this.getIcon()).read(config));
-        config.saveChanges();
+        this.setDisplayName(ConfigValue.create(path + ".DisplayName", this.getDisplayName()).read(config));
+        this.setIcon(ConfigValue.create(path + ".Icon", this.getIcon()).read(config));
         return true;
     }
 
@@ -76,7 +74,7 @@ public class ActionType<E extends Event, O> {
     }
 
     public void setDisplayName(@NotNull String displayName) {
-        this.displayName = Colorizer.apply(displayName);
+        this.displayName = displayName;
     }
 
     @NotNull
@@ -84,8 +82,10 @@ public class ActionType<E extends Event, O> {
         return new ItemStack(this.icon);
     }
 
-    public void setIcon(@NotNull ItemStack icon) {
+    @NotNull
+    public ActionType<E, O> setIcon(@NotNull ItemStack icon) {
         this.icon = new ItemStack(icon);
+        return this;
     }
 
     @NotNull

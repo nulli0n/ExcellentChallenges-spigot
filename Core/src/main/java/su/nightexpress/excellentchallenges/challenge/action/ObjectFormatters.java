@@ -2,15 +2,18 @@ package su.nightexpress.excellentchallenges.challenge.action;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.lang.LangManager;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
+import su.nightexpress.nightcore.language.LangAssets;
+import su.nightexpress.nightcore.util.BukkitThing;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.Version;
 
 public class ObjectFormatters {
 
@@ -25,7 +28,7 @@ public class ObjectFormatters {
         @NotNull
         @Override
         public String getLocalizedName(@NotNull Material material) {
-            return LangManager.getMaterial(material);
+            return LangAssets.get(material);
         }
 
         @Nullable
@@ -45,7 +48,7 @@ public class ObjectFormatters {
         @NotNull
         @Override
         public String getLocalizedName(@NotNull EntityType type) {
-            return LangManager.getEntityType(type);
+            return LangAssets.get(type);
         }
 
         @Nullable
@@ -56,21 +59,28 @@ public class ObjectFormatters {
     };
 
     public static final ObjectFormatter<PotionEffectType> POTION_TYPE = new ObjectFormatter<>() {
+
         @NotNull
         @Override
         public String getName(@NotNull PotionEffectType object) {
+            /*if (Version.isAtLeast(Version.V1_20_R3)) {
+                return object.getKey().getKey();
+            }*/
             return object.getName();
         }
 
         @NotNull
         @Override
         public String getLocalizedName(@NotNull PotionEffectType object) {
-            return LangManager.getPotionType(object);
+            return LangAssets.get(object);
         }
 
         @Nullable
         @Override
         public PotionEffectType parseObject(@NotNull String name) {
+            /*if (Version.isAtLeast(Version.V1_20_R3)) {
+                return BukkitThing.fromRegistry(Registry.EFFECT, name);
+            }*/
             return PotionEffectType.getByName(name.toUpperCase());
         }
     };
@@ -85,7 +95,7 @@ public class ObjectFormatters {
         @NotNull
         @Override
         public String getLocalizedName(@NotNull Enchantment object) {
-            return LangManager.getEnchantment(object);
+            return LangAssets.get(object);
         }
 
         @Nullable

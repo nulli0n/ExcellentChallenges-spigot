@@ -16,16 +16,16 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.utils.EngineUtils;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.hooks.HookId;
 import su.nightexpress.excellentchallenges.hooks.external.MythicMobsHook;
+import su.nightexpress.nightcore.manager.SimpleManager;
+import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionRegistry extends AbstractManager<ExcellentChallengesPlugin> {
+public class ActionRegistry extends SimpleManager<ExcellentChallengesPlugin> {
 
     private static final Map<String, ActionType<?, ?>> ACTION_TYPE_MAP = new HashMap<>();
 
@@ -76,7 +76,7 @@ public class ActionRegistry extends AbstractManager<ExcellentChallengesPlugin> {
     }
 
     private void registerHooks() {
-        if (EngineUtils.hasPlugin(HookId.MYTHIC_MOBS)) {
+        if (Plugins.isLoaded(HookId.MYTHIC_MOBS)) {
             this.plugin.info("Found " + HookId.MYTHIC_MOBS + "! Registering new challenge types...");
             MythicMobsHook.register(this);
         }
@@ -104,8 +104,8 @@ public class ActionRegistry extends AbstractManager<ExcellentChallengesPlugin> {
         if (!actionType.loadSettings(this.plugin)) return null;
 
         //for (EventPriority priority : EventPriority.values()) {
-            WrappedEvent<E, O> event = new WrappedEvent<>(plugin, eventClass, actionType);
-            plugin.getPluginManager().registerEvent(eventClass, event, priority, event, plugin, true);
+        WrappedEvent<E, O> event = new WrappedEvent<>(plugin, eventClass, actionType);
+        plugin.getPluginManager().registerEvent(eventClass, event, priority, event, plugin, true);
         //}
 
         ACTION_TYPE_MAP.put(actionType.getName(), actionType);

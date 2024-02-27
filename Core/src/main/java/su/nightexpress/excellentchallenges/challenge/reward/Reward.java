@@ -2,14 +2,13 @@ package su.nightexpress.excellentchallenges.challenge.reward;
 
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JOption;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.placeholder.Placeholder;
-import su.nexmedia.engine.api.placeholder.PlaceholderMap;
-import su.nexmedia.engine.utils.Colorizer;
-import su.nexmedia.engine.utils.PlayerUtil;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.Placeholders;
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.Players;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.placeholder.Placeholder;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class Reward implements Placeholder {
 
     public Reward(@NotNull String id, @NotNull String name, @NotNull List<String> commands) {
         this.id = id.toLowerCase();
-        this.name = Colorizer.apply(name);
+        this.name = name;
         this.commands = commands;
 
         this.placeholderMap = new PlaceholderMap()
@@ -33,15 +32,15 @@ public class Reward implements Placeholder {
     }
 
     @NotNull
-    public static Reward read(@NotNull JYML cfg, @NotNull String path, @NotNull String id) {
-        String name = JOption.create(path + ".Name", StringUtil.capitalizeUnderscored(id)).read(cfg);
-        List<String> commands = JOption.create(path + ".Commands", new ArrayList<>()).read(cfg);
+    public static Reward read(@NotNull FileConfig cfg, @NotNull String path, @NotNull String id) {
+        String name = ConfigValue.create(path + ".Name", StringUtil.capitalizeUnderscored(id)).read(cfg);
+        List<String> commands = ConfigValue.create(path + ".Commands", new ArrayList<>()).read(cfg);
 
         return new Reward(id, name, commands);
     }
 
 
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Name", this.getName());
         cfg.set(path + ".Commands", this.getCommands());
     }
@@ -68,6 +67,6 @@ public class Reward implements Placeholder {
     }
 
     public void give(@NotNull Player player) {
-        this.getCommands().forEach(command -> PlayerUtil.dispatchCommand(player, command));
+        this.getCommands().forEach(command -> Players.dispatchCommand(player, command));
     }
 }

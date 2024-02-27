@@ -19,8 +19,6 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.manager.AbstractListener;
-import su.nexmedia.engine.utils.PDCUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.Keys;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeCompleteEvent;
@@ -30,6 +28,8 @@ import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Lang;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
+import su.nightexpress.nightcore.manager.AbstractListener;
+import su.nightexpress.nightcore.util.PDCUtil;
 
 public class ChallengeListener extends AbstractListener<ExcellentChallengesPlugin> {
 
@@ -38,30 +38,30 @@ public class ChallengeListener extends AbstractListener<ExcellentChallengesPlugi
     }
 
     @EventHandler(priority = EventPriority.NORMAL)
-    public void onJoin(@NotNull PlayerJoinEvent e) {
-        Player player = e.getPlayer();
+    public void onJoin(@NotNull PlayerJoinEvent event) {
+        Player player = event.getPlayer();
         plugin.getChallengeManager().updateChallenges(player, false);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onChallengeObjectiveEvent(PlayerChallengeObjectiveEvent e) {
-        Player player = e.getPlayer().getPlayer();
+    public void onChallengeObjectiveEvent(PlayerChallengeObjectiveEvent event) {
+        Player player = event.getPlayer().getPlayer();
         if (player == null) return;
 
-        GeneratedChallenge progress = e.getChallenge();
-        String objId = e.getObjective();
-        plugin.getMessage(Lang.CHALLENGE_NOTIFY_PROGRESS)
+        GeneratedChallenge progress = event.getChallenge();
+        String objId = event.getObjective();
+        Lang.CHALLENGE_NOTIFY_PROGRESS.getMessage()
             .replace(progress.replacePlaceholders(objId))
             .send(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onChallengeCompleteEvent(PlayerChallengeCompleteEvent e) {
-        Player player = e.getPlayer().getPlayer();
+    public void onChallengeCompleteEvent(PlayerChallengeCompleteEvent event) {
+        Player player = event.getPlayer().getPlayer();
         if (player == null) return;
 
-        GeneratedChallenge challenge = e.getChallenge();
-        ChallengeUser user = e.getUser();
+        GeneratedChallenge challenge = event.getChallenge();
+        ChallengeUser user = event.getUser();
         ChallengeCategory type = challenge.getType();
 
         challenge.getRewards().forEach(reward -> reward.give(player));
@@ -72,16 +72,16 @@ public class ChallengeListener extends AbstractListener<ExcellentChallengesPlugi
             type.getCompletionRewards().forEach(reward -> reward.give(player));
         }
 
-        plugin.getMessage(Lang.CHALLENGE_NOTIFY_COMPLETED)
+        Lang.CHALLENGE_NOTIFY_COMPLETED.getMessage()
             .replace(challenge.replacePlaceholders())
             .send(player);
     }
 
     @EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
-    public void onChallengeEntitySpawn(CreatureSpawnEvent e) {
-        CreatureSpawnEvent.SpawnReason reason = e.getSpawnReason();
+    public void onChallengeEntitySpawn(CreatureSpawnEvent event) {
+        CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
         if (Config.OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS.get().contains(reason)) {
-            PDCUtil.set(e.getEntity(), Keys.ENTITY_TRACKED, true);
+            PDCUtil.set(event.getEntity(), Keys.ENTITY_TRACKED, true);
         }
     }
 

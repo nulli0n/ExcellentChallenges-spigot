@@ -6,9 +6,9 @@ import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.values.UniInt;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -44,24 +44,6 @@ public class BlockMaterialCreator extends AbstractCreator<Material> {
     public Set<String> getRewards(@NotNull ActionType<?, Material> actionType) {
         return Sets.newHashSet(CreatorManager.REWARDS_MONEY, CreatorManager.REWARDS_ITEMS);
     }
-
-    /*@NotNull
-    @Override
-    public ItemStack getIcon(@NotNull Material object) {
-        if (object == Material.POTATOES) object = Material.POTATO;
-        else if (object == Material.CARROTS) object = Material.CARROT;
-        else if (object == Material.BEETROOTS) object = Material.BEETROOT;
-        else if (object == Material.MELON_STEM) object = Material.MELON;
-        else if (object == Material.PUMPKIN_STEM) object = Material.PUMPKIN;
-
-        return new ItemStack(object);
-    }
-
-    @NotNull
-    @Override
-    public List<String> getNames(@NotNull ActionType<?, Material> actionType) {
-        return new ArrayList<>();
-    }*/
 
     @NotNull
     @Override

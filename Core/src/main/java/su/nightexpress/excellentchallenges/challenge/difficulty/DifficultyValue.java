@@ -1,10 +1,11 @@
 package su.nightexpress.excellentchallenges.challenge.difficulty;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JOption;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.utils.CollectionsUtil;
-import su.nexmedia.engine.utils.values.UniInt;
+import org.jetbrains.annotations.Nullable;
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 public class DifficultyValue {
 
@@ -19,25 +20,35 @@ public class DifficultyValue {
     }
 
     @NotNull
-    public static DifficultyValue read(@NotNull JYML cfg, @NotNull String path) {
+    public static DifficultyValue readOrCreate(@NotNull FileConfig cfg, @NotNull String path, @NotNull DifficultyValue def,
+                                               @Nullable String... comments) {
+        return ConfigValue.create(path,
+            (cfg1, path1, def1) -> read(cfg1, path1),
+            (cfg1, path1, val) -> val.write(cfg1, path1),
+            () -> def,
+            comments).read(cfg);
+    }
+
+    @NotNull
+    public static DifficultyValue read(@NotNull FileConfig cfg, @NotNull String path) {
         UniInt value = UniInt.read(cfg, path);
 
-        String modifierId = JOption.create(path + ".Difficulty_Modifier.Id",
+        String modifierId = ConfigValue.create(path + ".Difficulty_Modifier.Id",
             "null",
             "Determines the difficulty modifier used to adjust value generated from 'Min' and 'Max' settings.",
             "You can create & edit modifiers in the config.yml for each difficulty individually."
         ).read(cfg);
 
-        ModifierAction modifierAction = JOption.create(path + ".Difficulty_Modifier.Action",
+        ModifierAction modifierAction = ConfigValue.create(path + ".Difficulty_Modifier.Action",
             ModifierAction.class, ModifierAction.NONE,
             "Sets action to perform between value generated from 'Min' and 'Max' and value from difficulty modifier.",
-            "Available actions: " + String.join(", ", CollectionsUtil.getEnumsList(ModifierAction.class))
+            "Available actions: " + StringUtil.inlineEnum(ModifierAction.class, ", ")
         ).read(cfg);
 
         return new DifficultyValue(value, modifierId, modifierAction);
     }
 
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         this.getValue().write(cfg, path);
         cfg.set(path + ".Difficulty_Modifier.Id", this.getModifierId());
         cfg.set(path + ".Difficulty_Modifier.Action", this.getModifierAction().name());

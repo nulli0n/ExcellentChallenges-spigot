@@ -3,8 +3,7 @@ version: '${project.version}'
 name: ExcellentChallenges
 author: NightExpress
 description: Advanced challenges plugin for your server and players.
-depend:
-  - NexEngine
+depend: [ nightcore ]
 softdepend:
   - PlaceholderAPI
   - MythicMobs

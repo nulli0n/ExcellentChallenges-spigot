@@ -4,8 +4,8 @@ import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.data.AbstractUser;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.nightcore.database.AbstractUser;
 
 import java.util.*;
 
@@ -13,8 +13,8 @@ public class ChallengeUser extends AbstractUser<ExcellentChallengesPlugin> {
 
     private final Map<String, Set<GeneratedChallenge>> challenges;
     private final Map<String, Long>                    refreshTimes;
-    private final Map<String, Integer>                        rerollTokens;
-    private final Map<String, Map<String, Integer>> completedChallenges;
+    private final Map<String, Integer>                 rerollTokens;
+    private final Map<String, Map<String, Integer>>    completedChallenges;
 
     public ChallengeUser(@NotNull ExcellentChallengesPlugin plugin, @NotNull UUID uuid, @NotNull String name) {
         this(plugin, uuid, name, System.currentTimeMillis(), System.currentTimeMillis(),
@@ -121,11 +121,11 @@ public class ChallengeUser extends AbstractUser<ExcellentChallengesPlugin> {
         this.setRerollTokens(id, this.getRerollTokens(id) + amount);
     }
 
-    public void takeRerollTokens(@NotNull ChallengeCategory type, int amount) {
-        this.takeRerollTokens(type.getId(), amount);
+    public void removeRerollTokens(@NotNull ChallengeCategory type, int amount) {
+        this.removeRerollTokens(type.getId(), amount);
     }
 
-    public void takeRerollTokens(@NotNull String id, int amount) {
+    public void removeRerollTokens(@NotNull String id, int amount) {
         this.addRerollTokens(id, -amount);
     }
 

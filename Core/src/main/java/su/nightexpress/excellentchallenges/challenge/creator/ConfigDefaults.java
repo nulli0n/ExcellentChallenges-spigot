@@ -1,13 +1,13 @@
 package su.nightexpress.excellentchallenges.challenge.creator;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.ItemUtil;
-import su.nexmedia.engine.utils.PlayerRankMap;
-import su.nexmedia.engine.utils.values.UniInt;
-import su.nightexpress.excellentchallenges.Placeholders;
+import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
 import su.nightexpress.excellentchallenges.challenge.difficulty.DifficultyModifier;
+import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.RankMap;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -21,33 +21,33 @@ public class ConfigDefaults {
 
         ChallengeCategory daily = new ChallengeCategory(
             "daily", "Daily",
-            ItemUtil.createCustomHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvNjhhYzYzMmU3YjJkMjBjOWNjZTVjYzllNjQ4NmE3ZGZkOTMzYWVlYjM1MTNmZWJkMjMyMDMxZTBlNzU4YjAwZSJ9fX0="),
+            ItemUtil.getSkinHead("68ac632e7b2d20c9cce5cc9e6486a7dfd933aeeb3513febd232031e0e758b00e"),
             86400,
             true,
             Map.of(Difficulty.DEF_CHILD, 70D, Difficulty.DEF_EASY, 50D, Difficulty.DEF_MEDIUM, 25D),
-            new PlayerRankMap<>(Map.of(Placeholders.DEFAULT, 5, "donor", 7)),
+            new RankMap<>(RankMap.Mode.RANK, Perms.PREFIX_CHALLENGES_AMOUNT + "daily.", 5, Map.of("donor", 7)),
             new HashSet<>(),
             new HashSet<>()
         );
 
         ChallengeCategory weekly = new ChallengeCategory(
             "weekly", "Weekly",
-            ItemUtil.createCustomHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYTkzZGZiM2FlODE3Nzc4NGE2NDU3NzlkY2EyYzEyZGZiYTEyNThjMjAyYWZkYzA0ZDg3ZDgwZjJjZWNlYTFkNyJ9fX0="),
+            ItemUtil.getSkinHead("a93dfb3ae8177784a645779dca2c12dfba1258c202afdc04d87d80f2cecea1d7"),
             604800,
             true,
-            Map.of(Difficulty.DEF_EASY, 45D, Difficulty.DEF_MEDIUM, 60D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 15D),
-            new PlayerRankMap<>(Map.of(Placeholders.DEFAULT, 5, "donor", 7)),
+            Map.of(Difficulty.DEF_EASY, 25D, Difficulty.DEF_MEDIUM, 60D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 15D),
+            new RankMap<>(RankMap.Mode.RANK, Perms.PREFIX_CHALLENGES_AMOUNT + "weekly.", 5, Map.of("donor", 7)),
             new HashSet<>(),
             new HashSet<>()
         );
 
         ChallengeCategory monthly = new ChallengeCategory(
             "monthly", "Monthly",
-            ItemUtil.createCustomHead("eyJ0ZXh0dXJlcyI6eyJTS0lOIjp7InVybCI6Imh0dHA6Ly90ZXh0dXJlcy5taW5lY3JhZnQubmV0L3RleHR1cmUvYzBjMDAyM2JmOGQ4NzIxZTAyMjlkYWZkZmI5ZDgzZWVlYTRkNGI2ZTFmMmRkMTQ5MDEyMGMxY2MxMTdjYmM3OCJ9fX0="),
+            ItemUtil.getSkinHead("930423127bb0269c508333c6966578c1317db3368c1fbd0503dc38b642c5d193"),
             2628288,
             true,
-            Map.of(Difficulty.DEF_MEDIUM, 35D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 60D),
-            new PlayerRankMap<>(Map.of(Placeholders.DEFAULT, 5, "donor", 7)),
+            Map.of(Difficulty.DEF_MEDIUM, 35D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 80D),
+            new RankMap<>(RankMap.Mode.RANK, Perms.PREFIX_CHALLENGES_AMOUNT + "monthly.", 5, Map.of("donor", 7)),
             new HashSet<>(),
             new HashSet<>()
         );

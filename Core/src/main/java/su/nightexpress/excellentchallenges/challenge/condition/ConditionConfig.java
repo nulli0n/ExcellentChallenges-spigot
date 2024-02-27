@@ -1,19 +1,18 @@
 package su.nightexpress.excellentchallenges.challenge.condition;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.placeholder.Placeholder;
-import su.nexmedia.engine.api.placeholder.PlaceholderMap;
-import su.nexmedia.engine.utils.Colorizer;
-import su.nexmedia.engine.utils.Pair;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.Placeholders;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.Pair;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.placeholder.Placeholder;
+import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
 
 import java.util.*;
 
 public class ConditionConfig implements Placeholder {
 
-    private final String id;
+    private final String                                           id;
     private final Map<String, List<Pair<Condition<?, ?>, String>>> conditionMap;
     private final PlaceholderMap                                   placeholderMap;
 
@@ -35,9 +34,9 @@ public class ConditionConfig implements Placeholder {
     }
 
     @NotNull
-    public static ConditionConfig read(@NotNull JYML cfg, @NotNull String path, @NotNull String id) {
-        String name = Colorizer.apply(cfg.getString(path + ".Name", StringUtil.capitalizeUnderscored(id)));
-        List<String> description = Colorizer.apply(cfg.getStringList(path + ".Description"));
+    public static ConditionConfig read(@NotNull FileConfig cfg, @NotNull String path, @NotNull String id) {
+        String name = cfg.getString(path + ".Name", StringUtil.capitalizeUnderscored(id));
+        List<String> description = cfg.getStringList(path + ".Description");
 
         Map<String, List<Pair<Condition<?, ?>, String>>> conditionMap = new HashMap<>();
         for (String sId : cfg.getSection(path + ".Conditions")) {
@@ -85,7 +84,7 @@ public class ConditionConfig implements Placeholder {
         return true;
     }*/
 
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Name", this.getName());
         cfg.set(path + ".Description", this.getDescription());
         cfg.remove(path + ".Conditions");
@@ -116,7 +115,7 @@ public class ConditionConfig implements Placeholder {
     }
 
     public void setName(@NotNull String name) {
-        this.name = Colorizer.apply(name);
+        this.name = name;
     }
 
     @NotNull
@@ -125,7 +124,7 @@ public class ConditionConfig implements Placeholder {
     }
 
     public void setDescription(@NotNull List<String> description) {
-        this.description = Colorizer.apply(description);
+        this.description = description;
     }
 
     @NotNull

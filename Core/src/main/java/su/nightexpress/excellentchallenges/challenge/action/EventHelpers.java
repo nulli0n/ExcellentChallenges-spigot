@@ -22,13 +22,12 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.potion.PotionType;
 import org.bukkit.projectiles.ProjectileSource;
-import su.nexmedia.engine.Version;
-import su.nexmedia.engine.utils.*;
-import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.Keys;
 import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.hooks.HookId;
 import su.nightexpress.excellentchallenges.hooks.external.MythicMobsHook;
+import su.nightexpress.nightcore.util.*;
+import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -134,7 +133,6 @@ public class EventHelpers {
 
     public static final EventHelper<EntityDamageByEntityEvent, EntityDamageEvent.DamageCause> DAMAGE_INFLICT = (plugin, event, processor) -> {
         Entity damager = event.getDamager();
-        if (EntityUtil.isNPC(damager)) return false;
         if (!(damager instanceof Player player)) return false;
 
         EntityDamageEvent.DamageCause cause = event.getCause();
@@ -145,7 +143,6 @@ public class EventHelpers {
 
     public static final EventHelper<EntityDamageEvent, EntityDamageEvent.DamageCause> DAMAGE_RECEIVE = (plugin, event, processor) -> {
         Entity victim = event.getEntity();
-        if (EntityUtil.isNPC(victim)) return false;
         if (!(victim instanceof Player player)) return false;
 
         EntityDamageEvent.DamageCause cause = event.getCause();
@@ -167,10 +164,10 @@ public class EventHelpers {
         if (PDCUtil.getBoolean(entity, Keys.ENTITY_TRACKED).orElse(false)) return false;
 
         Player killer = entity.getKiller();
-        if (killer == null || EntityUtil.isNPC(killer)) return false;
+        if (killer == null) return false;
 
         // Do not count MythicMobs here.
-        if (EngineUtils.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
+        if (Plugins.isLoaded(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
 
         processor.progressChallenge(killer, entity.getType(), 1);
         return true;
@@ -181,13 +178,13 @@ public class EventHelpers {
         if (PDCUtil.getBoolean(entity, Keys.ENTITY_TRACKED).orElse(false)) return false;
 
         Player killer = entity.getKiller();
-        if (killer == null || EntityUtil.isNPC(killer)) return false;
+        if (killer == null) return false;
 
         if (!(entity.getLastDamageCause() instanceof EntityDamageByEntityEvent ede)) return false;
-        if (!(ede.getDamager() instanceof Projectile projectile)) return false;
+        if (!(ede.getDamager() instanceof Projectile)) return false;
 
         // Do not count MythicMobs here.
-        if (EngineUtils.hasPlugin(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
+        if (Plugins.isLoaded(HookId.MYTHIC_MOBS) && MythicMobsHook.isMythicMob(entity)) return false;
 
         processor.progressChallenge(killer, entity.getType(), 1);
         return true;
@@ -232,9 +229,9 @@ public class EventHelpers {
         boolean numberKey = event.getAction() == InventoryAction.HOTBAR_MOVE_AND_READD;
 
         if (event.isShiftClick() || numberKey) {
-            int has = PlayerUtil.countItem(player, craft);
+            int has = Players.countItem(player, craft);
             plugin.getServer().getScheduler().runTask(plugin, () -> {
-                int now = PlayerUtil.countItem(player, craft);
+                int now = Players.countItem(player, craft);
                 int crafted = now - has;
                 processor.progressChallenge(player, type, crafted);
             });
@@ -308,7 +305,7 @@ public class EventHelpers {
         Player player = (Player) event.getWhoClicked();
         ItemStack result = recipe.getResult();
         int uses = recipe.getUses();
-        int userHas = PlayerUtil.countItem(player, result);
+        int userHas = Players.countItem(player, result);
 
         plugin.runTask(task -> {
             int uses2 = recipe.getUses();
@@ -317,7 +314,7 @@ public class EventHelpers {
             int amount = 1;
             if (event.isShiftClick()) {
                 int resultSize = result.getAmount();
-                int userNow = PlayerUtil.countItem(player, result);
+                int userNow = Players.countItem(player, result);
                 int diff = userNow - userHas;
                 amount = (int) ((double) diff / (double) resultSize);
             }

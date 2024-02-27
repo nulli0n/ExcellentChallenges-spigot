@@ -1,7 +1,7 @@
 package su.nightexpress.excellentchallenges.data.serialize;
 
 import com.google.gson.*;
-import su.nexmedia.engine.utils.values.UniInt;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.lang.reflect.Type;
 

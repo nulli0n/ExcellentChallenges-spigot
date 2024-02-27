@@ -5,12 +5,6 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.lang.LangManager;
-import su.nexmedia.engine.utils.NumberUtil;
-import su.nexmedia.engine.utils.Pair;
-import su.nexmedia.engine.utils.StringUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.condition.Condition;
@@ -20,13 +14,20 @@ import su.nightexpress.excellentchallenges.challenge.condition.Operator;
 import su.nightexpress.excellentchallenges.challenge.creator.impl.*;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
 import su.nightexpress.excellentchallenges.config.Config;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.language.LangAssets;
+import su.nightexpress.nightcore.manager.SimpleManager;
+import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.Pair;
+import su.nightexpress.nightcore.util.StringUtil;
+import su.nightexpress.nightcore.util.Version;
 
 import java.io.File;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class CreatorManager extends AbstractManager<ExcellentChallengesPlugin> {
+public class CreatorManager extends SimpleManager<ExcellentChallengesPlugin> {
 
     public static final String CONDITIONS_WORLD       = "world";
     public static final String CONDITIONS_SERVER_TIME = "server_time";
@@ -100,8 +101,10 @@ public class CreatorManager extends AbstractManager<ExcellentChallengesPlugin> {
             Material.NETHERITE_BOOTS, Material.LEATHER_BOOTS
         ));
 
-        this.createWeaponCondition(Tag.ITEMS_SWORDS.getValues());
-        this.createWeaponCondition(Tag.ITEMS_AXES.getValues());
+        if (Version.isAtLeast(Version.V1_19_R3)) {
+            this.createWeaponCondition(Tag.ITEMS_SWORDS.getValues());
+            this.createWeaponCondition(Tag.ITEMS_AXES.getValues());
+        }
 
         this.createPlayerHealthCondition(75D);
         this.createPlayerHealthCondition(50D);
@@ -178,10 +181,10 @@ public class CreatorManager extends AbstractManager<ExcellentChallengesPlugin> {
         String fromRaw = "[" + model.getName() + "] " + Operator.GREATER.getRaw() + " " + from.format(DateTimeFormatter.ISO_LOCAL_TIME);
         String toRaw = "[" + model.getName() + "] " + Operator.SMALLER.getRaw() + " " + to.format(DateTimeFormatter.ISO_LOCAL_TIME);
 
-        JYML cfg = new JYML(plugin.getDataFolder() + Config.DIR_CONDITIONS, CONDITIONS_SERVER_TIME + ".yml");
+        FileConfig cfg = new FileConfig(plugin.getDataFolder() + Config.DIR_CONDITIONS, CONDITIONS_SERVER_TIME + ".yml");
         ConditionConfig conditionConfig = new ConditionConfig(id, id, new ArrayList<>(), new HashMap<>());
         conditionConfig.setName(StringUtil.capitalizeUnderscored(id));
-        conditionConfig.setDescription(Arrays.asList(
+        conditionConfig.setDescription(List.of(
             "Must be done between " + from.getHour() + " and " + to.getHour() + " real time hours!"
         ));
         conditionConfig.getConditionMap().put(Placeholders.DEFAULT, List.of(Pair.of(model, fromRaw), Pair.of(model, toRaw)));
@@ -193,10 +196,10 @@ public class CreatorManager extends AbstractManager<ExcellentChallengesPlugin> {
                                @NotNull Condition<?,?> condition, @NotNull String raw,
                                @NotNull String description) {
 
-        JYML cfg = new JYML(plugin.getDataFolder() + Config.DIR_CONDITIONS, file + ".yml");
+        FileConfig cfg = new FileConfig(plugin.getDataFolder() + Config.DIR_CONDITIONS, file + ".yml");
         ConditionConfig conditionConfig = new ConditionConfig(id, id, new ArrayList<>(), new HashMap<>());
         conditionConfig.setName(StringUtil.capitalizeUnderscored(id));
-        conditionConfig.setDescription(Arrays.asList(description));
+        conditionConfig.setDescription(List.of(description));
         conditionConfig.getConditionMap().put(Placeholders.DEFAULT, List.of(Pair.of(condition, raw)));
         conditionConfig.write(cfg, id);
         cfg.saveChanges();
@@ -235,7 +238,7 @@ public class CreatorManager extends AbstractManager<ExcellentChallengesPlugin> {
             String raw = "[" + condition.getName() + "] " + Operator.EQUAL.getRaw() + " " + material.name();
 
             this.saveCondition(file, id, condition, raw,
-                "You must have " + LangManager.getMaterial(material) + " equipped!");
+                "You must have " + LangAssets.get(material) + " equipped!");
 
             /*ConditionConfig conditionConfig = new ConditionConfig(id, "", new ArrayList<>(), new HashMap<>());
             conditionConfig.setName(StringUtil.capitalizeUnderscored(id));
@@ -287,23 +290,23 @@ public class CreatorManager extends AbstractManager<ExcellentChallengesPlugin> {
     }
 
     private void createMoneyReward(@NotNull String id, double money) {
-        JYML cfg = new JYML(plugin.getDataFolder() + Config.DIR_REWARDS, REWARDS_MONEY + ".yml");
+        FileConfig cfg = new FileConfig(plugin.getDataFolder() + Config.DIR_REWARDS, REWARDS_MONEY + ".yml");
 
         Reward reward = new Reward(
             id, "$" + NumberUtil.format(money),
-            Arrays.asList("eco give " + Placeholders.PLAYER_NAME + " " + NumberUtil.format(money))
+            List.of("eco give " + Placeholders.PLAYER_NAME + " " + NumberUtil.format(money))
         );
         reward.write(cfg, id);
         cfg.saveChanges();
     }
 
     private void createItemReward(Material material, int amount) {
-        JYML cfg = new JYML(plugin.getDataFolder() + Config.DIR_REWARDS, REWARDS_ITEMS + ".yml");
+        FileConfig cfg = new FileConfig(plugin.getDataFolder() + Config.DIR_REWARDS, REWARDS_ITEMS + ".yml");
 
         Reward reward = new Reward(
             material.getKey().getKey() + "_" + amount,
-            "x" + NumberUtil.format(amount) + " " + LangManager.getMaterial(material),
-            Arrays.asList("give " + Placeholders.PLAYER_NAME + " " + material.getKey().getKey() + " " + amount)
+            "x" + NumberUtil.format(amount) + " " + LangAssets.get(material),
+            List.of("give " + Placeholders.PLAYER_NAME + " " + material.getKey().getKey() + " " + amount)
         );
         reward.write(cfg, reward.getId());
         cfg.saveChanges();

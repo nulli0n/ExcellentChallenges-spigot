@@ -1,10 +1,10 @@
 package su.nightexpress.excellentchallenges.challenge.generator.object;
 
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
 import su.nightexpress.excellentchallenges.challenge.difficulty.DifficultyValue;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.random.Rnd;
 
 import java.util.*;
 
@@ -24,7 +24,7 @@ public class GenAmountObject extends GenObject {
     }
 
     @NotNull
-    public static GenAmountObject read(@NotNull JYML cfg, @NotNull String path, @NotNull String id) {
+    public static GenAmountObject read(@NotNull FileConfig cfg, @NotNull String path, @NotNull String id) {
         GenObject parent = GenObject.read(cfg, path, id);
 
         cfg.setComments(path + ".Amount",
@@ -37,7 +37,7 @@ public class GenAmountObject extends GenObject {
     }
 
     @Override
-    public void write(@NotNull JYML cfg, @NotNull String path) {
+    public void write(@NotNull FileConfig cfg, @NotNull String path) {
         super.write(cfg, path);
 
         this.getAmount().write(cfg, path + ".Amount");

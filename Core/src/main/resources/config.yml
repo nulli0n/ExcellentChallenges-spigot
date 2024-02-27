@@ -1,5 +1,0 @@
-Plugin:
-  Command_Aliases: excellentchallenges,challenges
-
-Database:
-  Table_Prefix: 'excellentchallenges'

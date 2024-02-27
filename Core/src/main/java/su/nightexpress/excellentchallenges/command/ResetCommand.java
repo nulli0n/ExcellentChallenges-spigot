@@ -1,35 +1,36 @@
 package su.nightexpress.excellentchallenges.command;
 
-import su.nightexpress.excellentchallenges.config.Config;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.command.AbstractCommand;
-import su.nexmedia.engine.api.command.CommandResult;
-import su.nexmedia.engine.utils.CollectionsUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
-import su.nightexpress.excellentchallenges.Perms;
+import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
+import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Lang;
-import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
+import su.nightexpress.nightcore.command.CommandResult;
+import su.nightexpress.nightcore.command.impl.AbstractCommand;
+import su.nightexpress.nightcore.util.Players;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class ResetCommand extends AbstractCommand<ExcellentChallengesPlugin> {
 
     public ResetCommand(@NotNull ExcellentChallengesPlugin plugin) {
         super(plugin, new String[]{"reset"}, Perms.COMMAND_RESET);
-        this.setDescription(plugin.getMessage(Lang.COMMAND_RESET_DESC));
-        this.setUsage(plugin.getMessage(Lang.COMMAND_RESET_USAGE));
+        this.setDescription(Lang.COMMAND_RESET_DESC);
+        this.setUsage(Lang.COMMAND_RESET_USAGE);
     }
 
     @Override
     @NotNull
     public List<String> getTab(@NotNull Player player, int arg, @NotNull String[] args) {
         if (arg == 1) {
-            return CollectionsUtil.playerNames(player);
+            return Players.playerNames(player);
         }
         if (arg == 2) {
             return new ArrayList<>(Config.CATEGORIES.get().keySet());
@@ -40,32 +41,40 @@ public class ResetCommand extends AbstractCommand<ExcellentChallengesPlugin> {
     @Override
     protected void onExecute(@NotNull CommandSender sender, @NotNull CommandResult result) {
         if (result.length() < 2) {
-            this.printUsage(sender);
+            this.errorUsage(sender);
             return;
         }
 
-        ChallengeUser user = plugin.getUserManager().getUserData(result.getArg(1));
-        if (user == null) {
-            this.errorPlayer(sender);
-            return;
+        Set<ChallengeCategory> categories = new HashSet<>();
+        if (result.length() >= 3) {
+            ChallengeCategory category = plugin.getChallengeManager().getChallengeType(result.getArg(2));
+            if (category == null) {
+                Lang.ERROR_CATEGORY_INVALID.getMessage().send(sender);
+                return;
+            }
+            categories.add(category);
         }
+        else categories.addAll(Config.CATEGORIES.get().values());
 
-        String type = result.length() >= 3 ? result.getArg(2) : null;
-        ChallengeCategory cType = type != null ? plugin.getChallengeManager().getChallengeType(type) : null;
-        ChallengeCategory[] types = cType != null ? new ChallengeCategory[]{cType} : Config.CATEGORIES.get().values().toArray(new ChallengeCategory[0]);
+        this.plugin.getUserManager().getUserDataAndPerform(result.getArg(1), user -> {
+            if (user == null) {
+                this.errorPlayer(sender);
+                return;
+            }
 
-        for (ChallengeCategory type2 : types) {
-            user.getChallenges(type2).clear();
+            for (ChallengeCategory category : categories) {
+                user.getChallenges(category).clear();
 
-            plugin.getMessage(Lang.COMMAND_RESET_DONE)
-                .replace(Placeholders.GENERIC_TYPE, type2.getName())
-                .replace(Placeholders.PLAYER_NAME, user.getName())
-                .send(sender);
-        }
+                Lang.COMMAND_RESET_DONE.getMessage()
+                    .replace(Placeholders.GENERIC_TYPE, category.getName())
+                    .replace(Placeholders.PLAYER_NAME, user.getName())
+                    .send(sender);
+            }
 
-        Player player = user.getPlayer();
-        if (player != null) {
-            plugin.getChallengeManager().updateChallenges(player, false);
-        }
+            Player player = user.getPlayer();
+            if (player != null) {
+                plugin.getChallengeManager().updateChallenges(player, false);
+            }
+        });
     }
 }

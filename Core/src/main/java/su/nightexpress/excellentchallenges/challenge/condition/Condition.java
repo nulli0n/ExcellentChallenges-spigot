@@ -3,7 +3,7 @@ package su.nightexpress.excellentchallenges.challenge.condition;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.utils.TriFunction;
+import su.nightexpress.nightcore.util.TriFunction;
 
 import java.util.function.Function;
 

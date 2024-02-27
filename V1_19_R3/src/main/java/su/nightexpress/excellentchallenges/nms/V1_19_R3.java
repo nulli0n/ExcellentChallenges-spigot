@@ -7,7 +7,7 @@ import net.minecraft.world.level.block.entity.TileEntityBrewingStand;
 import org.bukkit.block.BrewingStand;
 import org.bukkit.craftbukkit.v1_19_R3.CraftWorld;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.Reflex;
+import su.nightexpress.nightcore.util.Reflex;
 
 import java.lang.reflect.Method;
 
@@ -22,9 +22,6 @@ public class V1_19_R3 implements ChallengeNMS {
         CraftWorld craftWorld = (CraftWorld) stand.getWorld();
         TileEntity tile = craftWorld.getHandle().c_(new BlockPosition(stand.getX(), stand.getY(), stand.getZ()));
         if (tile == null) return false;
-
-        //if (!(tile instanceof TileEntityBrewingStand)) return false;
-        //TileEntityBrewingStand te = (TileEntityBrewingStand) tile;
 
         NonNullList<?> list = (NonNullList<?>) Reflex.getFieldValue(tile, "m");
         if (list == null) return false;

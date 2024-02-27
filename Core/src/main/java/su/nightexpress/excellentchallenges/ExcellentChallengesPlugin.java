@@ -2,13 +2,6 @@ package su.nightexpress.excellentchallenges;
 
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.NexPlugin;
-import su.nexmedia.engine.Version;
-import su.nexmedia.engine.api.command.GeneralCommand;
-import su.nexmedia.engine.api.data.UserDataHolder;
-import su.nexmedia.engine.command.list.ReloadSubCommand;
-import su.nexmedia.engine.utils.EngineUtils;
-import su.nexmedia.engine.utils.blocktracker.PlayerBlockTracker;
 import su.nightexpress.excellentchallenges.challenge.ChallengeManager;
 import su.nightexpress.excellentchallenges.challenge.action.ActionRegistry;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
@@ -17,13 +10,21 @@ import su.nightexpress.excellentchallenges.command.RerollTokensCommand;
 import su.nightexpress.excellentchallenges.command.ResetCommand;
 import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Lang;
+import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.data.DataHandler;
 import su.nightexpress.excellentchallenges.data.UserManager;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.excellentchallenges.hooks.external.PlaceholderHook;
 import su.nightexpress.excellentchallenges.nms.*;
+import su.nightexpress.nightcore.NightDataPlugin;
+import su.nightexpress.nightcore.command.api.NightPluginCommand;
+import su.nightexpress.nightcore.command.base.ReloadSubCommand;
+import su.nightexpress.nightcore.config.PluginDetails;
+import su.nightexpress.nightcore.util.Plugins;
+import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
-public class ExcellentChallengesPlugin extends NexPlugin<ExcellentChallengesPlugin> implements UserDataHolder<ExcellentChallengesPlugin, ChallengeUser> {
+public class ExcellentChallengesPlugin extends NightDataPlugin<ChallengeUser> {
 
     private DataHandler dataHandler;
     private UserManager userManager;
@@ -34,8 +35,11 @@ public class ExcellentChallengesPlugin extends NexPlugin<ExcellentChallengesPlug
 
     @Override
     @NotNull
-    protected ExcellentChallengesPlugin getSelf() {
-        return this;
+    protected PluginDetails getDefaultDetails() {
+        return PluginDetails.create("CHALLENGES", new String[]{"excellentchallenges", "challenges"})
+            .setConfigClass(Config.class)
+            .setLangClass(Lang.class)
+            .setPermissionsClass(Perms.class);
     }
 
     @Override
@@ -45,6 +49,14 @@ public class ExcellentChallengesPlugin extends NexPlugin<ExcellentChallengesPlug
             this.getPluginManager().disablePlugin(this);
             return;
         }
+        this.registerCommands();
+        this.getLangManager().loadEnum(EntityDamageEvent.DamageCause.class);
+
+        this.dataHandler = new DataHandler(this);
+        this.dataHandler.setup();
+
+        this.userManager = new UserManager(this);
+        this.userManager.setup();
 
         if (Config.OBJECTIVES_ANTI_GLITCH_TRACK_BLOCKS.get()) {
             PlayerBlockTracker.initialize();
@@ -58,6 +70,10 @@ public class ExcellentChallengesPlugin extends NexPlugin<ExcellentChallengesPlug
 
         this.challengeManager = new ChallengeManager(this);
         this.challengeManager.setup();
+
+        if (Plugins.hasPlaceholderAPI()) {
+            PlaceholderHook.setup(this);
+        }
     }
 
     @Override
@@ -65,7 +81,7 @@ public class ExcellentChallengesPlugin extends NexPlugin<ExcellentChallengesPlug
         if (this.challengeManager != null) this.challengeManager.shutdown();
         if (this.actionRegistry != null) this.actionRegistry.shutdown();
 
-        if (EngineUtils.hasPlaceholderAPI()) {
+        if (Plugins.hasPlaceholderAPI()) {
             PlaceholderHook.shutdown();
         }
     }
@@ -82,47 +98,13 @@ public class ExcellentChallengesPlugin extends NexPlugin<ExcellentChallengesPlug
         return this.challengeNMS != null;
     }
 
-    @Override
-    public boolean setupDataHandlers() {
-        this.dataHandler = DataHandler.getInstance(this);
-        this.dataHandler.setup();
+    private void registerCommands() {
+        NightPluginCommand mainCommand = this.getBaseCommand();
 
-        this.userManager = new UserManager(this);
-        this.userManager.setup();
-
-        return true;
-    }
-
-    @Override
-    public void loadConfig() {
-        this.getConfig().initializeOptions(Config.class);
-    }
-
-    @Override
-    public void loadLang() {
-        this.getLangManager().loadMissing(Lang.class);
-        this.getLangManager().loadEnum(EntityDamageEvent.DamageCause.class);
-        this.getLang().saveChanges();
-    }
-
-    @Override
-    public void registerHooks() {
-        if (EngineUtils.hasPlaceholderAPI()) {
-            PlaceholderHook.setup(this);
-        }
-    }
-
-    @Override
-    public void registerCommands(@NotNull GeneralCommand<ExcellentChallengesPlugin> mainCommand) {
         mainCommand.addDefaultCommand(new OpenCommand(this));
         mainCommand.addChildren(new ResetCommand(this));
         mainCommand.addChildren(new RerollTokensCommand(this));
-        mainCommand.addChildren(new ReloadSubCommand<>(this, Perms.COMMAND_RELOAD));
-    }
-
-    @Override
-    public void registerPermissions() {
-        this.registerPermissions(Perms.class);
+        mainCommand.addChildren(new ReloadSubCommand(this, Perms.COMMAND_RELOAD));
     }
 
     @Override

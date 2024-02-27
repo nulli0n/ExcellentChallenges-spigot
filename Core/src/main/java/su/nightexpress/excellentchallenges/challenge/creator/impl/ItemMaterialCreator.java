@@ -2,16 +2,17 @@ package su.nightexpress.excellentchallenges.challenge.creator.impl;
 
 import com.google.common.collect.Sets;
 import org.bukkit.inventory.*;
-import su.nexmedia.engine.Version;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.values.UniInt;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
+import su.nightexpress.nightcore.util.ItemUtil;
+import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -286,8 +287,20 @@ public class ItemMaterialCreator extends AbstractCreator<Material> {
 
     private void createAnvilRenameGenerators() {
         Map<String, Set<Material>> materials = new HashMap<>();
-        materials.put("tools", Tag.ITEMS_TOOLS.getValues());
-        materials.put("swords", Tag.ITEMS_SWORDS.getValues());
+        if (Version.isAtLeast(Version.V1_19_R3)) {
+            materials.put("tools", Tag.ITEMS_TOOLS.getValues());
+            materials.put("swords", Tag.ITEMS_SWORDS.getValues());
+        }
+        else {
+            for (Material material : Material.values()) {
+                if (ItemUtil.isTool(new ItemStack(material))) {
+                    materials.computeIfAbsent("tools", k -> new HashSet<>()).add(material);
+                }
+                else if (ItemUtil.isSword(new ItemStack(material))) {
+                    materials.computeIfAbsent("swords", k -> new HashSet<>()).add(material);
+                }
+            }
+        }
         materials.put("bows", Sets.newHashSet(Material.BOW, Material.CROSSBOW));
         materials.put("armors", Sets.newHashSet(
             Material.SHIELD, Material.TRIDENT,

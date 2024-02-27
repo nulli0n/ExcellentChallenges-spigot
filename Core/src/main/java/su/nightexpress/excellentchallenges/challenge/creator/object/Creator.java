@@ -1,5 +1,6 @@
 package su.nightexpress.excellentchallenges.challenge.creator.object;
 
+import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.generator.Generator;
@@ -7,8 +8,6 @@ import su.nightexpress.excellentchallenges.challenge.generator.object.GenAmountO
 import su.nightexpress.excellentchallenges.challenge.generator.object.GenObjectiveObject;
 import su.nightexpress.excellentchallenges.challenge.generator.object.ObjectList;
 import su.nightexpress.excellentchallenges.config.Config;
-import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JYML;
 
 import java.io.File;
 
@@ -68,8 +67,8 @@ public class Creator<O> {
         File file = new File(plugin.getDataFolder() + Config.DIR_GENERATORS + this.getActionType().getName(), this.name + ".yml");
         if (file.exists()) return null;
 
-        JYML cfg = new JYML(file);
-        Generator generator = new Generator(plugin, cfg);
+        //FileConfig cfg = new FileConfig(file);
+        Generator generator = new Generator(plugin, file);
         generator.setType(this.actionType);
         generator.getObjectiveList().getObjectMap().putAll(this.objectives.getObjectMap());
         generator.getConditionList().getObjectMap().putAll(this.conditions.getObjectMap());

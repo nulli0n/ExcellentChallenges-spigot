@@ -6,9 +6,8 @@ import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.NumberUtil;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
-import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
+import su.nightexpress.nightcore.util.NumberUtil;
 
 public class PlaceholderHook {
 

@@ -8,7 +8,8 @@ import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import org.bukkit.entity.*;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.utils.values.UniInt;
+import su.nightexpress.nightcore.util.Version;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -166,8 +167,9 @@ public class EntityTypeCreator extends AbstractCreator<EntityType> {
 
         Set<EntityType> spawnable = Stream.of(EntityType.values()).filter(e -> e.isAlive() && e.isSpawnable()).collect(Collectors.toSet());
         spawnable.forEach(type -> {
-            if (type == EntityType.GIANT || type == EntityType.ALLAY || type == EntityType.ARMOR_STAND) return;
+            if (type == EntityType.GIANT || type == EntityType.ARMOR_STAND) return;
             if (type == EntityType.WITHER || type == EntityType.ENDER_DRAGON || type == EntityType.ELDER_GUARDIAN) return;
+            if (Version.isAbove(Version.V1_19_R3) && type == EntityType.ALLAY) return;
 
             Class<? extends Entity> clazz = type.getEntityClass();
             if (clazz == null) return;

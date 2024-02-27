@@ -4,12 +4,12 @@ import su.nightexpress.excellentchallenges.config.Config;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.command.AbstractCommand;
-import su.nexmedia.engine.api.command.CommandResult;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
-import su.nightexpress.excellentchallenges.Perms;
+import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.config.Lang;
+import su.nightexpress.nightcore.command.CommandResult;
+import su.nightexpress.nightcore.command.impl.AbstractCommand;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,8 +18,8 @@ public class OpenCommand extends AbstractCommand<ExcellentChallengesPlugin> {
 
     public OpenCommand(@NotNull ExcellentChallengesPlugin plugin) {
         super(plugin, new String[]{"open"}, Perms.COMMAND_OPEN);
-        this.setDescription(plugin.getMessage(Lang.COMMAND_OPEN_DESC));
-        this.setUsage(plugin.getMessage(Lang.COMMAND_OPEN_USAGE));
+        this.setDescription(Lang.COMMAND_OPEN_DESC);
+        this.setUsage(Lang.COMMAND_OPEN_USAGE);
         this.setPlayerOnly(true);
     }
 
@@ -38,7 +38,7 @@ public class OpenCommand extends AbstractCommand<ExcellentChallengesPlugin> {
         ChallengeCategory category = result.length() >= 2 ? plugin.getChallengeManager().getChallengeType(result.getArg(1)) : null;
 
         if (category == null) {
-            plugin.getChallengeManager().getCategoriesMenu().open(player, 1);
+            plugin.getChallengeManager().getCategoriesMenu().open(player);
         }
         else {
             this.plugin.getChallengeManager().openChallengesMenu(player, category);

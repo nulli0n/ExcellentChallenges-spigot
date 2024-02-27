@@ -3,13 +3,8 @@ package su.nightexpress.excellentchallenges.challenge;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.manager.AbstractManager;
-import su.nexmedia.engine.utils.EntityUtil;
-import su.nexmedia.engine.utils.NumberUtil;
-import su.nexmedia.engine.utils.PlayerUtil;
-import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeCompleteEvent;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeObjectiveEvent;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
@@ -21,11 +16,20 @@ import su.nightexpress.excellentchallenges.challenge.menu.CategoriesMenu;
 import su.nightexpress.excellentchallenges.challenge.menu.ChallengesMenu;
 import su.nightexpress.excellentchallenges.challenge.menu.RerollConfirmMenu;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
+import su.nightexpress.excellentchallenges.challenge.type.RerollCondition;
 import su.nightexpress.excellentchallenges.config.Config;
+import su.nightexpress.excellentchallenges.config.Lang;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.manager.AbstractManager;
+import su.nightexpress.nightcore.util.NumberUtil;
+import su.nightexpress.nightcore.util.random.Rnd;
 
 import java.util.*;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
+
+import static su.nightexpress.excellentchallenges.Placeholders.*;
 
 public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin> {
 
@@ -47,7 +51,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     @Override
     public void onLoad() {
         // Load conditions.
-        for (JYML cfg : JYML.loadAll(plugin.getDataFolder() + Config.DIR_CONDITIONS, true)) {
+        for (FileConfig cfg : FileConfig.loadAll(plugin.getDataFolder() + Config.DIR_CONDITIONS, true)) {
             cfg.getSection("").forEach(sId -> {
                 ConditionConfig conditionConfig = ConditionConfig.read(cfg, sId, sId);
                 this.conditionMap.put(conditionConfig.getId(), conditionConfig);
@@ -58,7 +62,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
 
 
         // Load rewards.
-        for (JYML cfg : JYML.loadAll(plugin.getDataFolder() + Config.DIR_REWARDS, true)) {
+        for (FileConfig cfg : FileConfig.loadAll(plugin.getDataFolder() + Config.DIR_REWARDS, true)) {
             cfg.getSection("").forEach(sId -> {
                 Reward reward = Reward.read(cfg, sId, sId);
                 this.rewardMap.put(reward.getId(), reward);
@@ -69,8 +73,8 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
 
         int combis = 0;
         // Load generators.
-        for (JYML cfg : JYML.loadAll(plugin.getDataFolder() + Config.DIR_GENERATORS, true)) {
-            Generator generator = new Generator(plugin, cfg);
+        for (FileConfig cfg : FileConfig.loadAll(plugin.getDataFolder() + Config.DIR_GENERATORS, true)) {
+            Generator generator = new Generator(plugin, cfg.getFile());
             if (generator.load()) {
                 this.generatorMap.put(generator.getId(), generator);
 
@@ -188,7 +192,59 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     }
 
     public void openChallengesMenu(@NotNull Player player, @NotNull ChallengeCategory category) {
-        this.getChallengesMenu().open(player, category, 1);
+        this.getChallengesMenu().open(player, category);
+    }
+
+    public void openRerollMenu(@NotNull Player player, @NotNull ChallengeCategory category) {
+        this.getRerollConfirmMenu().open(player, category);
+    }
+
+    public boolean isDisabledWorld(@NotNull String name) {
+        return Config.OBJECTIVES_DISABLED_WORLDS.get().stream().anyMatch(disabled -> disabled.equalsIgnoreCase(name));
+    }
+
+    public boolean tryRerollChallenges(@NotNull Player player, @NotNull ChallengeCategory category) {
+        if (!player.hasPermission(Perms.REROLL)) {
+            Lang.ERROR_NO_PERMISSION.getMessage().send(player);
+            return false;
+        }
+
+        ChallengeUser user = plugin.getUserManager().getUserData(player);
+        int tokens = user.getRerollTokens(category);
+        if (tokens <= 0) {
+            Lang.CHALLENGE_REROLL_ERROR_NO_TOKENS.getMessage().send(player);
+            return false;
+        }
+
+        RerollCondition condition = Config.REROLL_CONDITION.get();
+        if (condition == RerollCondition.ALL_COMPLETED) {
+            if (user.getChallenges(category).stream().anyMatch(Predicate.not(GeneratedChallenge::isCompleted))) {
+                Lang.CHALLENGE_REROLL_ERROR_CONDITION.getMessage().send(player);
+                return false;
+            }
+        }
+        else if (condition == RerollCondition.ALL_UNFINISHED) {
+            if (user.getChallenges(category).stream().anyMatch(GeneratedChallenge::isCompleted)) {
+                Lang.CHALLENGE_REROLL_ERROR_CONDITION.getMessage().send(player);
+                return false;
+            }
+        }
+
+        this.openRerollMenu(player, category);
+        return true;
+    }
+
+    public boolean rerollChallenges(@NotNull Player player, @NotNull ChallengeCategory category) {
+        ChallengeUser user = plugin.getUserManager().getUserData(player);
+        user.removeRerollTokens(category, 1);
+        user.getChallenges(category).clear();
+        this.createChallenges(player, category);
+
+        Lang.CHALLENGE_REROLL_DONE.getMessage()
+            .replace(GENERIC_TYPE, category.getName())
+            .send(player);
+
+        return true;
     }
 
     public void updateChallenges(@NotNull Player player, boolean force) {
@@ -197,8 +253,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     }
 
     public void updateChallenges(@NotNull Player player, @NotNull ChallengeCategory type, boolean force) {
-        if (EntityUtil.isNPC(player)) return;
-
         ChallengeUser user = this.plugin.getUserManager().getUserData(player);
 
         if (!force) {
@@ -217,15 +271,13 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
 
     @NotNull
     public Set<GeneratedChallenge> createChallenges(@NotNull Player player, @NotNull ChallengeCategory category) {
-        if (EntityUtil.isNPC(player)) return Collections.emptySet();
-
         ChallengeUser user = plugin.getUserManager().getUserData(player);
         Set<GeneratedChallenge> generated = new HashSet<>();
 
         int amount = category.getAmountPerRank(player);
         if (amount <= 0) return generated;
 
-        String rank = PlayerUtil.getPermissionGroup(player);
+        //String rank = Players.getPermissionGroup(player);
         Set<Generator> generators = new HashSet<>(this.getGenerators());
 
         generators.removeIf(generator -> {
@@ -283,7 +335,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         challenges.clear();
         challenges.addAll(generated);
         user.updateRefreshTime(category);
-        this.plugin.getUserManager().saveUser(user);
+        this.plugin.getUserManager().saveAsync(user);
 
         return generated;
     }
@@ -292,7 +344,8 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
                                       @NotNull ActionType<?, O> type,
                                       @NotNull O objective,
                                       int amount) {
-        if (EntityUtil.isNPC(player)) return;
+        String worldName = player.getWorld().getName();
+        if (this.isDisabledWorld(worldName)) return;
 
         String objectName = type.getObjectName(objective);
         ChallengeUser user = this.plugin.getUserManager().getUserData(player);
@@ -301,6 +354,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
             .filter(chal -> chal.checkConditions(player))
             .filter(chal -> chal.addObjectiveProgress(objectName, amount))
             .collect(Collectors.toSet());
+        if (challenges.isEmpty()) return;
 
         challenges.forEach(challenge -> {
             if (challenge.isCompleted()) {
@@ -313,6 +367,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
             }
         });
 
-        this.plugin.getUserManager().saveUser(user);
+        this.plugin.getUserManager().saveAsync(user);
     }
 }

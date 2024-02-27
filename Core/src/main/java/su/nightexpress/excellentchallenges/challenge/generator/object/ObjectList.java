@@ -2,12 +2,10 @@ package su.nightexpress.excellentchallenges.challenge.generator.object;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.utils.random.Rnd;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
+import su.nightexpress.nightcore.util.random.Rnd;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class ObjectList<T extends GenObject> {
 
@@ -19,6 +17,13 @@ public class ObjectList<T extends GenObject> {
 
     @Nullable
     public T pickObject(@NotNull Difficulty difficulty) {
+        return this.pickObjects(difficulty, 1).stream().findFirst().orElse(null);
+    }
+
+    @NotNull
+    public Set<T> pickObjects(@NotNull Difficulty difficulty, int amount) {
+        Set<T> objects = new HashSet<>();
+
         Map<T, Double> weightMap = new HashMap<>();
         this.getObejcts().forEach(obj -> {
             if (obj.getWeight() <= 0D) return;
@@ -26,9 +31,16 @@ public class ObjectList<T extends GenObject> {
 
             weightMap.put(obj, obj.getWeight());
         });
-        if (weightMap.isEmpty()) return null;
+        if (weightMap.isEmpty()) return objects;
 
-        return Rnd.getByWeight(weightMap);
+        while (amount > 0 && !weightMap.isEmpty()) {
+            T object = Rnd.getByWeight(weightMap);
+            objects.add(object);
+            weightMap.remove(object);
+            amount--;
+        }
+
+        return objects;
     }
 
     public void add(@NotNull T object) {

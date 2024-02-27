@@ -1,14 +1,12 @@
 package su.nightexpress.excellentchallenges.challenge.generator;
 
-import su.nexmedia.engine.api.config.JOption;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.challenge.condition.ConditionConfig;
+import su.nightexpress.excellentchallenges.challenge.difficulty.DifficultyValue;
+import su.nightexpress.excellentchallenges.challenge.difficulty.ModifierAction;
 import su.nightexpress.excellentchallenges.challenge.generator.object.GenObjectiveObject;
 import org.jetbrains.annotations.NotNull;
-import su.nexmedia.engine.api.config.JYML;
-import su.nexmedia.engine.api.manager.AbstractConfigHolder;
-import su.nexmedia.engine.utils.values.UniInt;
 import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
@@ -16,36 +14,46 @@ import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
 import su.nightexpress.excellentchallenges.challenge.generator.object.GenAmountObject;
 import su.nightexpress.excellentchallenges.challenge.generator.object.ObjectList;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
+import su.nightexpress.nightcore.config.ConfigValue;
+import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.manager.AbstractFileData;
+import su.nightexpress.nightcore.util.wrapper.UniInt;
 
+import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Generator extends AbstractConfigHolder<ExcellentChallengesPlugin> {
+public class Generator extends AbstractFileData<ExcellentChallengesPlugin> {
 
+    private DifficultyValue objectiveAmount;
     private final ObjectList<GenObjectiveObject> objectiveList;
     private final ObjectList<GenAmountObject>    conditionList;
     private final ObjectList<GenAmountObject>    rewardList;
 
     private ActionType<?, ?> type;
 
-    public Generator(@NotNull ExcellentChallengesPlugin plugin, @NotNull JYML cfg) {
-        super(plugin, cfg);
+    public Generator(@NotNull ExcellentChallengesPlugin plugin, @NotNull File file) {
+        super(plugin, file);
         this.objectiveList = new ObjectList<>();
         this.conditionList = new ObjectList<>();
         this.rewardList = new ObjectList<>();
     }
 
     @Override
-    public boolean load() {
+    protected boolean onLoad(@NotNull FileConfig cfg) {
         String typeName = cfg.getString("Type");
         this.type = typeName == null ? null : plugin.getActionRegistry().getActionType(typeName);
         if (this.type == null) {
-            //this.plugin.warn("Invalid challenge type: '" + typeName + "' in generator '" + this.getId() + "'.");
+            this.plugin.warn("Invalid challenge type: '" + typeName + "' in generator '" + this.getId() + "'.");
             return false;
         }
 
-        boolean allowDuplicatedRewards = JOption.create("Rewards.Allow_Duplicates", false,
+        boolean allowDuplicatedRewards = ConfigValue.create("Rewards.Allow_Duplicates", false,
             "Sets whether or not duplicated rewards are allowed to be picked on generation.").read(cfg);
+
+        this.objectiveAmount = DifficultyValue.readOrCreate(cfg, "Objectives.Amount",
+            new DifficultyValue(UniInt.of(1, 2), "null", ModifierAction.NONE),
+            "Sets how many objectives lists can be used to get objectives from when generating challenge.");
 
         for (String sId : cfg.getSection("Objectives.List")) {
             GenObjectiveObject object = GenObjectiveObject.read(cfg, "Objectives.List." + sId, sId);
@@ -88,13 +96,14 @@ public class Generator extends AbstractConfigHolder<ExcellentChallengesPlugin> {
             });
         });
 
-        this.cfg.saveChanges();
         return true;
     }
 
     @Override
-    protected void onSave() {
-        this.cfg.set("Type", this.getType().getName());
+    protected void onSave(@NotNull FileConfig cfg) {
+        cfg.set("Type", this.getType().getName());
+
+        this.objectiveAmount.write(cfg, "Objectives.Amount");
 
         this.getObjectiveList().getObjectMap().forEach((id, object) -> {
             object.write(cfg, "Objectives.List." + id);
@@ -123,17 +132,21 @@ public class Generator extends AbstractConfigHolder<ExcellentChallengesPlugin> {
         Set<String> conditionIds = new HashSet<>();
         List<String> rewardIds = new ArrayList<>();
 
-        GenObjectiveObject objectivesHolder = this.getObjectiveList().pickObject(difficulty);
-        if (objectivesHolder == null) throw new NoSuchElementException("Could not pick objective!");
+        int objectivesAmount = this.objectiveAmount.createValue(difficulty, level);
 
-        for (String objectName : objectivesHolder.pickItems(difficulty, level)) {
-            int progress = objectivesHolder.getProgress().createValue(difficulty, level);
-            if (progress <= 0) {
-                this.plugin.error("Could not generate value for objective '" + objectName + "' in generator '" + this.getId() + "' for difficulty '" + difficulty.getId() + "'.");
-                continue;
+        Set<GenObjectiveObject> objectivesHolders = this.getObjectiveList().pickObjects(difficulty, objectivesAmount);
+        if (objectivesHolders.isEmpty()) throw new NoSuchElementException("Could not pick objective!");
+
+        for (GenObjectiveObject objectivesHolder : objectivesHolders) {
+            for (String objectName : objectivesHolder.pickItems(difficulty, level)) {
+                int progress = objectivesHolder.getProgress().createValue(difficulty, level);
+                if (progress <= 0) {
+                    this.plugin.error("Could not generate value for objective '" + objectName + "' in generator '" + this.getId() + "' for difficulty '" + difficulty.getId() + "'.");
+                    continue;
+                }
+
+                objectiveMap.put(objectName.toLowerCase(), UniInt.of(0, progress));
             }
-
-            objectiveMap.put(objectName.toLowerCase(), UniInt.of(0, progress));
         }
         if (objectiveMap.isEmpty()) {
             throw new IllegalStateException("No objectives generated!");
@@ -167,17 +180,9 @@ public class Generator extends AbstractConfigHolder<ExcellentChallengesPlugin> {
 
         long dateCreated = System.currentTimeMillis();
 
-        /*List<String> names = plugin.getChallengeManager().getNames(objectivesHolder.getNamesListId());
-        String name = Colorizer.apply((names.isEmpty() ? Placeholders.GENERIC_NAME : Rnd.get(names))
-            .replace(Placeholders.GENERIC_NAME, objectivesHolder.getName()));
-
-        List<String> description = new ArrayList<>();
-        ItemStack icon = objectivesHolder.pickIcon();*/
-
         return GeneratedChallenge.create(
-            this, challengeCategory, difficulty, level,
+            this.plugin, this, challengeCategory, difficulty, level,
             objectiveMap, conditionConfigs, rewards, dateCreated
-            //name, description, icon
         );
     }
 

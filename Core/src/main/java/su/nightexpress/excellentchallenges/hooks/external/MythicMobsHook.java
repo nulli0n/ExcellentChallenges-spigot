@@ -1,9 +1,5 @@
 package su.nightexpress.excellentchallenges.hooks.external;
 
-import su.nightexpress.excellentchallenges.challenge.action.ActionRegistry;
-import su.nightexpress.excellentchallenges.challenge.action.ActionType;
-import su.nightexpress.excellentchallenges.challenge.action.EventHelper;
-import su.nightexpress.excellentchallenges.challenge.action.ObjectFormatter;
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;
 import io.lumine.mythic.bukkit.MythicBukkit;
@@ -16,7 +12,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventPriority;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nexmedia.engine.utils.EntityUtil;
+import su.nightexpress.excellentchallenges.challenge.action.ActionRegistry;
+import su.nightexpress.excellentchallenges.challenge.action.ActionType;
+import su.nightexpress.excellentchallenges.challenge.action.EventHelper;
+import su.nightexpress.excellentchallenges.challenge.action.ObjectFormatter;
 
 public class MythicMobsHook {
 
@@ -62,7 +61,6 @@ public class MythicMobsHook {
     public static final EventHelper<MythicMobDeathEvent, MythicMob> EVENT_HELPER = (plugin, event, processor) -> {
         LivingEntity killer = event.getKiller();
         if (!(killer instanceof Player player)) return false;
-        if (EntityUtil.isNPC(player)) return false;
 
         processor.progressChallenge(player, event.getMobType(), 1);
         return true;
