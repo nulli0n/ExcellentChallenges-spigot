@@ -3,7 +3,7 @@ package su.nightexpress.excellentchallenges.challenge;
 import su.nightexpress.excellentchallenges.challenge.condition.ConditionConfig;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.condition.CompiledCondition;
@@ -37,7 +37,7 @@ public class GeneratedChallenge implements Placeholder {
     private final PlaceholderMap placeholderMap;
 
     public GeneratedChallenge(
-        @NotNull ExcellentChallengesPlugin plugin,
+        @NotNull ChallengesPlugin plugin,
         @NotNull ActionType<?, ?> actionType,
         @NotNull Generator generator,
         @NotNull ChallengeCategory type,
@@ -68,7 +68,7 @@ public class GeneratedChallenge implements Placeholder {
     }
 
     public static GeneratedChallenge create(
-        @NotNull ExcellentChallengesPlugin plugin,
+        @NotNull ChallengesPlugin plugin,
         @NotNull Generator generator,
         @NotNull ChallengeCategory type,
         @NotNull Difficulty difficulty,

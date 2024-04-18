@@ -1,4 +1,4 @@
-main: su.nightexpress.excellentchallenges.ExcellentChallengesPlugin
+main: su.nightexpress.excellentchallenges.ChallengesPlugin
 version: '${project.version}'
 name: ExcellentChallenges
 author: NightExpress

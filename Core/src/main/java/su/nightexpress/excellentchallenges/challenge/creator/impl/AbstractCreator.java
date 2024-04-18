@@ -4,7 +4,7 @@ import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.config.Config;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.object.Creator;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.Lists;
@@ -16,9 +16,9 @@ public abstract class AbstractCreator<O> {
 
     protected static final String VARIOUS = "various";
 
-    protected final ExcellentChallengesPlugin plugin;
+    protected final ChallengesPlugin plugin;
 
-    public AbstractCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public AbstractCreator(@NotNull ChallengesPlugin plugin) {
         this.plugin = plugin;
     }
 

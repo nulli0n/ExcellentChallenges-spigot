@@ -4,19 +4,19 @@ import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.nightcore.database.AbstractUser;
 
 import java.util.*;
 
-public class ChallengeUser extends AbstractUser<ExcellentChallengesPlugin> {
+public class ChallengeUser extends AbstractUser<ChallengesPlugin> {
 
     private final Map<String, Set<GeneratedChallenge>> challenges;
     private final Map<String, Long>                    refreshTimes;
     private final Map<String, Integer>                 rerollTokens;
     private final Map<String, Map<String, Integer>>    completedChallenges;
 
-    public ChallengeUser(@NotNull ExcellentChallengesPlugin plugin, @NotNull UUID uuid, @NotNull String name) {
+    public ChallengeUser(@NotNull ChallengesPlugin plugin, @NotNull UUID uuid, @NotNull String name) {
         this(plugin, uuid, name, System.currentTimeMillis(), System.currentTimeMillis(),
             new HashMap<>(),
             new HashMap<>(),
@@ -25,7 +25,7 @@ public class ChallengeUser extends AbstractUser<ExcellentChallengesPlugin> {
         );
     }
 
-    public ChallengeUser(@NotNull ExcellentChallengesPlugin plugin, @NotNull UUID uuid, @NotNull String name,
+    public ChallengeUser(@NotNull ChallengesPlugin plugin, @NotNull UUID uuid, @NotNull String name,
                          long dateCreated, long lastOnline,
                          @NotNull Map<String, Set<GeneratedChallenge>> challenges,
                          @NotNull Map<String, Long> refreshTimes,

@@ -24,8 +24,8 @@ import org.bukkit.potion.PotionType;
 import org.bukkit.projectiles.ProjectileSource;
 import su.nightexpress.excellentchallenges.Keys;
 import su.nightexpress.excellentchallenges.config.Config;
-import su.nightexpress.excellentchallenges.hooks.HookId;
-import su.nightexpress.excellentchallenges.hooks.external.MythicMobsHook;
+import su.nightexpress.excellentchallenges.hook.HookId;
+import su.nightexpress.excellentchallenges.hook.impl.MythicMobsHook;
 import su.nightexpress.nightcore.util.*;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
@@ -161,7 +161,7 @@ public class EventHelpers {
 
     public static final EventHelper<EntityDeathEvent, EntityType> ENTITY_KILL = (plugin, event, processor) -> {
         LivingEntity entity = event.getEntity();
-        if (PDCUtil.getBoolean(entity, Keys.ENTITY_TRACKED).orElse(false)) return false;
+        if (PDCUtil.getBoolean(entity, Keys.entityTracked).orElse(false)) return false;
 
         Player killer = entity.getKiller();
         if (killer == null) return false;
@@ -175,7 +175,7 @@ public class EventHelpers {
 
     public static final EventHelper<EntityDeathEvent, EntityType> ENTITY_SHOOT = (plugin, event, processor) -> {
         LivingEntity entity = event.getEntity();
-        if (PDCUtil.getBoolean(entity, Keys.ENTITY_TRACKED).orElse(false)) return false;
+        if (PDCUtil.getBoolean(entity, Keys.entityTracked).orElse(false)) return false;
 
         Player killer = entity.getKiller();
         if (killer == null) return false;
@@ -330,7 +330,7 @@ public class EventHelpers {
         BrewingStand stand = inventory.getHolder();
         if (stand == null) return false;
 
-        String uuidRaw = PDCUtil.getString(stand, Keys.BREWING_HOLDER).orElse(null);
+        String uuidRaw = PDCUtil.getString(stand, Keys.brewingHolder).orElse(null);
         UUID uuid = uuidRaw == null ? null : UUID.fromString(uuidRaw);
         if (uuid == null) return false;
 

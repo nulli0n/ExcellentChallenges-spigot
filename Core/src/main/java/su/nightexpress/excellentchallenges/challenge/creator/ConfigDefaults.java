@@ -22,6 +22,7 @@ public class ConfigDefaults {
         ChallengeCategory daily = new ChallengeCategory(
             "daily", "Daily",
             ItemUtil.getSkinHead("68ac632e7b2d20c9cce5cc9e6486a7dfd933aeeb3513febd232031e0e758b00e"),
+            new String[]{"dailychallenges"},
             86400,
             true,
             Map.of(Difficulty.DEF_CHILD, 70D, Difficulty.DEF_EASY, 50D, Difficulty.DEF_MEDIUM, 25D),
@@ -33,6 +34,7 @@ public class ConfigDefaults {
         ChallengeCategory weekly = new ChallengeCategory(
             "weekly", "Weekly",
             ItemUtil.getSkinHead("a93dfb3ae8177784a645779dca2c12dfba1258c202afdc04d87d80f2cecea1d7"),
+            new String[]{"weeklychallenges"},
             604800,
             true,
             Map.of(Difficulty.DEF_EASY, 25D, Difficulty.DEF_MEDIUM, 60D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 15D),
@@ -44,6 +46,7 @@ public class ConfigDefaults {
         ChallengeCategory monthly = new ChallengeCategory(
             "monthly", "Monthly",
             ItemUtil.getSkinHead("930423127bb0269c508333c6966578c1317db3368c1fbd0503dc38b642c5d193"),
+            new String[]{"monthlychallenges"},
             2628288,
             true,
             Map.of(Difficulty.DEF_MEDIUM, 35D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 80D),

@@ -5,7 +5,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.inventory.EquipmentSlot;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.condition.Condition;
 import su.nightexpress.excellentchallenges.challenge.condition.ConditionConfig;
@@ -27,7 +27,7 @@ import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
-public class CreatorManager extends SimpleManager<ExcellentChallengesPlugin> {
+public class CreatorManager extends SimpleManager<ChallengesPlugin> {
 
     public static final String CONDITIONS_WORLD       = "world";
     public static final String CONDITIONS_SERVER_TIME = "server_time";
@@ -38,7 +38,7 @@ public class CreatorManager extends SimpleManager<ExcellentChallengesPlugin> {
     public static final String REWARDS_MONEY = "money";
     public static final String REWARDS_ITEMS = "items";
 
-    public CreatorManager(@NotNull ExcellentChallengesPlugin plugin) {
+    public CreatorManager(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

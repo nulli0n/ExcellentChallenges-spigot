@@ -1,9 +1,15 @@
 package su.nightexpress.excellentchallenges;
 
 import org.bukkit.NamespacedKey;
+import org.jetbrains.annotations.NotNull;
 
 public class Keys {
 
-    public static final NamespacedKey BREWING_HOLDER = new NamespacedKey(ExcellentChallengesAPI.PLUGIN, "brewing_holder");
-    public static final NamespacedKey ENTITY_TRACKED = new NamespacedKey(ExcellentChallengesAPI.PLUGIN, "entity_tracked");
+    public static NamespacedKey brewingHolder;
+    public static NamespacedKey entityTracked;
+
+    public static void load(@NotNull ChallengesPlugin plugin) {
+        brewingHolder = new NamespacedKey(plugin, "brewing_holder");
+        entityTracked = new NamespacedKey(plugin, "entity_tracked");
+    }
 }

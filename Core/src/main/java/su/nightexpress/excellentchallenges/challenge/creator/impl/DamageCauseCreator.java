@@ -4,7 +4,7 @@ import com.google.common.collect.Sets;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
@@ -18,7 +18,7 @@ import static org.bukkit.event.entity.EntityDamageEvent.DamageCause.*;
 
 public class DamageCauseCreator extends AbstractCreator<DamageCause> {
 
-    public DamageCauseCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public DamageCauseCreator(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

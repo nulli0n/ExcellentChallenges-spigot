@@ -6,7 +6,7 @@ import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
@@ -17,7 +17,7 @@ import java.util.Set;
 
 public class BlockMaterialCreator extends AbstractCreator<Material> {
 
-    public BlockMaterialCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public BlockMaterialCreator(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

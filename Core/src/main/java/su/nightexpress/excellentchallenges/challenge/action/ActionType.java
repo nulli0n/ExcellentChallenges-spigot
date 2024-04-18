@@ -4,7 +4,7 @@ import org.bukkit.Material;
 import org.bukkit.event.Event;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.StringUtil;
@@ -52,7 +52,7 @@ public class ActionType<E extends Event, O> {
         return new ActionType<>(name, icon, objectFormatter, eventHelper);
     }
 
-    public boolean loadSettings(@NotNull ExcellentChallengesPlugin plugin) {
+    public boolean loadSettings(@NotNull ChallengesPlugin plugin) {
         FileConfig config = plugin.getConfig();
         String path = "Challenges.Action_Types." + this.getName();
         if (!ConfigValue.create(path + ".Enabled", true).read(config)) {

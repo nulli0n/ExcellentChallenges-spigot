@@ -4,10 +4,9 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import org.bukkit.permissions.Permission;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
-import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Lang;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.nightcore.command.CommandResult;
@@ -15,15 +14,14 @@ import su.nightexpress.nightcore.command.impl.AbstractCommand;
 import su.nightexpress.nightcore.language.entry.LangText;
 import su.nightexpress.nightcore.util.Players;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public abstract class TokensSubCommand extends AbstractCommand<ExcellentChallengesPlugin> {
+public abstract class TokensSubCommand extends AbstractCommand<ChallengesPlugin> {
 
     protected LangText doneMessage;
 
-    public TokensSubCommand(@NotNull ExcellentChallengesPlugin plugin, @NotNull String[] aliases, @NotNull Permission permission) {
+    public TokensSubCommand(@NotNull ChallengesPlugin plugin, @NotNull String[] aliases, @NotNull Permission permission) {
         super(plugin, aliases, permission);
         this.setUsage(Lang.COMMAND_REROLL_TOKENS_SUB_USAGE);
     }
@@ -39,7 +37,7 @@ public abstract class TokensSubCommand extends AbstractCommand<ExcellentChalleng
             return Players.playerNames(player);
         }
         if (arg == 3) {
-            return new ArrayList<>(Config.CATEGORIES.get().keySet());
+            return this.plugin.getChallengeManager().getCategoryIds();
         }
         if (arg == 4) {
             return Arrays.asList("0", "1", "5", "25", "100");
@@ -56,7 +54,7 @@ public abstract class TokensSubCommand extends AbstractCommand<ExcellentChalleng
             return;
         }
 
-        ChallengeCategory category = plugin.getChallengeManager().getChallengeType(result.getArg(3));
+        ChallengeCategory category = plugin.getChallengeManager().getChallengeCategory(result.getArg(3));
         if (category == null) {
             Lang.ERROR_CATEGORY_INVALID.getMessage().send(sender);
             return;

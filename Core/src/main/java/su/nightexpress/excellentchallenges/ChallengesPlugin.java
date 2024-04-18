@@ -14,7 +14,7 @@ import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.data.DataHandler;
 import su.nightexpress.excellentchallenges.data.UserManager;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
-import su.nightexpress.excellentchallenges.hooks.external.PlaceholderHook;
+import su.nightexpress.excellentchallenges.hook.impl.PlaceholderHook;
 import su.nightexpress.excellentchallenges.nms.*;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
@@ -24,7 +24,7 @@ import su.nightexpress.nightcore.util.Plugins;
 import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
-public class ExcellentChallengesPlugin extends NightDataPlugin<ChallengeUser> {
+public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
 
     private DataHandler dataHandler;
     private UserManager userManager;
@@ -36,7 +36,7 @@ public class ExcellentChallengesPlugin extends NightDataPlugin<ChallengeUser> {
     @Override
     @NotNull
     protected PluginDetails getDefaultDetails() {
-        return PluginDetails.create("CHALLENGES", new String[]{"excellentchallenges", "challenges"})
+        return PluginDetails.create("Challenges", new String[]{"excellentchallenges", "challenges"})
             .setConfigClass(Config.class)
             .setLangClass(Lang.class)
             .setPermissionsClass(Perms.class);
@@ -49,6 +49,9 @@ public class ExcellentChallengesPlugin extends NightDataPlugin<ChallengeUser> {
             this.getPluginManager().disablePlugin(this);
             return;
         }
+
+        Keys.load(this);
+
         this.registerCommands();
         this.getLangManager().loadEnum(EntityDamageEvent.DamageCause.class);
 

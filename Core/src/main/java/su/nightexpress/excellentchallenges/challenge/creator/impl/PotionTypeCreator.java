@@ -5,7 +5,7 @@ import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
@@ -17,7 +17,7 @@ import static org.bukkit.potion.PotionEffectType.*;
 
 public class PotionTypeCreator extends AbstractCreator<PotionEffectType> {
 
-    public PotionTypeCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public PotionTypeCreator(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

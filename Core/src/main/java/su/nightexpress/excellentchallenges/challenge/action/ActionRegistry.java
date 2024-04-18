@@ -16,20 +16,20 @@ import org.bukkit.event.player.PlayerItemConsumeEvent;
 import org.bukkit.event.player.PlayerShearEntityEvent;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
-import su.nightexpress.excellentchallenges.hooks.HookId;
-import su.nightexpress.excellentchallenges.hooks.external.MythicMobsHook;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
+import su.nightexpress.excellentchallenges.hook.HookId;
+import su.nightexpress.excellentchallenges.hook.impl.MythicMobsHook;
 import su.nightexpress.nightcore.manager.SimpleManager;
 import su.nightexpress.nightcore.util.Plugins;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class ActionRegistry extends SimpleManager<ExcellentChallengesPlugin> {
+public class ActionRegistry extends SimpleManager<ChallengesPlugin> {
 
     private static final Map<String, ActionType<?, ?>> ACTION_TYPE_MAP = new HashMap<>();
 
-    public ActionRegistry(@NotNull ExcellentChallengesPlugin plugin) {
+    public ActionRegistry(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

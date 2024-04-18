@@ -3,9 +3,9 @@ package su.nightexpress.excellentchallenges;
 import su.nightexpress.excellentchallenges.challenge.ChallengeManager;
 import org.jetbrains.annotations.NotNull;
 
-public class ExcellentChallengesAPI {
+public class ChallengesAPI {
 
-    public static final ExcellentChallengesPlugin PLUGIN = ExcellentChallengesPlugin.getPlugin(ExcellentChallengesPlugin.class);
+    public static final ChallengesPlugin PLUGIN = ChallengesPlugin.getPlugin(ChallengesPlugin.class);
 
     @NotNull
     public static ChallengeManager getChallengeManager() {

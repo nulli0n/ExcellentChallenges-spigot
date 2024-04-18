@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import org.bukkit.Tag;
 import org.bukkit.enchantments.EnchantmentTarget;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import su.nightexpress.nightcore.util.ItemUtil;
 import su.nightexpress.nightcore.util.Version;
@@ -24,7 +24,7 @@ import java.util.stream.Stream;
 
 public class ItemMaterialCreator extends AbstractCreator<Material> {
 
-    public ItemMaterialCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public ItemMaterialCreator(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

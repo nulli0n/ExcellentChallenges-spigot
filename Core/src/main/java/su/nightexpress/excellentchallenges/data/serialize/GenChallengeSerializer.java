@@ -2,11 +2,11 @@ package su.nightexpress.excellentchallenges.data.serialize;
 
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import org.jetbrains.annotations.NotNull;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.challenge.condition.ConditionConfig;
 import su.nightexpress.excellentchallenges.challenge.generator.Generator;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
-import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
@@ -20,11 +20,17 @@ import java.util.Map;
 
 public class GenChallengeSerializer implements JsonDeserializer<GeneratedChallenge>, JsonSerializer<GeneratedChallenge> {
 
+    private final ChallengesPlugin plugin;
+
+    public GenChallengeSerializer(@NotNull ChallengesPlugin plugin) {
+        this.plugin = plugin;
+    }
+
     @Override
     public GeneratedChallenge deserialize(JsonElement element, Type type, JsonDeserializationContext context) throws JsonParseException {
         JsonObject object = element.getAsJsonObject();
 
-        ExcellentChallengesPlugin plugin = ExcellentChallengesAPI.PLUGIN;
+        //ChallengesPlugin plugin = ChallengesAPI.PLUGIN;
 
         String jobTypRaw = object.get("jobType").getAsString();
         ActionType<?, ?> actionType = plugin.getActionRegistry().getActionType(jobTypRaw);
@@ -35,7 +41,7 @@ public class GenChallengeSerializer implements JsonDeserializer<GeneratedChallen
         if (generator == null) return null;
 
         String typeId = object.get("type").getAsString();
-        ChallengeCategory challengeCategory = plugin.getChallengeManager().getChallengeType(typeId);
+        ChallengeCategory challengeCategory = plugin.getChallengeManager().getChallengeCategory(typeId);
         if (challengeCategory == null) return null;
 
         String diffId = object.get("difficulty").getAsString();
@@ -67,7 +73,7 @@ public class GenChallengeSerializer implements JsonDeserializer<GeneratedChallen
         long dateCreated = object.get("dateCreated").getAsLong();
 
         return GeneratedChallenge.create(
-            ExcellentChallengesAPI.PLUGIN,
+            plugin,
             generator, challengeCategory, difficulty, level,
             objectives, conditionConfigs, rewards, dateCreated
         );

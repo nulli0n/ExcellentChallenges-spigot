@@ -19,7 +19,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.Keys;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeCompleteEvent;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeObjectiveEvent;
@@ -31,7 +31,7 @@ import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.nightcore.manager.AbstractListener;
 import su.nightexpress.nightcore.util.PDCUtil;
 
-public class ChallengeListener extends AbstractListener<ExcellentChallengesPlugin> {
+public class ChallengeListener extends AbstractListener<ChallengesPlugin> {
 
     public ChallengeListener(@NotNull ChallengeManager challengeManager) {
         super(challengeManager.plugin());
@@ -81,7 +81,7 @@ public class ChallengeListener extends AbstractListener<ExcellentChallengesPlugi
     public void onChallengeEntitySpawn(CreatureSpawnEvent event) {
         CreatureSpawnEvent.SpawnReason reason = event.getSpawnReason();
         if (Config.OBJECTIVES_ANTI_GLITCH_ENTITY_SPAWN_REASONS.get().contains(reason)) {
-            PDCUtil.set(event.getEntity(), Keys.ENTITY_TRACKED, true);
+            PDCUtil.set(event.getEntity(), Keys.entityTracked, true);
         }
     }
 
@@ -115,7 +115,7 @@ public class ChallengeListener extends AbstractListener<ExcellentChallengesPlugi
             if (!canBrewSure) return;
 
             BrewingStand stand2 = brewerInventory.getHolder();
-            PDCUtil.set(stand2, Keys.BREWING_HOLDER, player.getUniqueId().toString());
+            PDCUtil.set(stand2, Keys.brewingHolder, player.getUniqueId().toString());
             stand2.update();
         });
     }

@@ -5,7 +5,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
@@ -32,7 +32,7 @@ import java.util.List;
 import static su.nightexpress.excellentchallenges.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
-public class ChallengesMenu extends ConfigMenu<ExcellentChallengesPlugin>
+public class ChallengesMenu extends ConfigMenu<ChallengesPlugin>
     implements AutoFilled<GeneratedChallenge>, Linked<ChallengeCategory> {
 
     public static final String FILE = "challenges.yml";
@@ -42,8 +42,8 @@ public class ChallengesMenu extends ConfigMenu<ExcellentChallengesPlugin>
     private static final String PLACEHOLDER_REWARDS    = "%rewards%";
 
     private int[]        challengeSlots;
-    private boolean iconCompletedEnabled;
-    private ItemStack iconCompleted;
+    private boolean      iconCompletedEnabled;
+    private ItemStack    iconCompleted;
     private String       formatActiveName;
     private List<String> formatActiveLore;
     private String       formatCompletedName;
@@ -52,16 +52,16 @@ public class ChallengesMenu extends ConfigMenu<ExcellentChallengesPlugin>
     private List<String> formatConditions;
     private List<String> formatRewards;
 
-    private final ItemHandler returnHandler;
-    private final ItemHandler rerollHandler;
+    private final ItemHandler                 returnHandler;
+    private final ItemHandler                 rerollHandler;
     private final ViewLink<ChallengeCategory> viewLink;
 
-    public ChallengesMenu(@NotNull ExcellentChallengesPlugin plugin) {
+    public ChallengesMenu(@NotNull ChallengesPlugin plugin) {
         super(plugin, new FileConfig(plugin.getDataFolder() + Config.DIR_MENU, FILE));
         this.viewLink = new ViewLink<>();
 
         this.addHandler(this.returnHandler = ItemHandler.forReturn(this, (viewer, event) -> {
-            this.runNextTick(() -> plugin.getChallengeManager().getCategoriesMenu().open(viewer));
+            this.runNextTick(() -> plugin.getChallengeManager().openCategoriesMenu(viewer.getPlayer()));
         }));
 
         this.addHandler(this.rerollHandler = new ItemHandler("reroll", (viewer, event) -> {

@@ -2,7 +2,7 @@ package su.nightexpress.excellentchallenges.command;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.command.tokens.TokensGiveCommand;
 import su.nightexpress.excellentchallenges.command.tokens.TokensRemoveCommand;
@@ -12,9 +12,9 @@ import su.nightexpress.nightcore.command.CommandResult;
 import su.nightexpress.nightcore.command.base.HelpSubCommand;
 import su.nightexpress.nightcore.command.impl.PluginCommand;
 
-public class RerollTokensCommand extends PluginCommand<ExcellentChallengesPlugin> {
+public class RerollTokensCommand extends PluginCommand<ChallengesPlugin> {
 
-    public RerollTokensCommand(@NotNull ExcellentChallengesPlugin plugin) {
+    public RerollTokensCommand(@NotNull ChallengesPlugin plugin) {
         super(plugin, new String[]{"rerolltokens", "rtokens"}, Perms.COMMAND_REROLL_TOKENS);
         this.setDescription(Lang.COMMAND_REROLL_TOKENS_DESC);
         this.setUsage(Lang.COMMAND_REROLL_TOKENS_USAGE);

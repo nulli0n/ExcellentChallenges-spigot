@@ -5,7 +5,7 @@ import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
 import org.bukkit.enchantments.Enchantment;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import su.nightexpress.nightcore.util.wrapper.UniInt;
 
@@ -18,7 +18,7 @@ import java.util.stream.Stream;
 
 public class EnchantmentCreator extends AbstractCreator<Enchantment> {
 
-    public EnchantmentCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public EnchantmentCreator(@NotNull ChallengesPlugin plugin) {
         super(plugin);
     }
 

@@ -6,7 +6,7 @@ import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.excellentchallenges.data.serialize.GenChallengeSerializer;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.data.serialize.UniIntSerializer;
 import su.nightexpress.nightcore.database.AbstractUserDataHandler;
 import su.nightexpress.nightcore.database.sql.SQLColumn;
@@ -19,7 +19,7 @@ import java.sql.SQLException;
 import java.util.*;
 import java.util.function.Function;
 
-public class DataHandler extends AbstractUserDataHandler<ExcellentChallengesPlugin, ChallengeUser> {
+public class DataHandler extends AbstractUserDataHandler<ChallengesPlugin, ChallengeUser> {
 
     private static final SQLColumn COL_CHALLENGES           = SQLColumn.of("challenges", ColumnType.STRING);
     private static final SQLColumn COL_REFRESH_TIMES        = SQLColumn.of("refreshTimes", ColumnType.STRING);
@@ -28,7 +28,7 @@ public class DataHandler extends AbstractUserDataHandler<ExcellentChallengesPlug
 
     private final  Function<ResultSet, ChallengeUser> userFunction;
 
-    public DataHandler(@NotNull ExcellentChallengesPlugin plugin) {
+    public DataHandler(@NotNull ChallengesPlugin plugin) {
         super(plugin);
 
         this.userFunction = (resultSet) -> {
@@ -82,7 +82,7 @@ public class DataHandler extends AbstractUserDataHandler<ExcellentChallengesPlug
     protected GsonBuilder registerAdapters(@NotNull GsonBuilder builder) {
         return super.registerAdapters(builder)
             .registerTypeAdapter(UniInt.class, new UniIntSerializer())
-            .registerTypeAdapter(GeneratedChallenge.class, new GenChallengeSerializer());
+            .registerTypeAdapter(GeneratedChallenge.class, new GenChallengeSerializer(this.plugin));
     }
 
     @Override

@@ -19,6 +19,16 @@ public class Lang extends CoreLang {
         "[type]");
 
 
+    public static final LangString COMMAND_CATEGORY_DESC = LangString.of("Command.Category.Desc",
+        "View challenges.");
+
+    public static final LangString COMMAND_CATEGORY_USAGE = LangString.of("Command.Category.Usage",
+        "[player]");
+
+    public static final LangString COMMAND_CATEGORY_DONE = LangString.of("Command.Category.Done",
+        LIGHT_GRAY.enclose("Opened " + LIGHT_YELLOW.enclose(CATEGORY_NAME) + " challenges GUI for " + LIGHT_YELLOW.enclose(PLAYER_NAME) + "."));
+
+
     public static final LangString COMMAND_RESET_DESC = LangString.of("Command.Reset.Desc",
         "Resets current player's challenges.");
 

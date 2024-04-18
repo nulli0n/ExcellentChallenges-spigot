@@ -4,10 +4,11 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
+import su.nightexpress.excellentchallenges.ChallengesAPI;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
 import su.nightexpress.excellentchallenges.config.Config;
+import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
 import su.nightexpress.nightcore.util.RankMap;
@@ -22,6 +23,7 @@ public class ChallengeCategory implements Placeholder {
     private final String              id;
     private final String              name;
     private final ItemStack           icon;
+    private final String[]            commandAliases;
     private final long                refreshTime;
     private final boolean             uniqueTypes;
     private final Map<String, Double> difficulties;
@@ -34,6 +36,7 @@ public class ChallengeCategory implements Placeholder {
     public ChallengeCategory(@NotNull String id,
                              @NotNull String name,
                              @NotNull ItemStack icon,
+                             String[] commandAliases,
                              long refreshTime,
                              boolean uniqueTypes,
                              @NotNull Map<String, Double> difficulties,
@@ -43,6 +46,7 @@ public class ChallengeCategory implements Placeholder {
         this.id = id.toLowerCase();
         this.name = name;
         this.icon = icon;
+        this.commandAliases = commandAliases;
         this.refreshTime = refreshTime;
         this.uniqueTypes = uniqueTypes;
         this.difficulties = difficulties;
@@ -62,9 +66,16 @@ public class ChallengeCategory implements Placeholder {
             "Sets icon to display in Categories GUI."
         ).read(cfg);
 
+        String[] commandAliases = ConfigValue.create(path + ".Command_Aliases",
+            id + "challenges",
+            "List of commands to be registered for a quick access to the Challenges GUI.",
+            "Permissions are: '" + Perms.COMMAND_OPEN.getName() + "' and '" + Perms.COMMAND_OPEN_OTHERS.getName() + "'.",
+            "[*] You MUST reboot your server to apply command changes."
+        ).read(cfg).split(",");
+
         long refreshTime = ConfigValue.create(path + ".Refresh_Time", 86400,
             "Amount of seconds to reroll (replace) all challenges in the category.",
-            "The timer is individual for each player.."
+            "The timer is individual for each player."
         ).read(cfg);
 
         boolean uniqueTypes = ConfigValue.create(path + ".Unique_Types", true,
@@ -95,12 +106,13 @@ public class ChallengeCategory implements Placeholder {
             "Use '" + Placeholders.GENERIC_REWARDS + "' placeholder in 'categories.yml' menu config to display reward names.")
             .read(cfg);
 
-        return new ChallengeCategory(id, name, icon, refreshTime, uniqueTypes, difficulties, amountPerRank, excludedGenerators, completionRewards);
+        return new ChallengeCategory(id, name, icon, commandAliases, refreshTime, uniqueTypes, difficulties, amountPerRank, excludedGenerators, completionRewards);
     }
 
     public void write(@NotNull FileConfig cfg, @NotNull String path) {
         cfg.set(path + ".Name", this.getName());
         cfg.setItem(path + ".Icon", this.getIcon());
+        cfg.set(path + ".Command_Aliases", String.join(",", this.getCommandAliases()));
         cfg.set(path + ".Refresh_Time", this.getRefreshTime());
         cfg.set(path + ".Unique_Types", this.isUniqueTypes());
         cfg.remove(path + ".Difficulties");
@@ -132,6 +144,10 @@ public class ChallengeCategory implements Placeholder {
     @NotNull
     public ItemStack getIcon() {
         return new ItemStack(icon);
+    }
+
+    public String[] getCommandAliases() {
+        return commandAliases;
     }
 
     public long getRefreshTime() {
@@ -168,7 +184,7 @@ public class ChallengeCategory implements Placeholder {
 
     @NotNull
     public Set<Reward> getCompletionRewards() {
-        return this.getCompletionRewardIds().stream().map(id -> ExcellentChallengesAPI.getChallengeManager().getReward(id))
+        return this.getCompletionRewardIds().stream().map(id -> ChallengesAPI.getChallengeManager().getReward(id))
             .filter(Objects::nonNull).collect(Collectors.toSet());
     }
 }

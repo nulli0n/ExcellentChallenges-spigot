@@ -1,4 +1,4 @@
-package su.nightexpress.excellentchallenges.hooks;
+package su.nightexpress.excellentchallenges.hook;
 
 public class HookId {
 

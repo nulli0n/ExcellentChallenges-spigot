@@ -1,4 +1,4 @@
-package su.nightexpress.excellentchallenges.hooks.external;
+package su.nightexpress.excellentchallenges.hook.impl;
 
 import io.lumine.mythic.api.mobs.MythicMob;
 import io.lumine.mythic.api.skills.placeholders.PlaceholderString;

@@ -1,4 +1,4 @@
-package su.nightexpress.excellentchallenges.hooks.external;
+package su.nightexpress.excellentchallenges.hook.impl;
 
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
@@ -6,14 +6,14 @@ import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import me.clip.placeholderapi.expansion.PlaceholderExpansion;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.nightcore.util.NumberUtil;
 
 public class PlaceholderHook {
 
     private static Expansion expansion;
 
-    public static void setup(@NotNull ExcellentChallengesPlugin plugin) {
+    public static void setup(@NotNull ChallengesPlugin plugin) {
         if (expansion == null) {
             expansion = new Expansion(plugin);
             expansion.register();
@@ -29,9 +29,9 @@ public class PlaceholderHook {
 
     private static class Expansion extends PlaceholderExpansion {
 
-        private final ExcellentChallengesPlugin plugin;
+        private final ChallengesPlugin plugin;
 
-        public Expansion(@NotNull ExcellentChallengesPlugin plugin) {
+        public Expansion(@NotNull ChallengesPlugin plugin) {
             this.plugin = plugin;
         }
 
@@ -66,7 +66,7 @@ public class PlaceholderHook {
 
             if (params.startsWith("progress_")) {
                 String type = params.replace("progress_", "");
-                ChallengeCategory cType = plugin.getChallengeManager().getChallengeType(type);
+                ChallengeCategory cType = plugin.getChallengeManager().getChallengeCategory(type);
                 if (cType == null) return null;
 
 
@@ -75,7 +75,7 @@ public class PlaceholderHook {
 
             if (params.startsWith("reroll_tokens_")) {
                 String type = params.substring("reroll_tokens_".length());
-                ChallengeCategory cType = plugin.getChallengeManager().getChallengeType(type);
+                ChallengeCategory cType = plugin.getChallengeManager().getChallengeCategory(type);
                 if (cType == null) return null;
 
                 return NumberUtil.format(user.getRerollTokens(cType));
@@ -87,7 +87,7 @@ public class PlaceholderHook {
                     return NumberUtil.format(user.getCompletedChallengesAmount());
                 }
 
-                ChallengeCategory category = plugin.getChallengeManager().getChallengeType(type);
+                ChallengeCategory category = plugin.getChallengeManager().getChallengeCategory(type);
                 if (category != null) {
                     return NumberUtil.format(user.getCompletedChallengesAmount(category));
                 }

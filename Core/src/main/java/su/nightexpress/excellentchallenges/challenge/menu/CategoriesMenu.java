@@ -4,7 +4,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.GeneratedChallenge;
 import su.nightexpress.excellentchallenges.challenge.reward.Reward;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 import static su.nightexpress.excellentchallenges.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
-public class CategoriesMenu extends ConfigMenu<ExcellentChallengesPlugin> implements AutoFilled<ChallengeCategory> {
+public class CategoriesMenu extends ConfigMenu<ChallengesPlugin> implements AutoFilled<ChallengeCategory> {
 
     public static final String FILE = "categories.yml";
 
@@ -39,7 +39,7 @@ public class CategoriesMenu extends ConfigMenu<ExcellentChallengesPlugin> implem
     private String categoryName;
     private List<String> categoryLore;
 
-    public CategoriesMenu(@NotNull ExcellentChallengesPlugin plugin) {
+    public CategoriesMenu(@NotNull ChallengesPlugin plugin) {
         super(plugin, new FileConfig(plugin.getDataFolder() + Config.DIR_MENU, FILE));
 
         this.load();
@@ -92,7 +92,7 @@ public class CategoriesMenu extends ConfigMenu<ExcellentChallengesPlugin> implem
     @Override
     public void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<ChallengeCategory> autoFill) {
         autoFill.setSlots(this.categorySlots);
-        autoFill.setItems(Config.CATEGORIES.get().values().stream().toList());
+        autoFill.setItems(this.plugin.getChallengeManager().getCategories().stream().toList());
         autoFill.setItemCreator(category -> {
             ItemStack item = category.getIcon();
 

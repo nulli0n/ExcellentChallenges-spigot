@@ -6,15 +6,15 @@ import org.bukkit.event.Event;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.EventExecutor;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 
 public class WrappedEvent<E extends Event, O> implements Listener, EventExecutor, ChallengeProcessor<O> {
 
-    private final ExcellentChallengesPlugin plugin;
-    private final Class<E>                  eventClass;
+    private final ChallengesPlugin plugin;
+    private final Class<E>         eventClass;
     private final ActionType<E, O> actionType;
 
-    public WrappedEvent(@NotNull ExcellentChallengesPlugin plugin,
+    public WrappedEvent(@NotNull ChallengesPlugin plugin,
                         @NotNull Class<E> eventClass,
                         @NotNull ActionType<E, O> actionType) {
         this.plugin = plugin;

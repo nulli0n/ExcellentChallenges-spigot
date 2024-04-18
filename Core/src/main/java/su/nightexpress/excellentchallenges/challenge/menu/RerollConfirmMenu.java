@@ -5,7 +5,7 @@ import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
@@ -27,7 +27,7 @@ import java.util.List;
 import static su.nightexpress.excellentchallenges.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
-public class RerollConfirmMenu extends ConfigMenu<ExcellentChallengesPlugin> implements Linked<ChallengeCategory> {
+public class RerollConfirmMenu extends ConfigMenu<ChallengesPlugin> implements Linked<ChallengeCategory> {
 
     public static final String FILE = "reroll_confirm.yml";
 
@@ -35,7 +35,7 @@ public class RerollConfirmMenu extends ConfigMenu<ExcellentChallengesPlugin> imp
     private final ItemHandler declineHandler;
     private final ViewLink<ChallengeCategory> link;
 
-    public RerollConfirmMenu(@NotNull ExcellentChallengesPlugin plugin) {
+    public RerollConfirmMenu(@NotNull ChallengesPlugin plugin) {
         super(plugin, new FileConfig(plugin.getDataFolder() + Config.DIR_MENU, FILE));
         this.link = new ViewLink<>();
 

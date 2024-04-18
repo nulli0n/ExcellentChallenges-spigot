@@ -1,7 +1,7 @@
 package su.nightexpress.excellentchallenges.challenge.creator.object;
 
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.generator.Generator;
 import su.nightexpress.excellentchallenges.challenge.generator.object.GenAmountObject;
@@ -13,15 +13,15 @@ import java.io.File;
 
 public class Creator<O> {
 
-    private final ExcellentChallengesPlugin plugin;
-    private final ActionType<?, O>          actionType;
+    private final ChallengesPlugin plugin;
+    private final ActionType<?, O> actionType;
     private final String              name;
 
     private final ObjectList<GenObjectiveObject> objectives;
     private final ObjectList<GenAmountObject>    conditions;
     private final ObjectList<GenAmountObject>    rewards;
 
-    public Creator(@NotNull ExcellentChallengesPlugin plugin, @NotNull ActionType<?, O> actionType, @NotNull String name) {
+    public Creator(@NotNull ChallengesPlugin plugin, @NotNull ActionType<?, O> actionType, @NotNull String name) {
         this.plugin = plugin;
         this.actionType = actionType;
         this.name = name;

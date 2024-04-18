@@ -7,7 +7,7 @@ import su.nightexpress.excellentchallenges.challenge.difficulty.DifficultyValue;
 import su.nightexpress.excellentchallenges.challenge.difficulty.ModifierAction;
 import su.nightexpress.excellentchallenges.challenge.generator.object.GenObjectiveObject;
 import org.jetbrains.annotations.NotNull;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.challenge.ChallengeCategory;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.difficulty.Difficulty;
@@ -23,7 +23,7 @@ import java.io.File;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class Generator extends AbstractFileData<ExcellentChallengesPlugin> {
+public class Generator extends AbstractFileData<ChallengesPlugin> {
 
     private DifficultyValue objectiveAmount;
     private final ObjectList<GenObjectiveObject> objectiveList;
@@ -32,7 +32,7 @@ public class Generator extends AbstractFileData<ExcellentChallengesPlugin> {
 
     private ActionType<?, ?> type;
 
-    public Generator(@NotNull ExcellentChallengesPlugin plugin, @NotNull File file) {
+    public Generator(@NotNull ChallengesPlugin plugin, @NotNull File file) {
         super(plugin, file);
         this.objectiveList = new ObjectList<>();
         this.conditionList = new ObjectList<>();

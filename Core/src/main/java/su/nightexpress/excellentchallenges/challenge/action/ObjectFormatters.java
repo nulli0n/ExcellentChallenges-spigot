@@ -2,18 +2,15 @@ package su.nightexpress.excellentchallenges.challenge.action;
 
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Registry;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.potion.PotionEffectType;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.excellentchallenges.ExcellentChallengesAPI;
+import su.nightexpress.excellentchallenges.ChallengesAPI;
 import su.nightexpress.nightcore.language.LangAssets;
-import su.nightexpress.nightcore.util.BukkitThing;
 import su.nightexpress.nightcore.util.StringUtil;
-import su.nightexpress.nightcore.util.Version;
 
 public class ObjectFormatters {
 
@@ -115,7 +112,7 @@ public class ObjectFormatters {
         @NotNull
         @Override
         public String getLocalizedName(@NotNull EntityDamageEvent.DamageCause object) {
-            return ExcellentChallengesAPI.PLUGIN.getLangManager().getEnum(object);
+            return ChallengesAPI.PLUGIN.getLangManager().getEnum(object);
         }
 
         @Nullable

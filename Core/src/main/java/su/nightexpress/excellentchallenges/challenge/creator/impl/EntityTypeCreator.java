@@ -1,7 +1,7 @@
 package su.nightexpress.excellentchallenges.challenge.creator.impl;
 
 import com.google.common.collect.Sets;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
 import su.nightexpress.excellentchallenges.Placeholders;
 import su.nightexpress.excellentchallenges.challenge.action.ActionType;
 import su.nightexpress.excellentchallenges.challenge.action.ActionTypes;
@@ -22,7 +22,7 @@ public class EntityTypeCreator extends AbstractCreator<EntityType> {
 
     //private final Map<EntityType, String> skullMap;
 
-    public EntityTypeCreator(@NotNull ExcellentChallengesPlugin plugin) {
+    public EntityTypeCreator(@NotNull ChallengesPlugin plugin) {
         super(plugin);
         //this.skullMap = new HashMap<>();
         //this.fillMap();

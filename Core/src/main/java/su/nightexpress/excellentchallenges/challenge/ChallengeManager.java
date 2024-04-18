@@ -3,7 +3,8 @@ package su.nightexpress.excellentchallenges.challenge;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import su.nightexpress.excellentchallenges.ExcellentChallengesPlugin;
+import su.nightexpress.excellentchallenges.ChallengesPlugin;
+import su.nightexpress.excellentchallenges.command.CategoryCommand;
 import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeCompleteEvent;
 import su.nightexpress.excellentchallenges.api.event.PlayerChallengeObjectiveEvent;
@@ -31,7 +32,7 @@ import java.util.stream.Collectors;
 
 import static su.nightexpress.excellentchallenges.Placeholders.*;
 
-public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin> {
+public class ChallengeManager extends AbstractManager<ChallengesPlugin> {
 
     private final Map<String, Generator>       generatorMap;
     private final Map<String, ConditionConfig> conditionMap;
@@ -41,7 +42,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     private ChallengesMenu    challengesMenu;
     private RerollConfirmMenu rerollConfirmMenu;
 
-    public ChallengeManager(@NotNull ExcellentChallengesPlugin plugin) {
+    public ChallengeManager(@NotNull ChallengesPlugin plugin) {
         super(plugin);
         this.generatorMap = new HashMap<>();
         this.conditionMap = new HashMap<>();
@@ -49,8 +50,21 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     }
 
     @Override
-    public void onLoad() {
-        // Load conditions.
+    protected void onLoad() {
+        this.loadConditions();
+        this.loadRewards();
+        this.loadGenerators();
+
+        this.registerCategoryCommands();
+
+        this.categoriesMenu = new CategoriesMenu(this.plugin);
+        this.challengesMenu = new ChallengesMenu(this.plugin);
+        this.rerollConfirmMenu = new RerollConfirmMenu(this.plugin);
+
+        this.addListener(new ChallengeListener(this));
+    }
+
+    private void loadConditions() {
         for (FileConfig cfg : FileConfig.loadAll(plugin.getDataFolder() + Config.DIR_CONDITIONS, true)) {
             cfg.getSection("").forEach(sId -> {
                 ConditionConfig conditionConfig = ConditionConfig.read(cfg, sId, sId);
@@ -59,9 +73,9 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
 
         }
         this.plugin.info("Loaded " + this.getConditionMap().size() + " conditions.");
+    }
 
-
-        // Load rewards.
+    private void loadRewards() {
         for (FileConfig cfg : FileConfig.loadAll(plugin.getDataFolder() + Config.DIR_REWARDS, true)) {
             cfg.getSection("").forEach(sId -> {
                 Reward reward = Reward.read(cfg, sId, sId);
@@ -69,10 +83,10 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
             });
         }
         this.plugin.info("Loaded " + this.getRewardMap().size() + " rewards.");
+    }
 
-
+    private void loadGenerators() {
         int combis = 0;
-        // Load generators.
         for (FileConfig cfg : FileConfig.loadAll(plugin.getDataFolder() + Config.DIR_GENERATORS, true)) {
             Generator generator = new Generator(plugin, cfg.getFile());
             if (generator.load()) {
@@ -90,13 +104,24 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         }
         this.plugin.info("Loaded " + this.getGeneratorMap().size() + " generators.");
         this.plugin.info("Challenge combinations: " + NumberUtil.format(combis));
+    }
 
+    private void registerCategoryCommands() {
+        this.getCategories().forEach(category -> {
+            String[] aliases = category.getCommandAliases();
+            if (aliases.length == 0) return;
 
-        this.categoriesMenu = new CategoriesMenu(this.plugin);
-        this.challengesMenu = new ChallengesMenu(this.plugin);
-        this.rerollConfirmMenu = new RerollConfirmMenu(this.plugin);
+            this.plugin.getCommandManager().registerCommand(new CategoryCommand(this.plugin, category));
+        });
+    }
 
-        this.addListener(new ChallengeListener(this));
+    private void unregisterCategoryCommands() {
+        this.getCategories().forEach(category -> {
+            String[] aliases = category.getCommandAliases();
+            if (aliases.length == 0) return;
+
+            this.plugin.getCommandManager().unregisterCommand(aliases[0]);
+        });
     }
 
     @Override
@@ -105,10 +130,11 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         if (this.challengesMenu != null) this.challengesMenu.clear();
         if (this.categoriesMenu != null) this.categoriesMenu.clear();
 
+        this.unregisterCategoryCommands();
+
         this.getGeneratorMap().clear();
         this.getConditionMap().clear();
         this.getRewardMap().clear();
-        //this.getNamesMap().clear();
     }
 
     @NotNull
@@ -141,9 +167,24 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         return this.getGeneratorMap().get(id.toLowerCase());
     }
 
+    @NotNull
+    public Map<String, ChallengeCategory> getCategoryMap() {
+        return Config.CATEGORIES.get();
+    }
+
+    @NotNull
+    public Collection<ChallengeCategory> getCategories() {
+        return this.getCategoryMap().values();
+    }
+
+    @NotNull
+    public List<String> getCategoryIds() {
+        return new ArrayList<>(this.getCategoryMap().keySet());
+    }
+
     @Nullable
-    public ChallengeCategory getChallengeType(@NotNull String id) {
-        return Config.CATEGORIES.get().get(id.toLowerCase());
+    public ChallengeCategory getChallengeCategory(@NotNull String id) {
+        return this.getCategoryMap().get(id.toLowerCase());
     }
 
     @NotNull
@@ -181,22 +222,16 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         return categoriesMenu;
     }
 
-    @NotNull
-    public ChallengesMenu getChallengesMenu() {
-        return challengesMenu;
-    }
-
-    @NotNull
-    public RerollConfirmMenu getRerollConfirmMenu() {
-        return rerollConfirmMenu;
+    public void openCategoriesMenu(@NotNull Player player) {
+        this.categoriesMenu.open(player);
     }
 
     public void openChallengesMenu(@NotNull Player player, @NotNull ChallengeCategory category) {
-        this.getChallengesMenu().open(player, category);
+        this.challengesMenu.open(player, category);
     }
 
     public void openRerollMenu(@NotNull Player player, @NotNull ChallengeCategory category) {
-        this.getRerollConfirmMenu().open(player, category);
+        this.rerollConfirmMenu.open(player, category);
     }
 
     public boolean isDisabledWorld(@NotNull String name) {
@@ -248,8 +283,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     }
 
     public void updateChallenges(@NotNull Player player, boolean force) {
-        Collection<ChallengeCategory> challengeCategories = Config.CATEGORIES.get().values();
-        challengeCategories.forEach(type -> this.updateChallenges(player, type, force));
+        this.getCategories().forEach(type -> this.updateChallenges(player, type, force));
     }
 
     public void updateChallenges(@NotNull Player player, @NotNull ChallengeCategory type, boolean force) {
@@ -263,10 +297,7 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
     }
 
     public void createChallenges(@NotNull Player player) {
-        Collection<ChallengeCategory> challengeCategories = Config.CATEGORIES.get().values();
-        challengeCategories.forEach(type -> {
-            this.createChallenges(player, type);
-        });
+        this.getCategories().forEach(type -> this.createChallenges(player, type));
     }
 
     @NotNull
@@ -277,7 +308,6 @@ public class ChallengeManager extends AbstractManager<ExcellentChallengesPlugin>
         int amount = category.getAmountPerRank(player);
         if (amount <= 0) return generated;
 
-        //String rank = Players.getPermissionGroup(player);
         Set<Generator> generators = new HashSet<>(this.getGenerators());
 
         generators.removeIf(generator -> {
