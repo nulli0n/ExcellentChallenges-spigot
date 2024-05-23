@@ -71,9 +71,9 @@
         <dependency>
             <groupId>su.nightexpress.nightcore</groupId>
             <artifactId>nightcore</artifactId>
-            <version>2.6.1</version>
+            <version>2.5.1</version>
             <scope>provided</scope>
-            <systemPath>${basedir}/libs/</systemPath>
+            <systemPath>${basedir}/Core/nightcore-2.5.1.jar</systemPath>
         </dependency>
     </dependencies>
 
