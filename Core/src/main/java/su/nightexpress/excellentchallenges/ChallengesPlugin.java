@@ -15,13 +15,11 @@ import su.nightexpress.excellentchallenges.data.DataHandler;
 import su.nightexpress.excellentchallenges.data.UserManager;
 import su.nightexpress.excellentchallenges.data.object.ChallengeUser;
 import su.nightexpress.excellentchallenges.hook.impl.PlaceholderHook;
-import su.nightexpress.excellentchallenges.nms.*;
 import su.nightexpress.nightcore.NightDataPlugin;
 import su.nightexpress.nightcore.command.api.NightPluginCommand;
 import su.nightexpress.nightcore.command.base.ReloadSubCommand;
 import su.nightexpress.nightcore.config.PluginDetails;
 import su.nightexpress.nightcore.util.Plugins;
-import su.nightexpress.nightcore.util.Version;
 import su.nightexpress.nightcore.util.blocktracker.PlayerBlockTracker;
 
 public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
@@ -31,7 +29,6 @@ public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
 
     private ActionRegistry   actionRegistry;
     private ChallengeManager challengeManager;
-    private ChallengeNMS     challengeNMS;
 
     @Override
     @NotNull
@@ -44,12 +41,6 @@ public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
 
     @Override
     public void enable() {
-        if (!this.setupNMS()) {
-            this.error("Unsupported server version.");
-            this.getPluginManager().disablePlugin(this);
-            return;
-        }
-
         Keys.load(this);
 
         this.registerCommands();
@@ -89,18 +80,6 @@ public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
         }
     }
 
-    private boolean setupNMS() {
-        this.challengeNMS = switch (Version.getCurrent()) {
-            case V1_18_R2 -> new V1_18_R2();
-            case V1_19_R3 -> new V1_19_R3();
-            case V1_20_R1 -> new V1_20_R1();
-            case V1_20_R2 -> new V1_20_R2();
-            case V1_20_R3 -> new V1_20_R3();
-            default -> null;
-        };
-        return this.challengeNMS != null;
-    }
-
     private void registerCommands() {
         NightPluginCommand mainCommand = this.getBaseCommand();
 
@@ -130,10 +109,5 @@ public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
     @NotNull
     public ChallengeManager getChallengeManager() {
         return challengeManager;
-    }
-
-    @NotNull
-    public ChallengeNMS getChallengeNMS() {
-        return challengeNMS;
     }
 }

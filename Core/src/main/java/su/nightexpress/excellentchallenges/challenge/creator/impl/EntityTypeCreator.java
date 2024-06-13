@@ -202,6 +202,8 @@ public class EntityTypeCreator extends AbstractCreator<EntityType> {
         Stream.of(EntityType.values()).filter(e -> e.isAlive() && e.isSpawnable()).forEach(type -> {
             Class<? extends Entity> clazz = type.getEntityClass();
             if (clazz != null && Breedable.class.isAssignableFrom(clazz)) {
+                if (type == EntityType.WANDERING_TRADER) return;
+
                 map.computeIfAbsent("animal", k -> new HashSet<>()).add(type);
             }
         });
@@ -215,6 +217,9 @@ public class EntityTypeCreator extends AbstractCreator<EntityType> {
         Stream.of(EntityType.values()).filter(e -> e.isAlive() && e.isSpawnable()).forEach(type -> {
             Class<? extends Entity> clazz = type.getEntityClass();
             if (clazz != null && Tameable.class.isAssignableFrom(clazz)) {
+                if (type == EntityType.ZOMBIE_HORSE) return;
+                if (type == EntityType.SKELETON_HORSE) return;
+
                 map.computeIfAbsent("animal", k -> new HashSet<>()).add(type);
             }
         });

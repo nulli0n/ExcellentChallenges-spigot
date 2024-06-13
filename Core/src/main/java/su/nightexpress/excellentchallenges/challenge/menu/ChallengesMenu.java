@@ -1,6 +1,7 @@
 package su.nightexpress.excellentchallenges.challenge.menu;
 
 import org.bukkit.entity.Player;
+import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.event.inventory.InventoryType;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
@@ -32,8 +33,7 @@ import java.util.List;
 import static su.nightexpress.excellentchallenges.Placeholders.*;
 import static su.nightexpress.nightcore.util.text.tag.Tags.*;
 
-public class ChallengesMenu extends ConfigMenu<ChallengesPlugin>
-    implements AutoFilled<GeneratedChallenge>, Linked<ChallengeCategory> {
+public class ChallengesMenu extends ConfigMenu<ChallengesPlugin> implements AutoFilled<GeneratedChallenge>, Linked<ChallengeCategory> {
 
     public static final String FILE = "challenges.yml";
 
@@ -54,6 +54,8 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin>
 
     private final ItemHandler                 returnHandler;
     private final ItemHandler                 rerollHandler;
+    private final ItemHandler                 nextCategoryHandler;
+    private final ItemHandler                 previousCategoryHandler; // TODO Add as default items
     private final ViewLink<ChallengeCategory> viewLink;
 
     public ChallengesMenu(@NotNull ChallengesPlugin plugin) {
@@ -74,6 +76,14 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin>
             });
         }));
 
+        this.addHandler(this.nextCategoryHandler = new ItemHandler("next_category", (viewer, event) -> {
+            this.forCategoryPages(viewer, event, 1);
+        }));
+
+        this.addHandler(this.previousCategoryHandler = new ItemHandler("previous_category", (viewer, event) -> {
+            this.forCategoryPages(viewer, event, -1);
+        }));
+
         this.load();
 
         this.getItems().forEach(menuItem -> {
@@ -86,6 +96,113 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin>
                     .replace(GENERIC_REROLL_TOKENS, () -> NumberUtil.format(user.getRerollTokens(category)))
                     .writeMeta();
             });
+        });
+    }
+
+    private void forCategoryPages(@NotNull MenuViewer viewer, @NotNull InventoryClickEvent event, int type) {
+        ChallengeCategory category = this.getLink(viewer);
+        List<ChallengeCategory> categories = new ArrayList<>(this.plugin.getChallengeManager().getCategories());
+        int index = categories.indexOf(category);
+        if (index < 0) return;
+
+        ChallengeCategory shifted = Lists.shifted(categories, index, type);
+
+        this.runNextTick(() -> plugin.getChallengeManager().openChallengesMenu(viewer.getPlayer(), shifted));
+    }
+
+    @Override
+    @NotNull
+    public ViewLink<ChallengeCategory> getLink() {
+        return this.viewLink;
+    }
+
+    @Override
+    public void onPrepare(@NotNull MenuViewer viewer, @NotNull MenuOptions options) {
+        ChallengeCategory category = this.getLink().get(viewer);
+        if (category != null) {
+            options.setTitle(category.replacePlaceholders().apply(options.getTitle()));
+        }
+
+        this.autoFill(viewer);
+    }
+
+    @Override
+    protected void onReady(@NotNull MenuViewer viewer, @NotNull Inventory inventory) {
+
+    }
+
+    @Override
+    public void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<GeneratedChallenge> autoFill) {
+        Player player = viewer.getPlayer();
+
+        ChallengeCategory category = this.getLink().get(player);
+        if (category == null) return;
+
+        this.plugin.getChallengeManager().updateChallenges(player, false);
+
+        ChallengeUser user = plugin.getUserManager().getUserData(player);
+
+        autoFill.setSlots(this.challengeSlots);
+        autoFill.setItems(user.getChallenges(category).stream().sorted(Comparator.comparingInt(GeneratedChallenge::getLevel)).toList());
+        autoFill.setItemCreator(challenge -> {
+            ItemStack item = challenge.getActionType().getIcon();
+
+            boolean isCompleted = challenge.isCompleted();
+            long refreshTime = user.getRefreshTime(category);
+
+            if (isCompleted && this.iconCompletedEnabled) {
+                item = new ItemStack(this.iconCompleted);
+            }
+
+            List<String> objectives = new ArrayList<>();
+            List<String> conditions = new ArrayList<>();
+            List<String> rewards = new ArrayList<>();
+
+            for (String line : this.formatObjectives) {
+                if (line.contains(Placeholders.OBJECTIVE_NAME)) {
+                    for (var objId : challenge.getObjectives().keySet()) {
+                        objectives.add(challenge.replacePlaceholders(objId).apply(line));
+                    }
+                }
+                else objectives.add(line);
+            }
+
+            if (!challenge.getConditions().isEmpty()) {
+                for (String line : this.formatConditions) {
+                    if (line.contains(Placeholders.CONDITION_NAME) || line.contains(Placeholders.CONDITION_DESCRIPTION)) {
+                        for (var conditionConfig : challenge.getConditions().keySet()) {
+                            conditions.add(conditionConfig.replacePlaceholders().apply(line));
+                        }
+                    }
+                    else conditions.add(line);
+                }
+            }
+
+            if (!challenge.getRewards().isEmpty()) {
+                for (String line : this.formatRewards) {
+                    if (line.contains(Placeholders.REWARD_NAME)) {
+                        for (var reward : challenge.getRewards()) {
+                            rewards.add(reward.replacePlaceholders().apply(line));
+                        }
+                    }
+                    else rewards.add(line);
+                }
+            }
+
+            ItemReplacer.create(item).hideFlags().trimmed()
+                .setDisplayName(isCompleted ? this.formatCompletedName : this.formatActiveName)
+                .setLore(isCompleted ? this.formatCompletedLore : this.formatActiveLore)
+                .replace(Placeholders.CHALLENGE_REFRESH_TIME, () -> {
+                    return TimeUtil.formatDuration(refreshTime == 0 ? System.currentTimeMillis() : refreshTime);
+                })
+                .replaceLoreExact(PLACEHOLDER_OBJECTIVES, objectives)
+                .replaceLoreExact(PLACEHOLDER_CONDITIONS, conditions)
+                .replaceLoreExact(PLACEHOLDER_REWARDS, rewards)
+                .replacePlaceholderAPI(viewer.getPlayer())
+                .replace(category.replacePlaceholders())
+                .replace(challenge.replacePlaceholders())
+                .writeMeta();
+            return item;
         });
     }
 
@@ -195,99 +312,5 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin>
                 LIGHT_YELLOW.enclose("◈ " + REWARD_NAME)
             )
         ).read(cfg);
-    }
-
-    @Override
-    @NotNull
-    public ViewLink<ChallengeCategory> getLink() {
-        return this.viewLink;
-    }
-
-    @Override
-    public void onPrepare(@NotNull MenuViewer viewer, @NotNull MenuOptions options) {
-        ChallengeCategory category = this.getLink().get(viewer);
-        if (category != null) {
-            options.setTitle(category.replacePlaceholders().apply(options.getTitle()));
-        }
-
-        this.autoFill(viewer);
-    }
-
-    @Override
-    protected void onReady(@NotNull MenuViewer viewer, @NotNull Inventory inventory) {
-
-    }
-
-    @Override
-    public void onAutoFill(@NotNull MenuViewer viewer, @NotNull AutoFill<GeneratedChallenge> autoFill) {
-        Player player = viewer.getPlayer();
-
-        ChallengeCategory category = this.getLink().get(player);
-        if (category == null) return;
-
-        this.plugin.getChallengeManager().updateChallenges(player, false);
-
-        ChallengeUser user = plugin.getUserManager().getUserData(player);
-
-        autoFill.setSlots(this.challengeSlots);
-        autoFill.setItems(user.getChallenges(category).stream().sorted(Comparator.comparingInt(GeneratedChallenge::getLevel)).toList());
-        autoFill.setItemCreator(challenge -> {
-            ItemStack item = challenge.getActionType().getIcon();
-
-            boolean isCompleted = challenge.isCompleted();
-            long refreshTime = user.getRefreshTime(category);
-
-            if (isCompleted && this.iconCompletedEnabled) {
-                item = new ItemStack(this.iconCompleted);
-            }
-
-            List<String> objectives = new ArrayList<>();
-            List<String> conditions = new ArrayList<>();
-            List<String> rewards = new ArrayList<>();
-
-            for (String line : this.formatObjectives) {
-                if (line.contains(Placeholders.OBJECTIVE_NAME)) {
-                    for (var objId : challenge.getObjectives().keySet()) {
-                        objectives.add(challenge.replacePlaceholders(objId).apply(line));
-                    }
-                }
-                else objectives.add(line);
-            }
-
-            if (!challenge.getConditions().isEmpty()) {
-                for (String line : this.formatConditions) {
-                    if (line.contains(Placeholders.CONDITION_NAME) || line.contains(Placeholders.CONDITION_DESCRIPTION)) {
-                        for (var conditionConfig : challenge.getConditions().keySet()) {
-                            conditions.add(conditionConfig.replacePlaceholders().apply(line));
-                        }
-                    }
-                    else conditions.add(line);
-                }
-            }
-
-            if (!challenge.getRewards().isEmpty()) {
-                for (String line : this.formatRewards) {
-                    if (line.contains(Placeholders.REWARD_NAME)) {
-                        for (var reward : challenge.getRewards()) {
-                            rewards.add(reward.replacePlaceholders().apply(line));
-                        }
-                    }
-                    else rewards.add(line);
-                }
-            }
-
-            ItemReplacer.create(item).hideFlags().trimmed()
-                .setDisplayName(isCompleted ? this.formatCompletedName : this.formatActiveName)
-                .setLore(isCompleted ? this.formatCompletedLore : this.formatActiveLore)
-                .replace(Placeholders.CHALLENGE_REFRESH_TIME, () -> {
-                    return TimeUtil.formatDuration(refreshTime == 0 ? System.currentTimeMillis() : refreshTime);
-                })
-                .replaceLoreExact(PLACEHOLDER_OBJECTIVES, objectives)
-                .replaceLoreExact(PLACEHOLDER_CONDITIONS, conditions)
-                .replaceLoreExact(PLACEHOLDER_REWARDS, rewards)
-                .replace(challenge.replacePlaceholders())
-                .writeMeta();
-            return item;
-        });
     }
 }

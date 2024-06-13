@@ -230,18 +230,20 @@ public class EventHelpers {
 
         if (event.isShiftClick() || numberKey) {
             int has = Players.countItem(player, craft);
-            plugin.getServer().getScheduler().runTask(plugin, () -> {
+            plugin.runTask(task -> {
                 int now = Players.countItem(player, craft);
                 int crafted = now - has;
                 processor.progressChallenge(player, type, crafted);
             });
         }
         else {
-            ItemStack cursor = event.getCursor();
-            if (cursor != null && !cursor.getType().isAir() && (!cursor.isSimilar(craft) || cursor.getAmount() >= cursor.getMaxStackSize()))
-                return false;
+            plugin.runTask(task -> {
+                ItemStack cursor = event.getCursor();
+                if (cursor == null || cursor.getType().isAir()) return;
+                if (!cursor.isSimilar(craft) || cursor.getAmount() >= cursor.getMaxStackSize()) return;
 
-            processor.progressChallenge(player, type, 1);
+                processor.progressChallenge(player, type, cursor.getAmount());
+            });
         }
         return true;
     };

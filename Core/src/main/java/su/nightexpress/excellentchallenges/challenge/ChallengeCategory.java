@@ -89,7 +89,7 @@ public class ChallengeCategory implements Placeholder {
             "Sets chances for difficulties to be picked in generation."
         ).read(cfg);
 
-        RankMap<Integer> amountPerRank = RankMap.readInt(cfg, path + ".Amount_Per_Rank");
+        RankMap<Integer> amountPerRank = RankMap.readInt(cfg, path + ".Amount_Per_Rank", 5);
 
         Set<String> excludedGenerators = ConfigValue.create(path + ".Excluded_Generators",
             Set.of(),

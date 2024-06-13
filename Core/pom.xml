@@ -5,7 +5,7 @@
     <parent>
         <artifactId>ExcellentChallenges</artifactId>
         <groupId>su.nightexpress.challengesrenewed</groupId>
-        <version>3.1.1</version>
+        <version>3.1.2</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
@@ -17,36 +17,7 @@
     </properties>
 
     <dependencies>
-        <dependency>
-            <groupId>su.nightexpress.challengesrenewed</groupId>
-            <artifactId>NMS</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>su.nightexpress.challengesrenewed</groupId>
-            <artifactId>V1_18_R2</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>su.nightexpress.challengesrenewed</groupId>
-            <artifactId>V1_19_R3</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>su.nightexpress.challengesrenewed</groupId>
-            <artifactId>V1_20_R1</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>su.nightexpress.challengesrenewed</groupId>
-            <artifactId>V1_20_R2</artifactId>
-            <version>3.1.1</version>
-        </dependency>
-        <dependency>
-            <groupId>su.nightexpress.challengesrenewed</groupId>
-            <artifactId>V1_20_R3</artifactId>
-            <version>3.1.1</version>
-        </dependency>
+
     </dependencies>
 
     <build>
@@ -62,19 +33,6 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
-                <!-- Java 16 Fix -->
-                <dependencies>
-                    <dependency>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm</artifactId>
-                        <version>9.2</version>
-                    </dependency>
-                    <dependency>
-                        <groupId>org.ow2.asm</groupId>
-                        <artifactId>asm-commons</artifactId>
-                        <version>9.2</version>
-                    </dependency>
-                </dependencies>
                 <executions>
                     <execution>
                         <phase>package</phase>
