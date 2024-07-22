@@ -26,6 +26,7 @@ import java.util.stream.Collectors;
 public class Generator extends AbstractFileData<ChallengesPlugin> {
 
     private DifficultyValue objectiveAmount;
+    private DifficultyValue rewardAmount;
     private final ObjectList<GenObjectiveObject> objectiveList;
     private final ObjectList<GenAmountObject>    conditionList;
     private final ObjectList<GenAmountObject>    rewardList;
@@ -54,6 +55,10 @@ public class Generator extends AbstractFileData<ChallengesPlugin> {
         this.objectiveAmount = DifficultyValue.readOrCreate(cfg, "Objectives.Amount",
             new DifficultyValue(UniInt.of(1, 2), "null", ModifierAction.NONE),
             "Sets how many objectives lists can be used to get objectives from when generating challenge.");
+
+        this.rewardAmount = DifficultyValue.readOrCreate(cfg, "Rewards.Amount",
+            new DifficultyValue(UniInt.of(1, 2), "null", ModifierAction.NONE),
+            "Sets how many reward lists can be used to get rewards from when generating challenge.");
 
         for (String sId : cfg.getSection("Objectives.List")) {
             GenObjectiveObject object = GenObjectiveObject.read(cfg, "Objectives.List." + sId, sId);
@@ -106,6 +111,9 @@ public class Generator extends AbstractFileData<ChallengesPlugin> {
         if (this.objectiveAmount != null) {
             this.objectiveAmount.write(cfg, "Objectives.Amount");
         }
+        if (this.rewardAmount != null) {
+            this.rewardAmount.write(cfg, "Rewards.Amount");
+        }
 
         this.getObjectiveList().getObjectMap().forEach((id, object) -> {
             object.write(cfg, "Objectives.List." + id);
@@ -135,6 +143,7 @@ public class Generator extends AbstractFileData<ChallengesPlugin> {
         List<String> rewardIds = new ArrayList<>();
 
         int objectivesAmount = this.objectiveAmount.createValue(difficulty, level);
+        int rewardsAmount = this.rewardAmount.createValue(difficulty, level);
 
         Set<GenObjectiveObject> objectivesHolders = this.getObjectiveList().pickObjects(difficulty, objectivesAmount);
         if (objectivesHolders.isEmpty()) throw new NoSuchElementException("Could not pick objective!");
@@ -159,10 +168,13 @@ public class Generator extends AbstractFileData<ChallengesPlugin> {
             conditionIds.addAll(conditionsHolder.pickItems(difficulty, level));
         }
 
-        GenAmountObject rewardsHolder = this.getRewardList().pickObject(difficulty);
+        /*GenAmountObject rewardsHolder = this.getRewardList().pickObject(difficulty);
         if (rewardsHolder != null) {
             rewardIds.addAll(rewardsHolder.pickItems(difficulty, level));
-        }
+        }*/
+        this.rewardList.pickObjects(difficulty, rewardsAmount).forEach(holder -> {
+            rewardIds.addAll(holder.pickItems(difficulty, level));
+        });
 
         List<ConditionConfig> conditionConfigs = new ArrayList<>();
         for (String sId : conditionIds) {
