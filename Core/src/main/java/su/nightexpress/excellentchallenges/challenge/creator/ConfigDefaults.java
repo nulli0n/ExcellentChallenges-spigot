@@ -12,6 +12,7 @@ import su.nightexpress.nightcore.util.wrapper.UniInt;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 public class ConfigDefaults {
 
@@ -28,7 +29,8 @@ public class ConfigDefaults {
             Map.of(Difficulty.DEF_CHILD, 70D, Difficulty.DEF_EASY, 50D, Difficulty.DEF_MEDIUM, 25D),
             new RankMap<>(RankMap.Mode.RANK, Perms.PREFIX_CHALLENGES_AMOUNT + "daily.", 5, Map.of("donor", 7)),
             new HashSet<>(),
-            new HashSet<>()
+            new HashSet<>(),
+            new TreeMap<>()
         );
 
         ChallengeCategory weekly = new ChallengeCategory(
@@ -40,7 +42,8 @@ public class ConfigDefaults {
             Map.of(Difficulty.DEF_EASY, 25D, Difficulty.DEF_MEDIUM, 60D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 15D),
             new RankMap<>(RankMap.Mode.RANK, Perms.PREFIX_CHALLENGES_AMOUNT + "weekly.", 5, Map.of("donor", 7)),
             new HashSet<>(),
-            new HashSet<>()
+            new HashSet<>(),
+            new TreeMap<>()
         );
 
         ChallengeCategory monthly = new ChallengeCategory(
@@ -52,7 +55,8 @@ public class ConfigDefaults {
             Map.of(Difficulty.DEF_MEDIUM, 35D, Difficulty.DEF_HARD, 50D, Difficulty.DEF_EXTREME, 80D),
             new RankMap<>(RankMap.Mode.RANK, Perms.PREFIX_CHALLENGES_AMOUNT + "monthly.", 5, Map.of("donor", 7)),
             new HashSet<>(),
-            new HashSet<>()
+            new HashSet<>(),
+            new TreeMap<>()
         );
 
         map.put(daily.getId(), daily);

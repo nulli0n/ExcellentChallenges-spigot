@@ -42,7 +42,7 @@ public class CategoryCommand extends PluginCommand<ChallengesPlugin> {
             return;
         }
 
-        Player player = Players.getPlayer(result.getArg(2, sender.getName()));
+        Player player = Players.getPlayer(result.getArg(1, sender.getName()));
         if (player == null) {
             this.errorPlayer(sender);
             return;

@@ -15,6 +15,7 @@ public class Perms {
     public static final UniPermission COMMAND_OPEN                 = new UniPermission(PREFIX_COMMAND + "open", "Access to the 'open' sub-command.");
     public static final UniPermission COMMAND_OPEN_OTHERS          = new UniPermission(PREFIX_COMMAND + "open.others", "Access to the 'open' sub-command.");
     public static final UniPermission COMMAND_RESET                = new UniPermission(PREFIX_COMMAND + "reset", "Access to the 'reset' sub-command.");
+    public static final UniPermission COMMAND_RESET_ALL                = new UniPermission(PREFIX_COMMAND + "resetall", "Access to the 'reset' sub-command.");
     public static final UniPermission COMMAND_REROLL_TOKENS        = new UniPermission(PREFIX_COMMAND + "rerolltokens", "Access to the 'rerolltokens' command (without sub-commands).");
     public static final UniPermission COMMAND_REROLL_TOKENS_GIVE   = new UniPermission(PREFIX_COMMAND + "rerolltokens.give", "Access to the 'rerolltokens give' command");
     public static final UniPermission COMMAND_REROLL_TOKENS_SET    = new UniPermission(PREFIX_COMMAND + "rerolltokens.set", "Access to the 'rerolltokens set' command.");
@@ -27,12 +28,14 @@ public class Perms {
         PLUGIN.addChildren(COMMAND, REROLL);
 
         COMMAND.addChildren(
-            COMMAND_OPEN, COMMAND_OPEN_OTHERS,
+            COMMAND_OPEN,
+            COMMAND_OPEN_OTHERS,
             COMMAND_REROLL_TOKENS,
             COMMAND_REROLL_TOKENS_GIVE,
             COMMAND_REROLL_TOKENS_SET,
             COMMAND_REROLL_TOKENS_REMOVE,
             COMMAND_RESET,
+            COMMAND_RESET_ALL,
             COMMAND_RELOAD
         );
     }

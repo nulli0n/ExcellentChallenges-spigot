@@ -39,6 +39,17 @@ public class Lang extends CoreLang {
         LIGHT_GRAY.enclose("Reset " + LIGHT_YELLOW.enclose(GENERIC_TYPE) + " challenges for " + LIGHT_YELLOW.enclose(PLAYER_NAME) + "!"));
 
 
+
+    public static final LangString COMMAND_RESET_ALL_DESC = LangString.of("Command.ResetAll.Desc",
+        "Resets challenges for all players.");
+
+    public static final LangString COMMAND_RESET_ALL_USAGE = LangString.of("Command.ResetAll.Usage",
+        "[type]");
+
+    public static final LangText COMMAND_RESET_ALL_DONE = LangText.of("Command.ResetAll.Done",
+        LIGHT_GRAY.enclose("Reset " + LIGHT_YELLOW.enclose(GENERIC_TYPE) + " challenges for " + LIGHT_YELLOW.enclose("all players") + "!"));
+
+
     public static final LangString COMMAND_REROLL_TOKENS_DESC = LangString.of("Command.RerollTokens.Desc",
         "Manage Reroll Tokens.");
 

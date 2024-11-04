@@ -25,6 +25,7 @@ public class DataHandler extends AbstractUserDataHandler<ChallengesPlugin, Chall
     private static final SQLColumn COL_REFRESH_TIMES        = SQLColumn.of("refreshTimes", ColumnType.STRING);
     private static final SQLColumn COL_REROLL_TOKENS        = SQLColumn.of("rerollTokens", ColumnType.STRING);
     private static final SQLColumn COL_COMPLETED_CHALLENGES = SQLColumn.of("completedChallenges", ColumnType.STRING);
+    private static final SQLColumn COL_COMPLETED_MILESTONES = SQLColumn.of("completedMilestones", ColumnType.STRING);
 
     private final  Function<ResultSet, ChallengeUser> userFunction;
 
@@ -47,8 +48,11 @@ public class DataHandler extends AbstractUserDataHandler<ChallengesPlugin, Chall
 
                 Map<String, Map<String, Integer>> completedChallenges = gson.fromJson(resultSet.getString(COL_COMPLETED_CHALLENGES.getName()), new TypeToken<Map<String, Map<String, Integer>>>(){}.getType());
 
+                Map<String, Set<Integer>> completedMilestones = gson.fromJson(resultSet.getString(COL_COMPLETED_MILESTONES.getName()), new TypeToken<Map<String, Set<Integer>>>(){}.getType());
+                if (completedMilestones == null) completedMilestones = new HashMap<>();
+
                 return new ChallengeUser(plugin, uuid, name, dateCreated, lastOnline,
-                    challenges, refreshTimes, rerollTokens, completedChallenges);
+                    challenges, refreshTimes, rerollTokens, completedChallenges, completedMilestones);
             }
             catch (SQLException exception) {
                 exception.printStackTrace();
@@ -58,22 +62,36 @@ public class DataHandler extends AbstractUserDataHandler<ChallengesPlugin, Chall
     }
 
     @Override
+    protected void createUserTable() {
+        super.createUserTable();
+
+        this.addColumn(this.tableUsers, COL_COMPLETED_MILESTONES.toValue("[]"));
+    }
+
+    @Override
     public void onSynchronize() {
         for (ChallengeUser user : this.plugin.getUserManager().getLoaded()) {
-            ChallengeUser fetch = this.getUser(user.getId());
-            if (fetch == null) continue;
+            if (this.plugin.getUserManager().isScheduledToSave(user)) continue;
+
+            ChallengeUser fresh = this.getUser(user.getId());
+            if (fresh == null) continue;
+
+            if (!user.isSyncReady()) continue;
 
             user.getChallengesMap().clear();
-            user.getChallengesMap().putAll(fetch.getChallengesMap());
+            user.getChallengesMap().putAll(fresh.getChallengesMap());
 
             user.getRefreshTimes().clear();
-            user.getRefreshTimes().putAll(fetch.getRefreshTimes());
+            user.getRefreshTimes().putAll(fresh.getRefreshTimes());
 
             user.getRerollTokens().clear();
-            user.getRerollTokens().putAll(fetch.getRerollTokens());
+            user.getRerollTokens().putAll(fresh.getRerollTokens());
 
             user.getCompletedChallengesMap().clear();
-            user.getCompletedChallengesMap().putAll(fetch.getCompletedChallengesMap());
+            user.getCompletedChallengesMap().putAll(fresh.getCompletedChallengesMap());
+
+            user.getCompletedMilestonesMap().clear();
+            user.getCompletedMilestonesMap().putAll(fresh.getCompletedMilestonesMap());
         }
     }
 
@@ -88,7 +106,7 @@ public class DataHandler extends AbstractUserDataHandler<ChallengesPlugin, Chall
     @Override
     @NotNull
     protected List<SQLColumn> getExtraColumns() {
-        return Arrays.asList(COL_CHALLENGES, COL_REFRESH_TIMES, COL_REROLL_TOKENS, COL_COMPLETED_CHALLENGES);
+        return Arrays.asList(COL_CHALLENGES, COL_REFRESH_TIMES, COL_REROLL_TOKENS, COL_COMPLETED_CHALLENGES, COL_COMPLETED_MILESTONES);
     }
 
     @Override
@@ -98,7 +116,8 @@ public class DataHandler extends AbstractUserDataHandler<ChallengesPlugin, Chall
             COL_CHALLENGES.toValue(this.gson.toJson(user.getChallengesMap())),
             COL_REFRESH_TIMES.toValue(this.gson.toJson(user.getRefreshTimes())),
             COL_REROLL_TOKENS.toValue(this.gson.toJson(user.getRerollTokens())),
-            COL_COMPLETED_CHALLENGES.toValue(this.gson.toJson(user.getCompletedChallengesMap()))
+            COL_COMPLETED_CHALLENGES.toValue(this.gson.toJson(user.getCompletedChallengesMap())),
+            COL_COMPLETED_MILESTONES.toValue(this.gson.toJson(user.getCompletedMilestonesMap()))
         );
     }
 

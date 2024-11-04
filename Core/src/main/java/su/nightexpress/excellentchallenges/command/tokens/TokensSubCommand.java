@@ -73,7 +73,7 @@ public abstract class TokensSubCommand extends AbstractCommand<ChallengesPlugin>
             }
 
             this.editTokens(user, category, amount);
-            this.plugin.getUserManager().save(user);
+            this.plugin.getUserManager().scheduleSave(user);
 
             this.doneMessage.getMessage()
                 .replace(Placeholders.PLAYER_NAME, user.getName())

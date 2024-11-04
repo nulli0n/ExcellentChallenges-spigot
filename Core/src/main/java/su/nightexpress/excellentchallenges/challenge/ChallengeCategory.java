@@ -11,6 +11,8 @@ import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Perms;
 import su.nightexpress.nightcore.config.ConfigValue;
 import su.nightexpress.nightcore.config.FileConfig;
+import su.nightexpress.nightcore.util.Lists;
+import su.nightexpress.nightcore.util.NumberUtil;
 import su.nightexpress.nightcore.util.RankMap;
 import su.nightexpress.nightcore.util.placeholder.Placeholder;
 import su.nightexpress.nightcore.util.placeholder.PlaceholderMap;
@@ -30,6 +32,7 @@ public class ChallengeCategory implements Placeholder {
     private final RankMap<Integer>    amountPerRank;
     private final Set<String>         excludedGenerators;
     private final Set<String>         completionRewards;
+    private final TreeMap<Integer, ChallengeMilestone> milestones;
 
     private final PlaceholderMap placeholderMap;
 
@@ -42,7 +45,8 @@ public class ChallengeCategory implements Placeholder {
                              @NotNull Map<String, Double> difficulties,
                              @NotNull RankMap<Integer> amountPerRank,
                              @NotNull Set<String> excludedGenerators,
-                             @NotNull Set<String> completionRewards) {
+                             @NotNull Set<String> completionRewards,
+                             @NotNull TreeMap<Integer, ChallengeMilestone> milestones) {
         this.id = id.toLowerCase();
         this.name = name;
         this.icon = icon;
@@ -53,6 +57,7 @@ public class ChallengeCategory implements Placeholder {
         this.amountPerRank = amountPerRank;
         this.excludedGenerators = excludedGenerators.stream().map(String::toLowerCase).collect(Collectors.toSet());
         this.completionRewards = completionRewards;
+        this.milestones = milestones;
 
         this.placeholderMap = new PlaceholderMap()
             .add(Placeholders.CATEGORY_NAME, this::getName);
@@ -100,29 +105,55 @@ public class ChallengeCategory implements Placeholder {
             "- smelt_item_"
         ).read(cfg);
 
-        Set<String> completionRewards = ConfigValue.create(path + ".Completion_Rewards", new HashSet<>(),
-            "A list of reward identifiers that will be given to a player, when he completes all current challenges of this type",
+        Set<String> completionRewards = ConfigValue.create(path + ".Completion_Rewards",
+                new HashSet<>(),
+            "List of reward identifiers that will be given to a player, when he completes all current challenges of this type",
             "Reward configuration files with their identifiers are located in '" + Config.DIR_REWARDS + "' sub-folder.",
-            "Use '" + Placeholders.GENERIC_REWARDS + "' placeholder in 'categories.yml' menu config to display reward names.")
-            .read(cfg);
+            "Use '" + Placeholders.GENERIC_REWARDS + "' placeholder in 'categories.yml' menu config to display reward names."
+        ).read(cfg);
 
-        return new ChallengeCategory(id, name, icon, commandAliases, refreshTime, uniqueTypes, difficulties, amountPerRank, excludedGenerators, completionRewards);
+        TreeMap<Integer, ChallengeMilestone> milestones = ConfigValue.forTreeMap(path + ".Milestones",
+            NumberUtil::getInteger,
+            (cfg1, path1, key) -> ChallengeMilestone.read(cfg1, path1 + "." + key, key),
+            (cfg1, path1, map) -> map.values().forEach(mile -> mile.write(cfg1, path1 + "." + mile.getMilestone())),
+            () -> {
+                TreeMap<Integer, ChallengeMilestone> map = new TreeMap<>();
+                map.put(5, new ChallengeMilestone(5, false, Lists.newList("reward_1", "reward_2")));
+                map.put(15, new ChallengeMilestone(15, true, Lists.newList("reward_1", "reward_2")));
+                return map;
+            },
+            "Here you can create challenge milestones.",
+            "Players will get specific rewards upon completion specific amount of challenges of this type."
+        ).read(cfg);
+
+//        cfg.getSection(path + ".Milestones").forEach(sId -> {
+//            int milestone = NumberUtil.getInteger(sId);
+//            if (milestone <= 0) return;
+//
+//            ChallengeMilestone mile = ChallengeMilestone.read(cfg, path + ".Milestones." + sId, milestone);
+//            milestones.put(milestone, mile);
+//        });
+
+        return new ChallengeCategory(id, name, icon, commandAliases, refreshTime, uniqueTypes, difficulties, amountPerRank, excludedGenerators, completionRewards, milestones);
     }
 
-    public void write(@NotNull FileConfig cfg, @NotNull String path) {
-        cfg.set(path + ".Name", this.getName());
-        cfg.setItem(path + ".Icon", this.getIcon());
-        cfg.set(path + ".Command_Aliases", String.join(",", this.getCommandAliases()));
-        cfg.set(path + ".Refresh_Time", this.getRefreshTime());
-        cfg.set(path + ".Unique_Types", this.isUniqueTypes());
-        cfg.remove(path + ".Difficulties");
+    public void write(@NotNull FileConfig config, @NotNull String path) {
+        config.set(path + ".Name", this.getName());
+        config.setItem(path + ".Icon", this.getIcon());
+        config.set(path + ".Command_Aliases", String.join(",", this.getCommandAliases()));
+        config.set(path + ".Refresh_Time", this.getRefreshTime());
+        config.set(path + ".Unique_Types", this.isUniqueTypes());
+        config.remove(path + ".Difficulties");
         this.getDifficulties().forEach((sId, chance) -> {
-            cfg.set(path + ".Difficulties." + sId, chance);
+            config.set(path + ".Difficulties." + sId, chance);
         });
-        cfg.remove(path + ".Amount_Per_Rank");
-        this.getAmountPerRank().write(cfg, path + ".Amount_Per_Rank");
-        cfg.set(path + ".Excluded_Generators", this.getExcludedGenerators());
-        cfg.set(path + ".Completion_Rewards", this.getCompletionRewardIds());
+        config.remove(path + ".Amount_Per_Rank");
+        this.getAmountPerRank().write(config, path + ".Amount_Per_Rank");
+        config.set(path + ".Excluded_Generators", this.getExcludedGenerators());
+        config.set(path + ".Completion_Rewards", this.getCompletionRewardIds());
+
+        config.remove(path + ".Milestones");
+        this.milestones.forEach((mile, stone) -> stone.write(config, path + ".Milestones." + mile));
     }
 
     @Override
@@ -186,5 +217,22 @@ public class ChallengeCategory implements Placeholder {
     public Set<Reward> getCompletionRewards() {
         return this.getCompletionRewardIds().stream().map(id -> ChallengesAPI.getChallengeManager().getReward(id))
             .filter(Objects::nonNull).collect(Collectors.toSet());
+    }
+
+    @NotNull
+    public TreeMap<Integer, ChallengeMilestone> getMilestones() {
+        return milestones;
+    }
+
+    @NotNull
+    public Set<ChallengeMilestone> getMilestones(int amount) {
+        if (amount == 0) return Collections.emptySet();
+
+        System.out.println("amount = " + amount);
+
+        return this.milestones.entrySet().stream().filter(entry -> {
+            int milestone = entry.getKey();
+            return milestone > 0 && amount % milestone == 0;
+        }).map(Map.Entry::getValue).collect(Collectors.toSet());
     }
 }

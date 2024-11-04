@@ -82,10 +82,14 @@ public class BlockMaterialCreator extends AbstractCreator<Material> {
         ores.addAll(Tag.REDSTONE_ORES.getValues());
         map.put("ores", ores);
 
+        Set<Material> crops = new HashSet<>(Tag.CROPS.getValues());
+        crops.add(Material.ATTACHED_MELON_STEM);
+        crops.add(Material.ATTACHED_PUMPKIN_STEM);
+
         map.put("dirt", Tag.DIRT.getValues());
         map.put("terracotta", Tag.TERRACOTTA.getValues());
-        map.put("corals", Tag.CORALS.getValues());
-        map.put("crops", Tag.CROPS.getValues());
+        map.put("corals", Tag.UNDERWATER_BONEMEALS.getValues());
+        map.put("crops", crops);
         map.put("base_stone", Tag.BASE_STONE_OVERWORLD.getValues());
         map.put("nether_stone", Tag.BASE_STONE_NETHER.getValues());
         map.put("snow", Tag.SNOW.getValues());

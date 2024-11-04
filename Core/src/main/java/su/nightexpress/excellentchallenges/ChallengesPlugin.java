@@ -7,6 +7,7 @@ import su.nightexpress.excellentchallenges.challenge.action.ActionRegistry;
 import su.nightexpress.excellentchallenges.challenge.creator.CreatorManager;
 import su.nightexpress.excellentchallenges.command.OpenCommand;
 import su.nightexpress.excellentchallenges.command.RerollTokensCommand;
+import su.nightexpress.excellentchallenges.command.ResetAllCommand;
 import su.nightexpress.excellentchallenges.command.ResetCommand;
 import su.nightexpress.excellentchallenges.config.Config;
 import su.nightexpress.excellentchallenges.config.Lang;
@@ -85,6 +86,7 @@ public class ChallengesPlugin extends NightDataPlugin<ChallengeUser> {
 
         mainCommand.addDefaultCommand(new OpenCommand(this));
         mainCommand.addChildren(new ResetCommand(this));
+        mainCommand.addChildren(new ResetAllCommand(this));
         mainCommand.addChildren(new RerollTokensCommand(this));
         mainCommand.addChildren(new ReloadSubCommand(this, Perms.COMMAND_RELOAD));
     }

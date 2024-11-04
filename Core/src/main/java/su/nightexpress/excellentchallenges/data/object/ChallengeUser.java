@@ -15,9 +15,11 @@ public class ChallengeUser extends AbstractUser<ChallengesPlugin> {
     private final Map<String, Long>                    refreshTimes;
     private final Map<String, Integer>                 rerollTokens;
     private final Map<String, Map<String, Integer>>    completedChallenges;
+    private final Map<String, Set<Integer>> completedMilestones;
 
     public ChallengeUser(@NotNull ChallengesPlugin plugin, @NotNull UUID uuid, @NotNull String name) {
         this(plugin, uuid, name, System.currentTimeMillis(), System.currentTimeMillis(),
+            new HashMap<>(),
             new HashMap<>(),
             new HashMap<>(),
             new HashMap<>(),
@@ -30,13 +32,15 @@ public class ChallengeUser extends AbstractUser<ChallengesPlugin> {
                          @NotNull Map<String, Set<GeneratedChallenge>> challenges,
                          @NotNull Map<String, Long> refreshTimes,
                          @NotNull Map<String, Integer> rerollTokens,
-                         @NotNull Map<String, Map<String, Integer>> completedChallenges
+                         @NotNull Map<String, Map<String, Integer>> completedChallenges,
+                         @NotNull Map<String, Set<Integer>> completedMilestones
     ) {
         super(plugin, uuid, name, dateCreated, lastOnline);
         this.challenges = new HashMap<>(challenges);
         this.refreshTimes = new HashMap<>(refreshTimes);
         this.rerollTokens = new HashMap<>(rerollTokens);
         this.completedChallenges = new HashMap<>(completedChallenges);
+        this.completedMilestones = new HashMap<>(completedMilestones);
 
         this.removeInvalidChallenges();
     }
@@ -134,10 +138,20 @@ public class ChallengeUser extends AbstractUser<ChallengesPlugin> {
         return completedChallenges;
     }
 
+    @NotNull
+    public Map<String, Set<Integer>> getCompletedMilestonesMap() {
+        return this.completedMilestones;
+    }
+
     /*@NotNull
     public Map<String, Integer> getCompletedChallenges(@NotNull ChallengeActionType<?, ?> type) {
         return this.getCompletedChallenges(type.getName());
     }*/
+
+    @NotNull
+    public Map<String, Integer> getCompletedChallenges(@NotNull ChallengeCategory category) {
+        return this.getCompletedChallenges(category.getId());
+    }
 
     @NotNull
     public Map<String, Integer> getCompletedChallenges(@NotNull String id) {
@@ -145,7 +159,7 @@ public class ChallengeUser extends AbstractUser<ChallengesPlugin> {
     }
 
     public void addCompletedChallenge(@NotNull GeneratedChallenge challenge) {
-        Map<String, Integer> completed = this.getCompletedChallenges(challenge.getType().getId());
+        Map<String, Integer> completed = this.getCompletedChallenges(challenge.getType());
         int amount = completed.getOrDefault(challenge.getActionType().getName(), 0);
         completed.put(challenge.getActionType().getName(), amount + 1);
         this.getCompletedChallengesMap().put(challenge.getType().getId(), completed);
@@ -172,5 +186,19 @@ public class ChallengeUser extends AbstractUser<ChallengesPlugin> {
         return this.getCompletedChallengesMap().values().stream()
             .mapToInt(map -> map.entrySet().stream().filter(entry -> entry.getKey().equalsIgnoreCase(jobType.getName())).mapToInt(Map.Entry::getValue).sum())
             .sum();
+    }
+
+    @NotNull
+    public Set<Integer> getCompletedMilestones(@NotNull ChallengeCategory category) {
+        return this.getCompletedMilestones(category.getId());
+    }
+
+    @NotNull
+    public Set<Integer> getCompletedMilestones(@NotNull String id) {
+        return this.getCompletedMilestonesMap().computeIfAbsent(id.toLowerCase(), k -> new HashSet<>());
+    }
+
+    public boolean isMilestoneCompleted(@NotNull ChallengeCategory category, int milestone) {
+        return this.getCompletedMilestones(category).contains(milestone);
     }
 }

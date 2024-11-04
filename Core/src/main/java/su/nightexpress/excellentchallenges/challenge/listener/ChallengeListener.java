@@ -70,6 +70,13 @@ public class ChallengeListener extends AbstractListener<ChallengesPlugin> {
             type.getCompletionRewards().forEach(reward -> reward.give(player));
         }
 
+        int amount = user.getCompletedChallengesAmount(type);
+        type.getMilestones(amount).forEach(milestone -> {
+            if (milestone.isRepeatable() || !user.isMilestoneCompleted(type, milestone.getMilestone())) {
+                milestone.getCompletionRewards().forEach(reward -> reward.give(player));
+            }
+        });
+
         Lang.CHALLENGE_NOTIFY_COMPLETED.getMessage()
             .replace(challenge.replacePlaceholders())
             .send(player);
