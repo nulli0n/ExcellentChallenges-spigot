@@ -52,7 +52,7 @@ public class CategoriesMenu extends ConfigMenu<ChallengesPlugin> implements Auto
     @Override
     @NotNull
     protected MenuOptions createDefaultOptions() {
-        return new MenuOptions(BLACK.enclose("Challenges"), 27, InventoryType.CHEST, 1);
+        return new MenuOptions(BLACK.wrap("Challenges"), 27, InventoryType.CHEST, 1);
     }
 
     @Override
@@ -66,15 +66,15 @@ public class CategoriesMenu extends ConfigMenu<ChallengesPlugin> implements Auto
         this.categorySlots = ConfigValue.create("Category.Slots", new int[] {10, 13, 16}).read(cfg);
 
         this.categoryName = ConfigValue.create("Category.Name",
-            LIGHT_YELLOW.enclose(BOLD.enclose(CATEGORY_NAME + " Challenges"))
+            LIGHT_YELLOW.wrap(BOLD.wrap(CATEGORY_NAME + " Challenges"))
         ).read(cfg);
 
         this.categoryLore = ConfigValue.create("Category.Lore",
             Arrays.asList(
                 "",
-                LIGHT_YELLOW.enclose(BOLD.enclose("Statistics:")),
-                LIGHT_YELLOW.enclose("┃ " + LIGHT_GRAY.enclose("Completed: ") + GENERIC_COMPLETED + LIGHT_GRAY.enclose("/") + GENERIC_TOTAL),
-                LIGHT_YELLOW.enclose("┃ " + LIGHT_GRAY.enclose("Progress: ") + GENERIC_PROGRESS + "%")
+                LIGHT_YELLOW.wrap(BOLD.wrap("Statistics:")),
+                LIGHT_YELLOW.wrap("┃ " + LIGHT_GRAY.wrap("Completed: ") + GENERIC_COMPLETED + LIGHT_GRAY.wrap("/") + GENERIC_TOTAL),
+                LIGHT_YELLOW.wrap("┃ " + LIGHT_GRAY.wrap("Progress: ") + GENERIC_PROGRESS + "%")
             )
         ).read(cfg);
     }

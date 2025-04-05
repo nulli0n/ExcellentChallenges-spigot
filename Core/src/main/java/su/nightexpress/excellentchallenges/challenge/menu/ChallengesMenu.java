@@ -209,7 +209,7 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin> implements Auto
     @Override
     @NotNull
     protected MenuOptions createDefaultOptions() {
-        return new MenuOptions(BLACK.enclose(CATEGORY_NAME + " Challenges"), 54, InventoryType.CHEST, 1);
+        return new MenuOptions(BLACK.wrap(CATEGORY_NAME + " Challenges"), 54, InventoryType.CHEST, 1);
     }
 
     @Override
@@ -219,22 +219,22 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin> implements Auto
 
         ItemStack rerollStack = ItemUtil.getSkinHead("b423289510c54b67df023580979c465d0481c769c865bf4b465cf478749f1c4f");
         ItemUtil.editMeta(rerollStack, meta -> {
-            meta.setDisplayName(LIGHT_YELLOW.enclose(BOLD.enclose("Reroll Challenges ")) + LIGHT_GRAY.enclose("(1 Token)"));
+            meta.setDisplayName(LIGHT_YELLOW.wrap(BOLD.wrap("Reroll Challenges ")) + LIGHT_GRAY.wrap("(1 Token)"));
             meta.setLore(Arrays.asList(
-                LIGHT_YELLOW.enclose("▪ " + LIGHT_GRAY.enclose("Tokens: ") + GENERIC_REROLL_TOKENS),
-                LIGHT_YELLOW.enclose("▪ " + LIGHT_GRAY.enclose("Purchase at: ") + "store.samplesmp.com"),
+                LIGHT_YELLOW.wrap("▪ " + LIGHT_GRAY.wrap("Tokens: ") + GENERIC_REROLL_TOKENS),
+                LIGHT_YELLOW.wrap("▪ " + LIGHT_GRAY.wrap("Purchase at: ") + "store.samplesmp.com"),
                 "",
-                LIGHT_YELLOW.enclose(BOLD.enclose("Description:")),
-                LIGHT_GRAY.enclose("Use this button to " + LIGHT_YELLOW.enclose("replace") + " your"),
-                LIGHT_GRAY.enclose("current challenges."),
+                LIGHT_YELLOW.wrap(BOLD.wrap("Description:")),
+                LIGHT_GRAY.wrap("Use this button to " + LIGHT_YELLOW.wrap("replace") + " your"),
+                LIGHT_GRAY.wrap("current challenges."),
                 "",
-                LIGHT_GRAY.enclose(LIGHT_RED.enclose("[❗] ") + "All challenge progress will be " + LIGHT_RED.enclose("lost") + ".")
+                LIGHT_GRAY.wrap(LIGHT_RED.wrap("[❗] ") + "All challenge progress will be " + LIGHT_RED.wrap("lost") + ".")
             ));
         });
 
         ItemStack returnStack = ItemUtil.getSkinHead("be9ae7a4be65fcbaee65181389a2f7d47e2e326db59ea3eb789a92c85ea46");
         ItemUtil.editMeta(returnStack, meta -> {
-            meta.setDisplayName(LIGHT_YELLOW.enclose("Back to Categories"));
+            meta.setDisplayName(LIGHT_YELLOW.wrap("Back to Categories"));
         });
 
         list.add(new MenuItem(rerollStack).setHandler(this.rerollHandler).setSlots(4));
@@ -257,59 +257,59 @@ public class ChallengesMenu extends ConfigMenu<ChallengesPlugin> implements Auto
         ).read(cfg);
 
         this.formatActiveName = ConfigValue.create("Challenges.Format.Challenge_Active.Name",
-            LIGHT_CYAN.enclose(BOLD.enclose("Challenge: ")) + LIGHT_GRAY.enclose(CHALLENGE_TYPE)
+            LIGHT_CYAN.wrap(BOLD.wrap("Challenge: ")) + LIGHT_GRAY.wrap(CHALLENGE_TYPE)
         ).read(cfg);
 
         this.formatActiveLore = ConfigValue.create("Challenges.Format.Challenge_Active.Lore",
             Arrays.asList(
-                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Difficulty: ") + CHALLENGE_DIFFICULTY),
-                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Level: ") + CHALLENGE_LEVEL),
+                LIGHT_CYAN.wrap("▪ " + LIGHT_GRAY.wrap("Difficulty: ") + CHALLENGE_DIFFICULTY),
+                LIGHT_CYAN.wrap("▪ " + LIGHT_GRAY.wrap("Level: ") + CHALLENGE_LEVEL),
                 "",
                 PLACEHOLDER_OBJECTIVES,
                 PLACEHOLDER_CONDITIONS,
                 PLACEHOLDER_REWARDS,
                 "",
-                LIGHT_GRAY.enclose(LIGHT_GREEN.enclose("✔") + " You completed " + LIGHT_GREEN.enclose(CHALLENGE_PROGRESS_PERCENT + "% ") + "of the challenge."),
-                LIGHT_GRAY.enclose(LIGHT_GREEN.enclose("⌚") + " Finish it in: " + LIGHT_GREEN.enclose(CHALLENGE_REFRESH_TIME))
+                LIGHT_GRAY.wrap(LIGHT_GREEN.wrap("✔") + " You completed " + LIGHT_GREEN.wrap(CHALLENGE_PROGRESS_PERCENT + "% ") + "of the challenge."),
+                LIGHT_GRAY.wrap(LIGHT_GREEN.wrap("⌚") + " Finish it in: " + LIGHT_GREEN.wrap(CHALLENGE_REFRESH_TIME))
             )
         ).read(cfg);
 
         this.formatCompletedName = ConfigValue.create("Challenges.Format.Challenge_Completed.Name",
-            LIGHT_CYAN.enclose(BOLD.enclose("Challenge: ")) + LIGHT_GRAY.enclose(CHALLENGE_TYPE)
+            LIGHT_CYAN.wrap(BOLD.wrap("Challenge: ")) + LIGHT_GRAY.wrap(CHALLENGE_TYPE)
         ).read(cfg);
 
         this.formatCompletedLore = ConfigValue.create("Challenges.Format.Challenge_Completed.Lore",
             Arrays.asList(
-                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Difficulty: ") + CHALLENGE_DIFFICULTY),
-                LIGHT_CYAN.enclose("▪ " + LIGHT_GRAY.enclose("Level: ") + CHALLENGE_LEVEL),
+                LIGHT_CYAN.wrap("▪ " + LIGHT_GRAY.wrap("Difficulty: ") + CHALLENGE_DIFFICULTY),
+                LIGHT_CYAN.wrap("▪ " + LIGHT_GRAY.wrap("Level: ") + CHALLENGE_LEVEL),
                 "",
                 PLACEHOLDER_OBJECTIVES,
                 PLACEHOLDER_REWARDS,
                 "",
-                LIGHT_GRAY.enclose(LIGHT_GREEN.enclose("✔") + " You completed " + LIGHT_GREEN.enclose(CHALLENGE_PROGRESS_PERCENT + "% ") + "of the challenge.")
+                LIGHT_GRAY.wrap(LIGHT_GREEN.wrap("✔") + " You completed " + LIGHT_GREEN.wrap(CHALLENGE_PROGRESS_PERCENT + "% ") + "of the challenge.")
             )
         ).read(cfg);
 
         this.formatObjectives = ConfigValue.create("Challenges.Format.Objectives",
             Arrays.asList(
-                LIGHT_CYAN.enclose(BOLD.enclose("Objectives:")),
-                LIGHT_CYAN.enclose("┃ " + LIGHT_GRAY.enclose(OBJECTIVE_NAME + ": ") + OBJECTIVE_PROGRESS_CURRENT + LIGHT_GRAY.enclose("/") + OBJECTIVE_PROGRESS_MAX)
+                LIGHT_CYAN.wrap(BOLD.wrap("Objectives:")),
+                LIGHT_CYAN.wrap("┃ " + LIGHT_GRAY.wrap(OBJECTIVE_NAME + ": ") + OBJECTIVE_PROGRESS_CURRENT + LIGHT_GRAY.wrap("/") + OBJECTIVE_PROGRESS_MAX)
             )
         ).read(cfg);
 
         this.formatConditions = ConfigValue.create("Challenges.Format.Conditions",
             Arrays.asList(
                 "",
-                LIGHT_RED.enclose(BOLD.enclose("Requirements:")),
-                LIGHT_RED.enclose("[❗] ") + LIGHT_GRAY.enclose(CONDITION_DESCRIPTION)
+                LIGHT_RED.wrap(BOLD.wrap("Requirements:")),
+                LIGHT_RED.wrap("[❗] ") + LIGHT_GRAY.wrap(CONDITION_DESCRIPTION)
             )
         ).read(cfg);
 
         this.formatRewards = ConfigValue.create("Challenges.Format.Rewards",
             Arrays.asList(
                 "",
-                LIGHT_YELLOW.enclose("[$] ") + LIGHT_GRAY.enclose("Complete this challenge to receive:"),
-                LIGHT_YELLOW.enclose("◈ " + REWARD_NAME)
+                LIGHT_YELLOW.wrap("[$] ") + LIGHT_GRAY.wrap("Complete this challenge to receive:"),
+                LIGHT_YELLOW.wrap("◈ " + REWARD_NAME)
             )
         ).read(cfg);
     }

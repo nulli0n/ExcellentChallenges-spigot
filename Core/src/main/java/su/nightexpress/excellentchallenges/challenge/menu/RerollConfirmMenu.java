@@ -78,7 +78,7 @@ public class RerollConfirmMenu extends ConfigMenu<ChallengesPlugin> implements L
     @Override
     @NotNull
     protected MenuOptions createDefaultOptions() {
-        return new MenuOptions(BLACK.enclose("Reroll " + CATEGORY_NAME + " challenges?"), 9, InventoryType.CHEST);
+        return new MenuOptions(BLACK.wrap("Reroll " + CATEGORY_NAME + " challenges?"), 9, InventoryType.CHEST);
     }
 
     @Override
@@ -88,12 +88,12 @@ public class RerollConfirmMenu extends ConfigMenu<ChallengesPlugin> implements L
 
         ItemStack cancelStack = ItemUtil.getSkinHead("27548362a24c0fa8453e4d93e68c5969ddbde57bf6666c0319c1ed1e84d89065");
         ItemUtil.editMeta(cancelStack, meta -> {
-            meta.setDisplayName(LIGHT_RED.enclose(BOLD.enclose("Cancel")));
+            meta.setDisplayName(LIGHT_RED.wrap(BOLD.wrap("Cancel")));
         });
 
         ItemStack acceptStack = ItemUtil.getSkinHead("a79a5c95ee17abfef45c8dc224189964944d560f19a44f19f8a46aef3fee4756");
         ItemUtil.editMeta(acceptStack, meta -> {
-            meta.setDisplayName(LIGHT_GREEN.enclose(BOLD.enclose("Accept")));
+            meta.setDisplayName(LIGHT_GREEN.wrap(BOLD.wrap("Accept")));
         });
 
         list.add(new MenuItem(cancelStack).setHandler(this.declineHandler).setSlots(0));

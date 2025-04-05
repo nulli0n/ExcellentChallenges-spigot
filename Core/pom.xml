@@ -5,15 +5,16 @@
     <parent>
         <artifactId>ExcellentChallenges</artifactId>
         <groupId>su.nightexpress.challengesrenewed</groupId>
-        <version>3.1.5</version>
+        <version>3.1.7</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
     <artifactId>Core</artifactId>
 
     <properties>
-        <maven.compiler.source>17</maven.compiler.source>
-        <maven.compiler.target>17</maven.compiler.target>
+        <maven.compiler.source>21</maven.compiler.source>
+        <maven.compiler.target>21</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencies>
